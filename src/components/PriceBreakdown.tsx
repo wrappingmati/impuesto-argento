@@ -35,11 +35,11 @@ export default function PriceBreakdown({
   }
 
   const ivaRate = 0.21; // 21% IVA
-  const percepcionRate = 0.45; // 45% Percepción
+ 
 
   const ivaAmount = originalPrice * ivaRate;
-  const percepcionAmount = originalPrice * percepcionRate;
-  const finalPrice = originalPrice + ivaAmount + percepcionAmount;
+  
+  const finalPrice = originalPrice + ivaAmount;
 
   return (
     <Card className="w-full max-w-md p-6 space-y-4 bg-gaming-darker/50 backdrop-blur-sm animate-fade-in">
@@ -55,7 +55,7 @@ export default function PriceBreakdown({
         </div>
         <div className="flex justify-between text-gaming-accent">
           <span>Percepción Ganancias/BBPP (45%):</span>
-          <span>ARS ${percepcionAmount.toFixed(2)}</span>
+        
         </div>
         <div className="flex justify-between font-bold pt-2 border-t border-gaming-accent/20">
           <span>Precio Final:</span>
