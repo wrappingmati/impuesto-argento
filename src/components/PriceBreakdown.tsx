@@ -54,7 +54,7 @@ export default function PriceBreakdown({
           <span>ARS ${ivaAmount.toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-gaming-accent">
-          <span>Percepción Ganancias/BBPP (45%):</span>
+          <span> ̶P̶e̶r̶c̶e̶p̶c̶i̶ó̶n̶ ̶G̶a̶n̶a̶n̶c̶i̶a̶s̶/̶B̶B̶P̶P̶ ̶(̶4̶5̶%̶)̶:̶:</span>
         
         </div>
         <div className="flex justify-between font-bold pt-2 border-t border-gaming-accent/20">

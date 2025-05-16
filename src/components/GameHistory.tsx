@@ -22,8 +22,8 @@ export default function GameHistory({ games, onDeleteGame }: GameHistoryProps) {
       <div className="space-y-4">
         {games.map((game, index) => {
           const ivaAmount = game.originalPrice * 0.21;
-          const percepcionAmount = game.originalPrice * 0.45;
-          const finalPrice = game.originalPrice + ivaAmount + percepcionAmount;
+          
+          const finalPrice = game.originalPrice + ivaAmount ;
 
           return (
             <Card key={index} className="w-full p-4 bg-gaming-darker/50 backdrop-blur-sm relative group">

@@ -10,9 +10,7 @@ export default function TaxInfo() {
           <h3 className="font-semibold">Impuestos en Compras Digitales en Argentina</h3>
           <p className="text-sm text-muted-foreground">
             Las compras digitales en Argentina están sujetas a los siguientes impuestos:
-            IVA (21%) y Percepción a cuenta de Ganancias y Bienes Personales (45%).
-            El total de impuestos es del 66% sobre el precio original.
-          </p>
+            IVA (21%) </p>
         </div>
       </div>
     </Card>
