@@ -4,6 +4,7 @@ import PriceBreakdown from "@/components/PriceBreakdown";
 import TaxInfo from "@/components/TaxInfo";
 import GameHistory from "@/components/GameHistory";
 import { useToast } from "@/components/ui/use-toast";
+import DolarInfo from "@/components/DolarInfo"; // 👈 import nuevo
 
 interface SavedGame {
   name: string;
@@ -68,7 +69,10 @@ export default function Index() {
             Calcula el precio final de tus juegos en Argentina con Impuesto argento
           </p>
         </div>
+{/* Cotización del dólar */}
+        <DolarInfo /> {/* 👈 agregado */}
 
+        {/* Main Content */}
         {/* Main Content */}
         <div className="space-y-8">
           <div className="flex flex-col items-center gap-6">
