@@ -5,16 +5,16 @@
 ## 🚀 Características Principales
 
 * **Cálculo Preciso de Impuestos:** Automatización en el cálculo de percepciones y retenciones vigentes para compras en moneda extranjera.
-* **Gestión de Cotizaciones:** [Aclarar si consume alguna API en tiempo real, ej: DolarAPI] para mantener los valores actualizados.
+* **Gestión de Cotizaciones:** [DolarAPI] para mantener los valores actualizados.
 * **Arquitectura Escalable:** Código modularizado pensado para escalar y añadir nuevas normativas fiscales con facilidad.
 * **UI/UX Optimizada:** Interfaz de usuario limpia, rápida y responsiva, enfocada en la conversión y la usabilidad.
 
 ## 🛠️ Stack Tecnológico
 
-* **Frontend:** [Ej: Next.js / React / Vite]
+* **Frontend:** [ Vite]
 * **Estilos:** [Ej: Tailwind CSS / Styled Components]
-* **Backend / Lógica:** [Ej: Node.js / Python / Google Apps Script]
-* **Deploy:** [Ej: Vercel / Netlify]
+
+* **Deploy:** [ Netlify]
 
 ## ⚙️ Instalación y Ejecución Local
 
