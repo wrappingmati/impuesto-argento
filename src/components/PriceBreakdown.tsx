@@ -1,19 +1,18 @@
 // src/components/PriceBreakdown.tsx
-import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { computeBreakdown, formatArs, formatUsd, PROVINCES, type DolarType, type ProvinceCode } from "@/lib/tax";
 
 interface PriceBreakdownProps {
   originalPrice?: number;
   usdPrice?: number;
-  dolarType?: "blue" | "oficial" | "tarjeta";
+  dolarType?: DolarType;
   dolarRate?: number;
+  province: ProvinceCode;
   isLoading?: boolean;
   error?: string;
 }
 
-const IVA_RATE = 0.21;
-
-const dolarLabels: Record<string, string> = {
+const dolarLabels: Record<DolarType, string> = {
   blue: "Blue",
   oficial: "Oficial",
   tarjeta: "Tarjeta (+45% Ganancias)",
@@ -24,76 +23,115 @@ export default function PriceBreakdown({
   usdPrice,
   dolarType,
   dolarRate,
+  province,
   isLoading,
   error,
 }: PriceBreakdownProps) {
   if (isLoading) {
     return (
-      <Card className="w-full max-w-md p-6 space-y-4 bg-gaming-darker/50 backdrop-blur-sm">
+      <div className="ticket w-full max-w-md p-6 space-y-4">
         <Skeleton className="h-6 w-32" />
         <Skeleton className="h-4 w-full" />
         <Skeleton className="h-4 w-full" />
         <Skeleton className="h-4 w-full" />
-      </Card>
+      </div>
     );
   }
 
   if (error) {
     return (
-      <Card className="w-full max-w-md p-6 bg-gaming-darker/50 backdrop-blur-sm border-destructive">
+      <div className="ticket w-full max-w-md p-6 border-destructive">
         <p className="text-destructive">{error}</p>
-      </Card>
+      </div>
     );
   }
 
   if (typeof originalPrice === "undefined") return null;
 
-  const ivaAmount = originalPrice * IVA_RATE;
-  const finalPrice = originalPrice + ivaAmount;
+  const isForeign = !!usdPrice && !!dolarType;
+  const breakdown = computeBreakdown(originalPrice, province, isForeign);
+  const iibbApplies = isForeign && PROVINCES[province].iibbRate > 0;
 
   return (
-    <Card className="w-full max-w-md p-6 space-y-4 bg-gaming-darker/50 backdrop-blur-sm animate-fade-in">
-      <h3 className="text-lg font-semibold">Desglose de Precio</h3>
+    <div className="ticket w-full max-w-md p-6 space-y-4 animate-print-in font-nums">
+      <div className="flex items-center justify-between font-display">
+        <h3 className="text-base font-semibold tracking-wide">Comprobante estimado</h3>
+        <span className="text-[10px] uppercase tracking-widest text-muted-foreground">
+          no válido como factura
+        </span>
+      </div>
+
+      <div className="ticket-divider" />
 
       <div className="space-y-2 text-sm">
-        {/* Conversión USD si aplica */}
         {usdPrice && dolarType && dolarRate && (
-          <div className="pb-3 mb-1 border-b border-gaming-accent/10 space-y-1">
+          <div className="pb-3 space-y-1">
             <div className="flex justify-between text-muted-foreground">
-              <span>Precio en USD:</span>
-              <span>USD ${usdPrice.toFixed(2)}</span>
+              <span className="font-display">Precio en USD</span>
+              <span>{formatUsd(usdPrice)}</span>
             </div>
             <div className="flex justify-between text-muted-foreground">
-              <span>Dólar {dolarLabels[dolarType]}:</span>
+              <span className="font-display">Dólar {dolarLabels[dolarType]}</span>
               <span>× ${dolarRate.toFixed(0)}</span>
             </div>
+            <div className="ticket-divider pt-2" />
           </div>
         )}
 
-        {/* Precio base en ARS */}
         <div className="flex justify-between">
-          <span className="text-muted-foreground">Precio base (ARS):</span>
-          <span>${originalPrice.toFixed(2)}</span>
+          <span className="text-muted-foreground font-display">Precio base (ARS)</span>
+          <span>{formatArs(breakdown.base)}</span>
         </div>
 
-        {/* IVA */}
-        <div className="flex justify-between text-gaming-accent">
-          <span>IVA (21%):</span>
-          <span>+ ${ivaAmount.toFixed(2)}</span>
+        <div className="flex justify-between text-primary">
+          <span className="font-display">IVA (21%)</span>
+          <span>+ {formatArs(breakdown.iva)}</span>
         </div>
 
-        {/* Percepción Ganancias/BBPP - eliminado desde 2024 */}
+        {isForeign ? (
+          iibbApplies ? (
+            <div className="flex justify-between text-tarjeta">
+              <span className="font-display">
+                Percepción IIBB · {PROVINCES[province].label}
+              </span>
+              <span>+ {formatArs(breakdown.iibb)}</span>
+            </div>
+          ) : (
+            <div className="flex justify-between text-muted-foreground/50">
+              <span className="font-display line-through">Percepción IIBB</span>
+              <span className="text-xs self-center">
+                {province === "OTRA" ? "elegí tu provincia" : "no aplica en tu provincia"}
+              </span>
+            </div>
+          )
+        ) : (
+          <div className="flex justify-between text-muted-foreground/40">
+            <span className="font-display line-through">Percepción IIBB</span>
+            <span className="text-xs self-center">solo aplica a compras en plataformas extranjeras</span>
+          </div>
+        )}
+
+        {dolarType === "tarjeta" && (
+          <div className="flex justify-between text-muted-foreground/40">
+            <span className="font-display line-through">Percepción Ganancias/BBPP (RG 5617)</span>
+            <span className="text-xs self-center">ya incluida en el dólar tarjeta</span>
+          </div>
+        )}
+
         <div className="flex justify-between text-muted-foreground/40">
-          <span className="line-through">Percepción Ganancias/BBPP (45%):</span>
-          <span className="line-through text-xs self-center">eliminado</span>
+          <span className="font-display line-through">Impuesto PAÍS</span>
+          <span className="text-xs self-center">eliminado 2 ene. 2026</span>
         </div>
 
-        {/* Total */}
-        <div className="flex justify-between font-bold text-base pt-3 border-t border-gaming-accent/20">
-          <span>Precio Final:</span>
-          <span className="text-gaming-accent">ARS ${finalPrice.toFixed(2)}</span>
+        <div className="ticket-divider" />
+
+        <div className="flex justify-between font-display font-bold text-base pt-1">
+          <span>Total estimado</span>
+          <span className="text-primary">{formatArs(breakdown.total)}</span>
         </div>
       </div>
-    </Card>
+
+      <div className="barcode mt-2" aria-hidden="true" />
+    </div>
   );
 }
