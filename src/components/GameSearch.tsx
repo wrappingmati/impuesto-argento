@@ -1,16 +1,9 @@
 // src/components/GameSearch.tsx
 import React, { useState } from "react";
-import { DollarSign, Edit3, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { PROVINCES, type DolarType, type ProvinceCode } from "@/lib/tax";
 import type { DolarRates } from "@/lib/dolarApi";
 import { calculateArgentineTaxes, type TaxCalculationResult } from "@/lib/tax-engine";
@@ -63,32 +56,17 @@ export default function GameSearch({
       ? "Ingresá un precio mayor a 0."
       : null;
 
-  const isValidThumbnail = (url: string) => {
-    if (!url) return true;
-    try {
-      const parsed = new URL(url);
-      return parsed.protocol === "https:";
-    } catch {
-      return false;
-    }
-  };
-  const thumbnailError =
-    touched && thumbnail.trim() && !isValidThumbnail(thumbnail)
-      ? "Tiene que ser una URL https:// válida."
-      : null;
-
   const canSubmit =
     !!name.trim() &&
     !!price.trim() &&
     !!arsPreview &&
-    isValidThumbnail(thumbnail) &&
     (currencyMode === "ars" || !!getRate());
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setTouched(true);
     const arsPrice = getArsPrice();
-    if (!name.trim() || !arsPrice || !isValidThumbnail(thumbnail)) return;
+    if (!name.trim() || !arsPrice) return;
 
     const numPrice = parseFloat(price);
     const isUsd = currencyMode === "usd";
@@ -123,67 +101,49 @@ export default function GameSearch({
       isForeignDigitalService: isUsd ? true : isForeignDigitalService,
       calculation: calc,
     });
-
-    setName("");
-    setPrice("");
-    setThumbnail("");
-    setTouched(false);
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-[#131B2E]/40 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-sm space-y-4"
-    >
-      <div className="space-y-1">
-        <h3 className="font-semibold text-base text-slate-100 flex items-center gap-2">
-          <Edit3 className="w-4 h-4 text-violet-400" />
-          <span>Ingreso manual de producto</span>
-        </h3>
-        <p className="text-xs text-slate-400 leading-relaxed">
-          Completá el nombre y el valor para simular compras en cualquier plataforma que no admita scraping directo.
-        </p>
-      </div>
-
-      <div className="space-y-3 pt-1">
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-3">
         {/* Nombre */}
-        <div className="space-y-1.5">
-          <Label htmlFor="game-name" className="text-xs text-slate-300">
-            Nombre del ítem
+        <div className="space-y-1">
+          <Label htmlFor="manual-name" className="text-xs font-medium text-slate-300">
+            Nombre del juego o servicio
           </Label>
           <Input
-            id="game-name"
+            id="manual-name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Ej: Mortal Kombat 1, Nintendo Switch Online..."
-            className="bg-[#0F1626] border-slate-800 text-slate-100 placeholder:text-slate-500 text-xs h-10 rounded-xl focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 transition-colors duration-200"
+            className="bg-[#0b0e14] border-white/[0.08] text-slate-100 placeholder:text-slate-500 text-xs h-11 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20"
             required
           />
         </div>
 
         {/* Moneda y Precio */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div className="space-y-1.5">
-            <Label className="text-xs text-slate-300">Moneda original</Label>
-            <div className="grid grid-cols-2 gap-1.5 p-1 bg-[#0F1626] border border-slate-800 rounded-xl">
+          <div className="space-y-1">
+            <Label className="text-xs font-medium text-slate-300">Moneda</Label>
+            <div className="grid grid-cols-2 gap-1 p-1 bg-[#0b0e14] border border-white/[0.08] rounded-xl h-11">
               <button
                 type="button"
                 onClick={() => setCurrencyMode("usd")}
-                className={`py-1.5 text-xs font-medium rounded-lg transition-all ${
+                className={`text-xs font-medium rounded-lg transition-all ${
                   currencyMode === "usd"
-                    ? "bg-violet-600/30 text-violet-200 border border-violet-500/40"
+                    ? "bg-white/10 text-white"
                     : "text-slate-400 hover:text-slate-200"
                 }`}
               >
-                USD (Dólares)
+                USD (Dólar)
               </button>
               <button
                 type="button"
                 onClick={() => setCurrencyMode("ars")}
-                className={`py-1.5 text-xs font-medium rounded-lg transition-all ${
+                className={`text-xs font-medium rounded-lg transition-all ${
                   currencyMode === "ars"
-                    ? "bg-violet-600/30 text-violet-200 border border-violet-500/40"
+                    ? "bg-white/10 text-white"
                     : "text-slate-400 hover:text-slate-200"
                 }`}
               >
@@ -192,16 +152,16 @@ export default function GameSearch({
             </div>
           </div>
 
-          <div className="space-y-1.5">
-            <Label htmlFor="game-price" className="text-xs text-slate-300">
-              Precio {currencyMode === "usd" ? "en dólares (USD)" : "en pesos (ARS)"}
+          <div className="space-y-1">
+            <Label htmlFor="manual-price" className="text-xs font-medium text-slate-300">
+              Precio original
             </Label>
             <div className="relative flex items-center">
-              <span className="absolute left-3 text-xs text-slate-500 font-mono">
+              <span className="absolute left-3 text-xs text-slate-400 font-mono">
                 {currencyMode === "usd" ? "US$" : "$"}
               </span>
               <Input
-                id="game-price"
+                id="manual-price"
                 type="number"
                 step="0.01"
                 min="0"
@@ -211,7 +171,7 @@ export default function GameSearch({
                   setTouched(true);
                 }}
                 placeholder="0.00"
-                className="bg-[#0F1626] border-slate-800 text-slate-100 placeholder:text-slate-500 pl-10 text-xs h-10 rounded-xl focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 transition-colors duration-200 font-mono"
+                className="bg-[#0b0e14] border-white/[0.08] text-slate-100 placeholder:text-slate-500 pl-10 text-xs h-11 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 font-mono"
                 required
               />
             </div>
@@ -219,33 +179,13 @@ export default function GameSearch({
           </div>
         </div>
 
-        {/* Imagen opcional */}
-        <div className="space-y-1.5">
-          <Label htmlFor="game-thumbnail" className="text-xs text-slate-300 flex items-center justify-between">
-            <span>URL de portada (opcional)</span>
-            <span className="text-[10px] text-slate-500">https://...</span>
-          </Label>
-          <Input
-            id="game-thumbnail"
-            type="url"
-            value={thumbnail}
-            onChange={(e) => {
-              setThumbnail(e.target.value);
-              setTouched(true);
-            }}
-            placeholder="https://images.example.com/cover.jpg"
-            className="bg-[#0F1626] border-slate-800 text-slate-100 placeholder:text-slate-500 text-xs h-10 rounded-xl focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 transition-colors duration-200"
-          />
-          {thumbnailError && <p className="text-[11px] text-red-400">{thumbnailError}</p>}
-        </div>
-
         <Button
           type="submit"
           disabled={!canSubmit}
-          className="w-full h-10 bg-violet-600 hover:bg-violet-500 text-white text-xs font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2 mt-2"
+          className="w-full h-11 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium rounded-xl transition-all flex items-center justify-center gap-2 mt-1 shadow-sm"
         >
           <Plus className="w-4 h-4" />
-          <span>Calcular y mostrar desglose</span>
+          <span>Calcular desglose</span>
         </Button>
       </div>
     </form>

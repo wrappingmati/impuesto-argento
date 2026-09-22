@@ -6,38 +6,37 @@
 
 @layer base {
   :root {
-    /* Fondo ultra oscuro profundo #0B0F19 */
-    --background: 222 47% 7%;
-    --foreground: 210 40% 98%;
+    /* Fondo natural y orgánico, no saturado */
+    --background: 220 20% 7%;
+    --foreground: 220 15% 95%;
 
-    /* Tarjetas #131B2E */
-    --card: 222 41% 13%;
-    --card-foreground: 210 40% 98%;
+    --card: 220 18% 10%;
+    --card-foreground: 220 15% 95%;
 
-    --popover: 222 41% 13%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 220 18% 10%;
+    --popover-foreground: 220 15% 95%;
 
-    /* Acento Violeta / Indigo sutil */
-    --primary: 258 90% 66%;
+    /* Azul-violeta sutil alineado al logo */
+    --primary: 235 85% 65%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 222 35% 18%;
-    --secondary-foreground: 210 40% 96%;
+    --secondary: 220 15% 15%;
+    --secondary-foreground: 220 15% 90%;
 
-    --muted: 222 30% 16%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 220 14% 14%;
+    --muted-foreground: 220 10% 60%;
 
-    --accent: 258 90% 66%;
+    --accent: 235 85% 65%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217 33% 18%;
-    --input: 222 43% 10%;
-    --ring: 258 90% 66%;
+    --border: 220 14% 16%;
+    --input: 220 16% 11%;
+    --ring: 235 85% 65%;
 
-    --radius: 1rem;
+    --radius: 0.875rem;
 
     /* Cotizaciones */
     --rate-blue: 213 82% 66%;
@@ -51,11 +50,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-[#0B0F19] text-foreground font-sans antialiased selection:bg-violet-500/30 selection:text-white;
-    background-image:
-      radial-gradient(circle at 50% -15%, rgba(139, 92, 246, 0.08) 0%, transparent 60%),
-      radial-gradient(circle at 100% 60%, rgba(59, 130, 246, 0.04) 0%, transparent 50%);
-    background-attachment: fixed;
+    @apply bg-[#0b0e14] text-foreground font-sans antialiased selection:bg-indigo-500/20 selection:text-white;
   }
 }
 

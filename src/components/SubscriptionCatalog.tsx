@@ -104,47 +104,43 @@ export default function SubscriptionCatalog({
     return true;
   });
 
-  const categories: { id: FilterCategory; label: string; icon: LucideIcon }[] = [
-    { id: "all", label: "Todas", icon: Sparkles },
-    { id: "streaming", label: "Streaming", icon: Film },
-    { id: "gaming", label: "Gaming", icon: Gamepad2 },
-    { id: "ai", label: "IA & Dev", icon: Bot },
-    { id: "cloud", label: "Cloud", icon: Cloud },
+  const categories: { id: FilterCategory; label: string }[] = [
+    { id: "all", label: "Todas" },
+    { id: "streaming", label: "Streaming" },
+    { id: "gaming", label: "Gaming" },
+    { id: "ai", label: "IA & Dev" },
+    { id: "cloud", label: "Cloud" },
   ];
 
   return (
     <div className="space-y-4">
-      {/* Selector de categoría */}
+      {/* Filtros sutiles */}
       <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-        {categories.map((c) => {
-          const Icon = c.icon;
-          return (
-            <button
-              key={c.id}
-              type="button"
-              onClick={() => setCategory(c.id)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 whitespace-nowrap transition-all border ${
-                category === c.id
-                  ? "bg-violet-600/20 text-violet-300 border-violet-500/40"
-                  : "bg-[#0F1626] text-slate-400 border-slate-800 hover:text-slate-200 hover:border-slate-700"
-              }`}
-            >
-              <Icon className="w-3.5 h-3.5" />
-              <span>{c.label}</span>
-            </button>
-          );
-        })}
+        {categories.map((c) => (
+          <button
+            key={c.id}
+            type="button"
+            onClick={() => setCategory(c.id)}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all border ${
+              category === c.id
+                ? "bg-white/10 text-white border-white/[0.12]"
+                : "bg-transparent text-slate-400 border-transparent hover:text-slate-200 hover:bg-white/[0.04]"
+            }`}
+          >
+            {c.label}
+          </button>
+        ))}
       </div>
 
       {isLoading && !remoteServices && (
-        <div className="p-8 text-center text-slate-400 space-y-2 bg-[#131B2E]/20 border border-slate-800 rounded-2xl">
-          <Loader2 className="w-6 h-6 animate-spin mx-auto text-violet-400" />
-          <p className="text-xs">Cargando catálogo actualizado de suscripciones...</p>
+        <div className="p-8 text-center text-slate-400 space-y-2">
+          <Loader2 className="w-5 h-5 animate-spin mx-auto text-slate-400" />
+          <p className="text-xs">Cargando suscripciones...</p>
         </div>
       )}
 
-      {/* Grilla de servicios */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+      {/* Grilla limpia de servicios */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {filteredServices.map((service) => {
           const planIndex = selectedPlanMap[service.id] ?? 0;
           const currentPlan = service.plans[planIndex] || service.plans[0];
@@ -155,27 +151,27 @@ export default function SubscriptionCatalog({
           return (
             <div
               key={service.id}
-              className="bg-[#131B2E]/40 border border-slate-800/80 hover:border-slate-700/80 rounded-2xl p-4 space-y-3 transition-all duration-200 flex flex-col justify-between"
+              className="bg-[#0b0e14] border border-white/[0.06] hover:border-white/[0.12] rounded-xl p-3.5 space-y-2.5 transition-all flex flex-col justify-between"
             >
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <h4 className="font-semibold text-sm text-slate-100 truncate">{service.name}</h4>
-                    <p className="text-[11px] text-slate-400 truncate">{service.domain}</p>
+                  <div>
+                    <h4 className="font-medium text-sm text-slate-100">{service.name}</h4>
+                    <p className="text-[11px] text-slate-500">{service.domain}</p>
                   </div>
-                  <div className="text-right shrink-0">
-                    <p className="text-base font-bold text-emerald-400 font-mono">
+                  <div className="text-right">
+                    <p className="text-sm font-semibold font-mono text-emerald-400">
                       {formatArs(calc.totalArs)}
                     </p>
-                    <p className="text-[10px] text-slate-400 font-mono">
+                    <p className="text-[10px] text-slate-500 font-mono">
                       Base: {currentPlan.currency === "USD" ? formatUsd(currentPlan.price) : formatArs(currentPlan.price)}
                     </p>
                   </div>
                 </div>
 
-                {/* Selector de plan si tiene más de 1 */}
+                {/* Planes si tiene más de 1 */}
                 {service.plans.length > 1 && (
-                  <div className="flex flex-wrap gap-1 pt-1">
+                  <div className="flex flex-wrap gap-1 pt-0.5">
                     {service.plans.map((p, idx) => (
                       <button
                         key={p.name}
@@ -183,10 +179,10 @@ export default function SubscriptionCatalog({
                         onClick={() =>
                           setSelectedPlanMap((prev) => ({ ...prev, [service.id]: idx }))
                         }
-                        className={`text-[10px] px-2 py-0.5 rounded-lg font-medium border transition-colors ${
+                        className={`text-[10px] px-2 py-0.5 rounded-md font-medium border transition-colors ${
                           planIndex === idx
-                            ? "bg-violet-600/30 text-violet-200 border-violet-500/50"
-                            : "bg-[#0F1626] text-slate-400 border-slate-800 hover:border-slate-700"
+                            ? "bg-white/10 text-white border-white/[0.12]"
+                            : "bg-transparent text-slate-400 border-white/[0.04] hover:text-slate-200"
                         }`}
                       >
                         {p.name}
@@ -196,7 +192,6 @@ export default function SubscriptionCatalog({
                 )}
               </div>
 
-              {/* Botón para calcular */}
               <button
                 type="button"
                 onClick={() =>
@@ -210,10 +205,10 @@ export default function SubscriptionCatalog({
                     calculation: calc,
                   })
                 }
-                className="w-full text-xs font-medium py-2 rounded-xl bg-slate-850 hover:bg-violet-600 text-slate-200 hover:text-white border border-slate-750 hover:border-violet-500 transition-all duration-200 flex items-center justify-center gap-1.5 mt-1"
+                className="w-full text-xs font-medium py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.06] transition-colors flex items-center justify-center gap-1"
               >
-                <span>Ver comprobante</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <span>Calcular desglose</span>
+                <ArrowRight className="w-3 h-3 text-slate-400" />
               </button>
             </div>
           );

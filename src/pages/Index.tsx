@@ -53,12 +53,10 @@ export default function Index() {
   const { games, addGame, removeGame } = useSavedGames();
   const { toast } = useToast();
 
-  // Cargar configuración impositiva remota/estática si está disponible
   useEffect(() => {
     loadRemoteTaxConfig();
   }, []);
 
-  // Verificar estado del microservicio backend
   useEffect(() => {
     let isMounted = true;
     const check = async () => {
@@ -78,7 +76,6 @@ export default function Index() {
     persistSettings({ province: next, defaultDolarType: "tarjeta" });
   };
 
-  // Recalcular el ítem activo si el usuario cambia de provincia o método de pago
   useEffect(() => {
     if (!currentItem) return;
 
@@ -132,7 +129,6 @@ export default function Index() {
     isForeignDigitalService?: boolean;
     calculation?: TaxCalculationResult;
   }) => {
-    // Confirmamos estado online si el resultado provino del backend
     if (item.calculation) {
       setBackendOnline(true);
     }
@@ -148,8 +144,8 @@ export default function Index() {
     setCurrentItem(item);
 
     toast({
-      title: "Guardado en el historial",
-      description: `${item.name} se agregó a tus cálculos.`,
+      title: "Cálculo guardado",
+      description: `${item.name} se agregó al historial.`,
     });
   };
 
@@ -170,194 +166,189 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0F19] text-slate-100 flex flex-col justify-between selection:bg-violet-500/30">
-      {/* 1. Header Superior */}
+    <div className="min-h-screen bg-[#0b0e14] text-slate-100 flex flex-col justify-between selection:bg-indigo-500/20">
+      {/* 1. Header con el logo provisto */}
       <Header
         backendOnline={backendOnline}
+        dolarRates={dolarRates}
         onNavigateTab={(tab) => setActiveTab(tab)}
+        activeTab={activeTab}
       />
 
-      {/* Contenedor Principal */}
-      <main className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10">
-        {/* 2. Hero Section */}
-        <section className="text-center space-y-3 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300 text-xs font-medium">
-            <Sparkles className="w-3.5 h-3.5 text-violet-400" />
-            <span>Motor Tributario & Scraper 2026</span>
-          </div>
-
-          <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-slate-100">
-            Calculá el precio real de tus juegos y servicios digitales
+      {/* Contenedor central */}
+      <main className="max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
+        {/* 2. Hero Section: Directo, humano, sin excesos */}
+        <section className="text-center space-y-2 max-w-2xl mx-auto">
+          <h1 className="text-2xl sm:text-4xl font-semibold tracking-tight text-slate-100">
+            Calculá el precio real con impuestos
           </h1>
-
-          <p className="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            Obtené el valor final exacto en pesos con IVA (21%), Ganancias (30% RG 5617), alícuotas provinciales de IIBB y comparativa inmediata con Dólar MEP.
+          <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+            Pegá un enlace de Steam, Xbox o elegí tu servicio para ver cuánto te va a costar en pesos con IVA, Ganancias e Ingresos Brutos.
           </p>
         </section>
 
-        {/* 3. Layout Principal de 3 Columnas (2 cols inputs / 1 col resultado) */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-          {/* Columna Izquierda (2 columnas en desktop) */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Tarjeta de Parámetros Globales (Provincia y Método de Pago) */}
-            <div className="bg-[#131B2E]/40 border border-slate-800/80 rounded-2xl p-5 backdrop-blur-sm space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Selector de Provincia */}
-                <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-slate-300">
-                    Tu provincia (Alícuota IIBB)
-                  </Label>
-                  <Select
-                    value={province}
-                    onValueChange={(v) => handleProvinceChange(v as ProvinceCode)}
-                  >
-                    <SelectTrigger className="bg-[#0F1626] border-slate-800 text-slate-100 text-xs h-10 rounded-xl focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 transition-colors">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-[#0F1626] border-slate-800 text-slate-100 max-h-60 rounded-xl">
-                      {Object.entries(PROVINCES).map(([code, info]) => (
-                        <SelectItem key={code} value={code} className="text-xs hover:bg-slate-800">
-                          {info.label} ({((info.iibbRate || 0) * 100).toFixed(1)}%)
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Selector de Método de Pago */}
-                <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-slate-300">
-                    Método de pago
-                  </Label>
-                  <div className="grid grid-cols-2 gap-1.5 p-1 bg-[#0F1626] border border-slate-800 rounded-xl h-10">
-                    <button
-                      type="button"
-                      onClick={() => setPaymentMethod("TARJETA_ARS")}
-                      className={`text-xs font-medium rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-                        paymentMethod === "TARJETA_ARS"
-                          ? "bg-violet-600/30 text-violet-200 border border-violet-500/40 shadow-sm"
-                          : "text-slate-400 hover:text-slate-200"
-                      }`}
-                    >
-                      <CreditCard className="w-3.5 h-3.5" />
-                      <span>Tarjeta ARS</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setPaymentMethod("DOLAR_MEP_CUENTA")}
-                      className={`text-xs font-medium rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-                        paymentMethod === "DOLAR_MEP_CUENTA"
-                          ? "bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 shadow-sm"
-                          : "text-slate-400 hover:text-slate-200"
-                      }`}
-                    >
-                      <DollarSign className="w-3.5 h-3.5" />
-                      <span>Dólar MEP</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
+        {/* 3. Panel Principal (Workbench) */}
+        <div className="bg-[#131722] border border-white/[0.08] rounded-2xl p-5 sm:p-7 shadow-sm space-y-6">
+          {/* Fila de configuración rápida: Provincia + Medio de Pago */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pb-5 border-b border-white/[0.06]">
+            {/* Provincia */}
+            <div className="flex-1 space-y-1">
+              <Label className="text-xs font-medium text-slate-400">
+                Tu provincia (Ingresos Brutos)
+              </Label>
+              <Select
+                value={province}
+                onValueChange={(v) => handleProvinceChange(v as ProvinceCode)}
+              >
+                <SelectTrigger className="bg-[#0b0e14] border-white/[0.08] text-slate-200 text-xs h-10 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-[#131722] border-white/[0.08] text-slate-200 max-h-60 rounded-xl">
+                  {Object.entries(PROVINCES).map(([code, info]) => (
+                    <SelectItem key={code} value={code} className="text-xs hover:bg-white/5">
+                      {info.label} ({((info.iibbRate || 0) * 100).toFixed(1)}%)
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
-            {/* Pestañas de Modos de Entrada */}
-            <Tabs
-              value={activeTab}
-              onValueChange={setActiveTab}
-              className="w-full space-y-4"
-            >
-              <TabsList className="grid grid-cols-3 w-full bg-[#0F1626] border border-slate-800 h-11 p-1 rounded-xl">
-                <TabsTrigger
-                  value="url"
-                  className="text-xs font-medium flex items-center gap-1.5 rounded-lg data-[state=active]:bg-violet-600/30 data-[state=active]:text-violet-200 data-[state=active]:border data-[state=active]:border-violet-500/40 transition-all text-slate-400"
+            {/* Medio de Pago */}
+            <div className="flex-1 space-y-1">
+              <Label className="text-xs font-medium text-slate-400">
+                Forma de pago
+              </Label>
+              <div className="grid grid-cols-2 gap-1 p-1 bg-[#0b0e14] border border-white/[0.08] rounded-xl h-10">
+                <button
+                  type="button"
+                  onClick={() => setPaymentMethod("TARJETA_ARS")}
+                  className={`text-xs font-medium rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                    paymentMethod === "TARJETA_ARS"
+                      ? "bg-white/10 text-white shadow-sm"
+                      : "text-slate-400 hover:text-slate-200"
+                  }`}
                 >
-                  <Link2 className="w-3.5 h-3.5" />
-                  <span>Pegar URL</span>
-                </TabsTrigger>
-                <TabsTrigger
-                  value="catalog"
-                  className="text-xs font-medium flex items-center gap-1.5 rounded-lg data-[state=active]:bg-violet-600/30 data-[state=active]:text-violet-200 data-[state=active]:border data-[state=active]:border-violet-500/40 transition-all text-slate-400"
+                  <CreditCard className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Tarjeta (ARS)</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPaymentMethod("DOLAR_MEP_CUENTA")}
+                  className={`text-xs font-medium rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                    paymentMethod === "DOLAR_MEP_CUENTA"
+                      ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 shadow-sm"
+                      : "text-slate-400 hover:text-slate-200"
+                  }`}
                 >
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>Catálogo</span>
-                </TabsTrigger>
-                <TabsTrigger
-                  value="manual"
-                  className="text-xs font-medium flex items-center gap-1.5 rounded-lg data-[state=active]:bg-violet-600/30 data-[state=active]:text-violet-200 data-[state=active]:border data-[state=active]:border-violet-500/40 transition-all text-slate-400"
-                >
-                  <Edit3 className="w-3.5 h-3.5" />
-                  <span>Manual</span>
-                </TabsTrigger>
-              </TabsList>
-
-              {/* Pestaña 1: Scrapear URL en vivo */}
-              <TabsContent value="url" className="mt-0">
-                <UrlScraper
-                  province={province}
-                  paymentMethod={paymentMethod}
-                  onResult={handleSaveItem}
-                  onSwitchToManual={() => setActiveTab("manual")}
-                />
-              </TabsContent>
-
-              {/* Pestaña 2: Catálogo de Suscripciones */}
-              <TabsContent value="catalog" className="mt-0">
-                <SubscriptionCatalog
-                  province={province}
-                  paymentMethod={paymentMethod}
-                  dolarRates={dolarRates}
-                  onSelectPlan={handleSaveItem}
-                />
-              </TabsContent>
-
-              {/* Pestaña 3: Calculadora Manual */}
-              <TabsContent value="manual" className="mt-0">
-                <GameSearch
-                  onSave={handleSaveItem}
-                  dolarRates={dolarRates}
-                  province={province}
-                  onProvinceChange={handleProvinceChange}
-                />
-              </TabsContent>
-            </Tabs>
-
-            {/* Historial de Cálculos Guardados */}
-            <GameHistory
-              games={games}
-              province={province}
-              onDeleteGame={handleDeleteGame}
-            />
-
-            {/* Información Tributaria Vigente */}
-            <TaxInfo />
+                  <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Dólar MEP</span>
+                </button>
+              </div>
+            </div>
           </div>
 
-          {/* Columna Derecha (1 columna en desktop): Tarjeta de Resultado Sticky + Cotizaciones */}
-          <div className="lg:col-span-1 space-y-6 lg:sticky lg:top-20">
-            {/* Tarjeta de Resultado en Tiempo Real */}
-            <PriceBreakdown
-              title={currentItem?.title || currentItem?.name}
-              thumbnail={currentItem?.thumbnail}
-              originalPrice={currentItem?.price}
-              usdPrice={currentItem?.usdPrice}
-              dolarType={currentItem?.dolarType}
-              dolarRate={
-                currentItem?.calculation?.exchangeRateUsed ||
-                getDolarRate(currentItem?.dolarType)
-              }
-              province={province}
-              isForeignDigitalService={currentItem?.isForeignDigitalService}
-              paymentMethod={paymentMethod}
-              calculation={currentItem?.calculation}
-              mepComparison={currentItem?.calculation?.mepComparison}
-            />
+          {/* Grilla de 2 Columnas (Inputs a la izquierda, Resultado a la derecha) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 items-start">
+            {/* Lado Izquierdo: Pestañas y Formularios (7 columnas) */}
+            <div className="lg:col-span-7 space-y-4">
+              <Tabs
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="w-full space-y-4"
+              >
+                <TabsList className="grid grid-cols-3 w-full bg-[#0b0e14] border border-white/[0.08] h-11 p-1 rounded-xl">
+                  <TabsTrigger
+                    value="url"
+                    className="text-xs font-medium rounded-lg data-[state=active]:bg-white/10 data-[state=active]:text-white text-slate-400 transition-all flex items-center gap-1.5"
+                  >
+                    <Link2 className="w-3.5 h-3.5" />
+                    <span>Pegar Link</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="catalog"
+                    className="text-xs font-medium rounded-lg data-[state=active]:bg-white/10 data-[state=active]:text-white text-slate-400 transition-all flex items-center gap-1.5"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Suscripciones</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="manual"
+                    className="text-xs font-medium rounded-lg data-[state=active]:bg-white/10 data-[state=active]:text-white text-slate-400 transition-all flex items-center gap-1.5"
+                  >
+                    <Edit3 className="w-3.5 h-3.5" />
+                    <span>Manual</span>
+                  </TabsTrigger>
+                </TabsList>
 
-            {/* Barra de Cotizaciones */}
-            <DolarInfo onRatesLoaded={setDolarRates} />
+                {/* Tab 1: Pegar link */}
+                <TabsContent value="url" className="mt-0 pt-1">
+                  <UrlScraper
+                    province={province}
+                    paymentMethod={paymentMethod}
+                    onResult={handleSaveItem}
+                    onSwitchToManual={() => setActiveTab("manual")}
+                  />
+                </TabsContent>
+
+                {/* Tab 2: Suscripciones */}
+                <TabsContent value="catalog" className="mt-0 pt-1">
+                  <SubscriptionCatalog
+                    province={province}
+                    paymentMethod={paymentMethod}
+                    dolarRates={dolarRates}
+                    onSelectPlan={handleSaveItem}
+                  />
+                </TabsContent>
+
+                {/* Tab 3: Manual */}
+                <TabsContent value="manual" className="mt-0 pt-1">
+                  <GameSearch
+                    onSave={handleSaveItem}
+                    dolarRates={dolarRates}
+                    province={province}
+                    onProvinceChange={handleProvinceChange}
+                  />
+                </TabsContent>
+              </Tabs>
+            </div>
+
+            {/* Lado Derecho: Tarjeta de Resultado (5 columnas) */}
+            <div className="lg:col-span-5 lg:sticky lg:top-24">
+              <PriceBreakdown
+                title={currentItem?.title || currentItem?.name}
+                thumbnail={currentItem?.thumbnail}
+                originalPrice={currentItem?.price}
+                usdPrice={currentItem?.usdPrice}
+                dolarType={currentItem?.dolarType}
+                dolarRate={
+                  currentItem?.calculation?.exchangeRateUsed ||
+                  getDolarRate(currentItem?.dolarType)
+                }
+                province={province}
+                isForeignDigitalService={currentItem?.isForeignDigitalService}
+                paymentMethod={paymentMethod}
+                calculation={currentItem?.calculation}
+                mepComparison={currentItem?.calculation?.mepComparison}
+              />
+            </div>
           </div>
         </div>
+
+        {/* 4. Cotizaciones de Referencia */}
+        <DolarInfo onRatesLoaded={setDolarRates} />
+
+        {/* 5. Historial de cálculos (si hay guardados) */}
+        <GameHistory
+          games={games}
+          province={province}
+          onDeleteGame={handleDeleteGame}
+        />
+
+        {/* 6. Marco Tributario Informativo */}
+        <TaxInfo />
       </main>
 
-      {/* 4. Footer con Redes del Autor */}
+      {/* 7. Footer sutil con redes de autor */}
       <Footer />
     </div>
   );
