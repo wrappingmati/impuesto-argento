@@ -60,9 +60,19 @@ export default {
         blue: "hsl(var(--rate-blue))",
         oficial: "hsl(var(--rate-oficial))",
         tarjeta: "hsl(var(--rate-tarjeta))",
+        brand: {
+          violet: "#6D28D9",
+          violetHover: "#5B21B6",
+          blue: "#3B82F6",
+          bg: "#0F172A",
+          surface: "#1E1B2E",
+          surfaceAlt: "#131B2E",
+          cyan: "#22D3EE",
+          secondary: "#A78BFA",
+        },
         slate: {
           850: "#131B2E",
-          950: "#0B0F19",
+          950: "#0F172A",
         },
       },
       borderRadius: {

@@ -6,42 +6,42 @@
 
 @layer base {
   :root {
-    /* Fondo natural y orgánico, no saturado */
-    --background: 220 20% 7%;
-    --foreground: 220 15% 95%;
+    /* Paleta oficial de la referencia: #0F172A (Fondo), #1E1B2E / #131B2E (Superficie) */
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
 
-    --card: 220 18% 10%;
-    --card-foreground: 220 15% 95%;
+    --card: 222 41% 13%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 220 18% 10%;
-    --popover-foreground: 220 15% 95%;
+    --popover: 222 41% 13%;
+    --popover-foreground: 210 40% 98%;
 
-    /* Azul-violeta sutil alineado al logo */
-    --primary: 235 85% 65%;
+    /* Violeta principal #6D28D9 */
+    --primary: 263 70% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 15% 15%;
-    --secondary-foreground: 220 15% 90%;
+    --secondary: 222 35% 18%;
+    --secondary-foreground: 210 40% 96%;
 
-    --muted: 220 14% 14%;
-    --muted-foreground: 220 10% 60%;
+    --muted: 222 30% 16%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 235 85% 65%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 189 94% 53%;
+    --accent-foreground: 222 47% 11%;
 
-    --destructive: 0 75% 55%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 220 14% 16%;
-    --input: 220 16% 11%;
-    --ring: 235 85% 65%;
+    --border: 217 33% 20%;
+    --input: 222 47% 11%;
+    --ring: 263 70% 50%;
 
-    --radius: 0.875rem;
+    --radius: 1rem;
 
     /* Cotizaciones */
-    --rate-blue: 213 82% 66%;
+    --rate-blue: 217 91% 60%;
     --rate-oficial: 152 55% 48%;
-    --rate-tarjeta: 37 82% 58%;
+    --rate-tarjeta: 263 70% 60%;
   }
 }
 
@@ -50,7 +50,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-[#0b0e14] text-foreground font-sans antialiased selection:bg-indigo-500/20 selection:text-white;
+    @apply bg-[#0F172A] text-foreground font-sans antialiased selection:bg-[#6D28D9]/30 selection:text-white;
   }
 }
 
