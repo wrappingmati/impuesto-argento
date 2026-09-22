@@ -1,5 +1,11 @@
 # 🇦🇷 Impuesto Argento 2.0
 
+![React](https://img.shields.io/badge/React_18-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
+![Python](https://img.shields.io/badge/Python_3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![License MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
+
 Calculadora inteligente del **precio final real** de videojuegos, suscripciones y compras en moneda extranjera para Argentina. Integra un motor de **web scraping indetectable (Scrapling + FastAPI)**, cálculo de alícuotas provinciales de IIBB, IVA (21%), percepción de Ganancias/Bienes Personales (30% RG 5617) y comparativa de ahorro con **Dólar MEP**.
 
 > Los valores que muestra la app son una **estimación técnica**, no asesoramiento fiscal. Las alícuotas de IIBB varían por jurisdicción y pueden cambiar sin aviso — confirmá siempre con el resumen de tu tarjeta.
@@ -83,6 +89,15 @@ npm run dev
 
 ---
 
-## 📄 Licencia
+## 🌐 Demo en Vivo
 
-Proyecto de código abierto desarrollado por [wrappingmati](https://github.com/wrappingmati).
+- 🖥️ **Aplicación Web:** [impuesto-argento.netlify.app](https://impuesto-argento.netlify.app)
+- 🔌 **Documentación API (Swagger):** `/docs` (en tu instancia de Render o local)
+
+---
+
+## 📄 Licencia y Descargo de Responsabilidad
+
+Distribuido bajo la Licencia **MIT**. Consulta el archivo [`LICENSE`](./LICENSE) para más información.
+
+Este proyecto se distribuye "tal cual", sin garantías de ningún tipo. Los cálculos son informativos y no constituyen asesoramiento contable ni financiero. El autor no se hace responsable por decisiones tomadas en base a las estimaciones del sistema.
