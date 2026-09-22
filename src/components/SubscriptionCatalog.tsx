@@ -1,10 +1,10 @@
 // src/components/SubscriptionCatalog.tsx
-import { useState } from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchServicesCatalogApi, type CatalogService } from "@/lib/api";
 import { POPULAR_PROVIDERS, calculateArgentineTaxes, type PaymentMethod, type ProvinceCode, type ExchangeRates, type TaxCalculationResult } from "@/lib/tax-engine";
 import { formatArs, formatUsd } from "@/lib/tax";
-import { Film, Gamepad2, Bot, Cloud, Check, Loader2, Sparkles, type LucideIcon } from "lucide-react";
+import { Film, Gamepad2, Bot, Cloud, Check, Loader2, Sparkles, ArrowRight, type LucideIcon } from "lucide-react";
 
 interface SubscriptionCatalogProps {
   province: ProvinceCode;
@@ -38,7 +38,7 @@ export default function SubscriptionCatalog({
   const [selectedPlanMap, setSelectedPlanMap] = useState<Record<string, number>>({});
 
   // Consultar el catálogo del backend
-  const { data: remoteServices, isLoading, error } = useQuery({
+  const { data: remoteServices, isLoading } = useQuery({
     queryKey: ["servicesCatalog", province, paymentMethod],
     queryFn: () => fetchServicesCatalogApi(province, paymentMethod),
     retry: 1,
@@ -113,9 +113,9 @@ export default function SubscriptionCatalog({
   ];
 
   return (
-    <div className="w-full max-w-md space-y-4">
+    <div className="space-y-4">
       {/* Selector de categoría */}
-      <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-none">
+      <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
         {categories.map((c) => {
           const Icon = c.icon;
           return (
@@ -123,28 +123,28 @@ export default function SubscriptionCatalog({
               key={c.id}
               type="button"
               onClick={() => setCategory(c.id)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 whitespace-nowrap transition-all border ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 whitespace-nowrap transition-all border ${
                 category === c.id
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-white/5 text-muted-foreground border-border/60 hover:border-primary/40"
+                  ? "bg-violet-600/20 text-violet-300 border-violet-500/40"
+                  : "bg-[#0F1626] text-slate-400 border-slate-800 hover:text-slate-200 hover:border-slate-700"
               }`}
             >
               <Icon className="w-3.5 h-3.5" />
-              {c.label}
+              <span>{c.label}</span>
             </button>
           );
         })}
       </div>
 
       {isLoading && !remoteServices && (
-        <div className="p-8 text-center text-muted-foreground space-y-2">
-          <Loader2 className="w-6 h-6 animate-spin mx-auto text-primary" />
-          <p className="text-xs">Cargando catálogo de suscripciones...</p>
+        <div className="p-8 text-center text-slate-400 space-y-2 bg-[#131B2E]/20 border border-slate-800 rounded-2xl">
+          <Loader2 className="w-6 h-6 animate-spin mx-auto text-violet-400" />
+          <p className="text-xs">Cargando catálogo actualizado de suscripciones...</p>
         </div>
       )}
 
       {/* Grilla de servicios */}
-      <div className="space-y-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
         {filteredServices.map((service) => {
           const planIndex = selectedPlanMap[service.id] ?? 0;
           const currentPlan = service.plans[planIndex] || service.plans[0];
@@ -155,46 +155,48 @@ export default function SubscriptionCatalog({
           return (
             <div
               key={service.id}
-              className="ticket p-4 space-y-3 transition-all hover:border-primary/50"
+              className="bg-[#131B2E]/40 border border-slate-800/80 hover:border-slate-700/80 rounded-2xl p-4 space-y-3 transition-all duration-200 flex flex-col justify-between"
             >
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <h4 className="font-display font-bold text-sm text-foreground">{service.name}</h4>
-                  <p className="text-[11px] text-muted-foreground">{service.domain}</p>
+              <div className="space-y-2">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <h4 className="font-semibold text-sm text-slate-100 truncate">{service.name}</h4>
+                    <p className="text-[11px] text-slate-400 truncate">{service.domain}</p>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <p className="text-base font-bold text-emerald-400 font-mono">
+                      {formatArs(calc.totalArs)}
+                    </p>
+                    <p className="text-[10px] text-slate-400 font-mono">
+                      Base: {currentPlan.currency === "USD" ? formatUsd(currentPlan.price) : formatArs(currentPlan.price)}
+                    </p>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <p className="text-base font-bold text-primary font-nums">
-                    {formatArs(calc.totalArs)}
-                  </p>
-                  <p className="text-[10px] text-muted-foreground font-nums">
-                    Base: {currentPlan.currency === "USD" ? formatUsd(currentPlan.price) : formatArs(currentPlan.price)}
-                  </p>
-                </div>
+
+                {/* Selector de plan si tiene más de 1 */}
+                {service.plans.length > 1 && (
+                  <div className="flex flex-wrap gap-1 pt-1">
+                    {service.plans.map((p, idx) => (
+                      <button
+                        key={p.name}
+                        type="button"
+                        onClick={() =>
+                          setSelectedPlanMap((prev) => ({ ...prev, [service.id]: idx }))
+                        }
+                        className={`text-[10px] px-2 py-0.5 rounded-lg font-medium border transition-colors ${
+                          planIndex === idx
+                            ? "bg-violet-600/30 text-violet-200 border-violet-500/50"
+                            : "bg-[#0F1626] text-slate-400 border-slate-800 hover:border-slate-700"
+                        }`}
+                      >
+                        {p.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              {/* Selector de plan si tiene más de 1 */}
-              {service.plans.length > 1 && (
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  {service.plans.map((p, idx) => (
-                    <button
-                      key={p.name}
-                      type="button"
-                      onClick={() =>
-                        setSelectedPlanMap((prev) => ({ ...prev, [service.id]: idx }))
-                      }
-                      className={`text-[10px] px-2 py-1 rounded font-medium border transition-colors ${
-                        planIndex === idx
-                          ? "bg-primary/20 text-primary border-primary"
-                          : "bg-white/5 text-muted-foreground border-border hover:border-primary/40"
-                      }`}
-                    >
-                      {p.name}
-                    </button>
-                  ))}
-                </div>
-              )}
-
-              {/* Botón para proyectar en el comprobante */}
+              {/* Botón para calcular */}
               <button
                 type="button"
                 onClick={() =>
@@ -208,10 +210,10 @@ export default function SubscriptionCatalog({
                     calculation: calc,
                   })
                 }
-                className="w-full text-xs font-semibold py-1.5 rounded-md bg-white/5 hover:bg-primary hover:text-primary-foreground border border-border/70 transition-colors flex items-center justify-center gap-1"
+                className="w-full text-xs font-medium py-2 rounded-xl bg-slate-850 hover:bg-violet-600 text-slate-200 hover:text-white border border-slate-750 hover:border-violet-500 transition-all duration-200 flex items-center justify-center gap-1.5 mt-1"
               >
-                <Check className="w-3.5 h-3.5" />
-                Ver Comprobante e Impuestos
+                <span>Ver comprobante</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
           );

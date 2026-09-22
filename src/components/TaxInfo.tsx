@@ -1,54 +1,75 @@
 // src/components/TaxInfo.tsx
-import { Info } from "lucide-react";
+import React from "react";
+import { Info, CheckCircle2, XCircle } from "lucide-react";
 
 export default function TaxInfo() {
   return (
-    <div className="ticket w-full max-w-md p-5">
-      <div className="flex items-start gap-3">
-        <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-        <div className="space-y-2 text-sm">
-          <h3 className="font-display font-semibold">
-            Impuestos vigentes hoy (agosto 2026)
-          </h3>
-          <div className="space-y-1 text-muted-foreground font-nums">
-            <div className="flex justify-between">
-              <span className="font-display">✅ IVA (servicios digitales)</span>
-              <span className="font-medium text-foreground">21%</span>
+    <div className="bg-[#131B2E]/40 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-sm space-y-4">
+      <div className="flex items-center gap-2.5">
+        <Info className="w-5 h-5 text-violet-400 shrink-0" />
+        <h3 className="font-semibold text-base text-slate-100">
+          Marco tributario argentino vigente
+        </h3>
+      </div>
+
+      <div className="space-y-2 text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div className="p-3 rounded-xl bg-[#0F1626] border border-slate-800 space-y-1">
+            <div className="flex items-center justify-between font-medium">
+              <span className="text-slate-200 flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                IVA Servicios Digitales
+              </span>
+              <span className="text-emerald-400 font-mono font-bold">21%</span>
             </div>
-            <div className="flex justify-between">
-              <span className="font-display">✅ Percepción Ganancias/BBPP (RG 5617)</span>
-              <span className="font-medium text-foreground">30% · solo dólar tarjeta</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-display">✅ Percepción IIBB (según provincia)</span>
-              <span className="font-medium text-foreground">0% – 5,5%</span>
-            </div>
-            <div className="flex justify-between line-through opacity-40">
-              <span className="font-display">❌ Impuesto PAÍS</span>
-              <span>30% (venció por ley el 2/1/2026)</span>
-            </div>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              Decreto 813/2018. Aplica a Netflix, Steam, Spotify, ChatGPT y cualquier servicio del exterior.
+            </p>
           </div>
-          <p className="text-xs text-muted-foreground/70 pt-1">
-            Hasta enero de 2026 el dólar tarjeta llevaba Impuesto PAÍS (30%) +
-            percepción de Ganancias (30%) = 60% total. El Impuesto PAÍS tenía
-            una vigencia legal de 5 años y venció; hoy solo queda la
-            percepción RG 5617 del 30%, ya incorporada en la cotización
-            "tarjeta" de esta app.
-          </p>
-          <p className="text-xs text-muted-foreground/70">
-            La percepción de IIBB grava el consumo de servicios digitales de
-            plataformas extranjeras (Steam, PlayStation Store, Xbox, etc.) y
-            depende de tu provincia. Entre Ríos, Mendoza y la mayoría de las
-            provincias no listadas no tienen, a esta fecha, un régimen
-            específico para esto — CABA, Buenos Aires, Córdoba, Santa Fe,
-            Chaco, La Pampa, Neuquén, Río Negro, Salta y Tierra del Fuego sí.
-          </p>
-          <p className="text-xs text-muted-foreground/70">
-            Son valores de referencia relevados de normativa pública, no
-            asesoramiento impositivo. Las alícuotas provinciales cambian con
-            frecuencia — confirmá siempre con el resumen de tu tarjeta.
-          </p>
+
+          <div className="p-3 rounded-xl bg-[#0F1626] border border-slate-800 space-y-1">
+            <div className="flex items-center justify-between font-medium">
+              <span className="text-slate-200 flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-violet-400" />
+                Percepción Ganancias / BBPP
+              </span>
+              <span className="text-violet-300 font-mono font-bold">30%</span>
+            </div>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              Resolución General ARCA 5617. Exenta si cancelás el resumen con dólares propios (Dólar MEP).
+            </p>
+          </div>
+
+          <div className="p-3 rounded-xl bg-[#0F1626] border border-slate-800 space-y-1">
+            <div className="flex items-center justify-between font-medium">
+              <span className="text-slate-200 flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-sky-400" />
+                Percepción IIBB Provincial
+              </span>
+              <span className="text-sky-300 font-mono font-bold">0% a 5,5%</span>
+            </div>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              Según tu jurisdicción fiscal (CABA, BsAs, Córdoba, Santa Fe reducida 3%, etc.).
+            </p>
+          </div>
+
+          <div className="p-3 rounded-xl bg-[#0F1626] border border-slate-800 space-y-1 opacity-70">
+            <div className="flex items-center justify-between font-medium">
+              <span className="text-slate-400 flex items-center gap-1.5 line-through">
+                <XCircle className="w-3.5 h-3.5 text-red-400" />
+                Impuesto PAÍS
+              </span>
+              <span className="text-red-400 font-mono font-bold">0% (Vencido)</span>
+            </div>
+            <p className="text-[11px] text-slate-500 leading-relaxed">
+              Venció por ley el 2 de enero de 2026. Ya no se cobra en consumos con tarjeta en el exterior.
+            </p>
+          </div>
         </div>
+
+        <p className="text-[11px] text-slate-500 pt-1 leading-relaxed">
+          Los valores son estimaciones técnicas de carácter informativo para orientar a consumidores y gamers. Las normas y alícuotas bancarias pueden actualizarse periódicamente.
+        </p>
       </div>
     </div>
   );

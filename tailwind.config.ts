@@ -60,6 +60,10 @@ export default {
         blue: "hsl(var(--rate-blue))",
         oficial: "hsl(var(--rate-oficial))",
         tarjeta: "hsl(var(--rate-tarjeta))",
+        slate: {
+          850: "#131B2E",
+          950: "#0B0F19",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -6,39 +6,40 @@
 
 @layer base {
   :root {
-    /* "Tinta de impresora térmica": verde-negro profundo, no un negro puro genérico */
-    --background: 155 18% 6%;
-    --foreground: 60 9% 94%;
+    /* Fondo ultra oscuro profundo #0B0F19 */
+    --background: 222 47% 7%;
+    --foreground: 210 40% 98%;
 
-    --card: 155 14% 9%;
-    --card-foreground: 60 9% 94%;
+    /* Tarjetas #131B2E */
+    --card: 222 41% 13%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 155 14% 9%;
-    --popover-foreground: 60 9% 94%;
+    --popover: 222 41% 13%;
+    --popover-foreground: 210 40% 98%;
 
-    /* Verde billete: acento principal */
-    --primary: 152 55% 48%;
-    --primary-foreground: 155 30% 8%;
+    /* Acento Violeta / Indigo sutil */
+    --primary: 258 90% 66%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 155 10% 16%;
-    --secondary-foreground: 60 9% 94%;
+    --secondary: 222 35% 18%;
+    --secondary-foreground: 210 40% 96%;
 
-    --muted: 155 10% 15%;
-    --muted-foreground: 150 6% 62%;
+    --muted: 222 30% 16%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 152 55% 48%;
-    --accent-foreground: 155 30% 8%;
+    --accent: 258 90% 66%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 4 71% 58%;
-    --destructive-foreground: 60 9% 96%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 155 12% 18%;
-    --input: 155 12% 18%;
-    --ring: 152 55% 48%;
+    --border: 217 33% 18%;
+    --input: 222 43% 10%;
+    --ring: 258 90% 66%;
 
-    --radius: 0.6rem;
+    --radius: 1rem;
 
-    /* Colores de las tres cotizaciones, con identidad propia */
+    /* Cotizaciones */
     --rate-blue: 213 82% 66%;
     --rate-oficial: 152 55% 48%;
     --rate-tarjeta: 37 82% 58%;
@@ -50,14 +51,11 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-display antialiased;
+    @apply bg-[#0B0F19] text-foreground font-sans antialiased selection:bg-violet-500/30 selection:text-white;
     background-image:
-      radial-gradient(circle at 15% -10%, hsl(152 55% 48% / 0.08), transparent 45%),
-      radial-gradient(circle at 85% 110%, hsl(213 82% 66% / 0.06), transparent 45%);
+      radial-gradient(circle at 50% -15%, rgba(139, 92, 246, 0.08) 0%, transparent 60%),
+      radial-gradient(circle at 100% 60%, rgba(59, 130, 246, 0.04) 0%, transparent 50%);
     background-attachment: fixed;
-  }
-  ::selection {
-    background: hsl(var(--primary) / 0.35);
   }
 }
 
@@ -66,38 +64,23 @@
     @apply font-mono tabular-nums;
   }
 
-  /* Ficha estilo "ticket fiscal": esquinas cortadas en octágono, como
-     un comprobante recortado. Es el elemento firma de la interfaz. */
+  /* Tarjetas principales estilo premium */
   .ticket {
-    background: hsl(var(--card));
-    border: 1px solid hsl(var(--border));
-    clip-path: polygon(
-      0% 10px, 10px 0%, calc(100% - 10px) 0%, 100% 10px,
-      100% calc(100% - 10px), calc(100% - 10px) 100%,
-      10px 100%, 0% calc(100% - 10px)
-    );
+    background-color: rgba(19, 27, 46, 0.4);
+    border: 1px solid rgba(30, 41, 59, 0.8);
+    border-radius: 1rem;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
   }
 
-  /* Línea de perforación entre secciones del ticket */
+  /* Divisor sutil y limpio */
   .ticket-divider {
-    border-top: 1px dashed hsl(var(--border));
+    border-top: 1px solid rgba(51, 65, 85, 0.4);
   }
 
-  /* Tira de "código de barras" decorativa, coherente con el tema de comprobante */
+  /* Barra decorativa sutil */
   .barcode {
-    height: 18px;
-    background-image: repeating-linear-gradient(
-      90deg,
-      hsl(var(--foreground) / 0.5) 0px,
-      hsl(var(--foreground) / 0.5) 2px,
-      transparent 2px,
-      transparent 5px,
-      hsl(var(--foreground) / 0.5) 5px,
-      hsl(var(--foreground) / 0.5) 6px,
-      transparent 6px,
-      transparent 10px
-    );
-    opacity: 0.5;
+    display: none;
   }
 }
 

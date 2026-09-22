@@ -1,6 +1,6 @@
 // src/components/UrlScraper.tsx
-import { useState } from "react";
-import { Link2, Search, Loader2, Clipboard, ExternalLink, AlertCircle } from "lucide-react";
+import React, { useState } from "react";
+import { Link2, Search, Loader2, Clipboard, ArrowRight, AlertCircle, Sparkles } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { scrapeAndCalculateApi, type ScrapeAndCalculateResponse } from "@/lib/api";
@@ -25,16 +25,16 @@ interface UrlScraperProps {
 
 const EXAMPLE_URLS = [
   {
-    label: "Steam: Baldur's Gate 3",
+    label: "Baldur's Gate 3 (Steam)",
     url: "https://store.steampowered.com/app/1086940/Baldurs_Gate_3/",
   },
   {
-    label: "Steam: Counter-Strike 2",
-    url: "https://store.steampowered.com/app/730/CounterStrike_2/",
+    label: "Xbox PC Game Pass",
+    url: "https://www.xbox.com/es-AR/xbox-game-pass/pc-game-pass",
   },
   {
-    label: "Xbox Game Pass PC",
-    url: "https://www.xbox.com/es-AR/xbox-game-pass/pc-game-pass",
+    label: "Counter-Strike 2 (Steam)",
+    url: "https://store.steampowered.com/app/730/CounterStrike_2/",
   },
 ];
 
@@ -92,8 +92,8 @@ export default function UrlScraper({
       });
 
       toast({
-        title: "¡Scraping exitoso!",
-        description: `Se detectó ${scraped.title} (${scraped.currency} $${scraped.amount}).`,
+        title: "¡Producto encontrado!",
+        description: `${scraped.title} (${scraped.currency} \$${scraped.amount}).`,
       });
     } catch (err) {
       console.error("Error scraping:", err);
@@ -108,14 +108,15 @@ export default function UrlScraper({
   };
 
   return (
-    <div className="ticket w-full max-w-md p-6 space-y-4">
+    <div className="bg-[#131B2E]/40 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-sm space-y-5">
+      {/* Encabezado del modo */}
       <div className="space-y-1">
-        <h3 className="font-display font-semibold text-lg flex items-center gap-2 text-primary">
-          <Link2 className="w-5 h-5" />
-          Scrapear cualquier URL
+        <h3 className="font-semibold text-base text-slate-100 flex items-center gap-2">
+          <Link2 className="w-4 h-4 text-violet-400" />
+          <span>Scrapear cualquier enlace</span>
         </h3>
-        <p className="text-xs text-muted-foreground">
-          Pegá el link de cualquier juego, suscripción o tienda (Steam, Xbox, PlayStation, Amazon) y Scrapling extraerá el precio y calculará los impuestos al instante.
+        <p className="text-xs text-slate-400 leading-relaxed">
+          Pegá la URL de Steam, Microsoft Store, PlayStation, Amazon o cualquier tienda para extraer automáticamente el título y calcular el precio final en pesos.
         </p>
       </div>
 
@@ -135,7 +136,7 @@ export default function UrlScraper({
               setError(null);
             }}
             placeholder="https://store.steampowered.com/app/..."
-            className="pr-20 font-mono text-xs"
+            className="bg-[#0F1626] border-slate-800 text-slate-100 placeholder:text-slate-500 pr-24 text-xs h-11 rounded-xl focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 transition-colors duration-200"
             disabled={loading}
             required
           />
@@ -144,70 +145,78 @@ export default function UrlScraper({
             onClick={handlePaste}
             disabled={loading}
             title="Pegar del portapapeles"
-            className="absolute right-2 text-muted-foreground hover:text-foreground text-xs px-2 py-1 rounded bg-white/5 border border-border/50 flex items-center gap-1 transition-colors"
+            className="absolute right-2.5 text-xs text-slate-400 hover:text-slate-200 px-2.5 py-1 rounded-lg bg-slate-850 border border-slate-750/80 hover:border-slate-650 flex items-center gap-1.5 transition-colors"
           >
-            <Clipboard className="w-3 h-3" />
+            <Clipboard className="w-3.5 h-3.5" />
             <span>Pegar</span>
           </button>
         </div>
 
-        <Button type="submit" disabled={!url.trim() || loading} className="w-full font-semibold">
-          {loading ? (
-            <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Extrayendo con Scrapling...
-            </>
-          ) : (
-            <>
-              <Search className="w-4 h-4 mr-2" />
-              Analizar y Calcular Impuestos
-            </>
-          )}
-        </Button>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-1">
+          <Button
+            type="submit"
+            disabled={loading || !url.trim()}
+            className="flex-1 h-10 bg-violet-600 hover:bg-violet-500 text-white text-xs font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-sm"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Extrayendo información...</span>
+              </>
+            ) : (
+              <>
+                <Search className="w-4 h-4" />
+                <span>Calcular precio real</span>
+              </>
+            )}
+          </Button>
+
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={onSwitchToManual}
+            disabled={loading}
+            className="h-10 text-xs text-slate-400 hover:text-slate-200 hover:bg-slate-850/50 rounded-xl"
+          >
+            Ingreso manual
+          </Button>
+        </div>
       </form>
 
+      {/* Mensaje de Error si ocurre */}
+      {error && (
+        <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-xs text-red-300 flex items-start gap-2.5">
+          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-400" />
+          <div className="space-y-1">
+            <p className="font-medium">No se pudo scrapear este enlace</p>
+            <p className="text-[11px] text-red-400/80 leading-relaxed">{error}</p>
+          </div>
+        </div>
+      )}
+
       {/* Ejemplos rápidos */}
-      <div className="pt-1 space-y-2">
-        <p className="text-[11px] text-muted-foreground font-display uppercase tracking-wider">
-          Probar enlaces de ejemplo:
-        </p>
-        <div className="flex flex-wrap gap-1.5">
-          {EXAMPLE_URLS.map((ex) => (
+      <div className="pt-2 border-t border-slate-800/50 space-y-2">
+        <span className="text-[11px] text-slate-500 uppercase tracking-wider font-semibold">
+          Probar con enlaces de ejemplo
+        </span>
+        <div className="flex flex-wrap gap-2">
+          {EXAMPLE_URLS.map((item) => (
             <button
-              key={ex.label}
+              key={item.url}
               type="button"
-              disabled={loading}
               onClick={() => {
-                setUrl(ex.url);
-                handleScrape(ex.url);
+                setUrl(item.url);
+                handleScrape(item.url);
               }}
-              className="text-[11px] px-2.5 py-1 rounded-md bg-white/5 hover:bg-primary/20 border border-border/60 text-muted-foreground hover:text-primary transition-all flex items-center gap-1"
+              disabled={loading}
+              className="text-[11px] text-slate-400 hover:text-slate-200 bg-[#0F1626] border border-slate-800 hover:border-violet-500/50 px-2.5 py-1.5 rounded-lg transition-colors flex items-center gap-1.5"
             >
-              <ExternalLink className="w-3 h-3" />
-              {ex.label}
+              <span>{item.label}</span>
+              <ArrowRight className="w-3 h-3 opacity-60" />
             </button>
           ))}
         </div>
       </div>
-
-      {/* Error con botón para ir a la calculadora manual */}
-      {error && (
-        <div className="p-3 rounded-lg border border-destructive/40 bg-destructive/10 text-xs text-destructive flex items-start gap-2 animate-in fade-in duration-200">
-          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-          <div className="space-y-1.5 flex-1">
-            <p className="font-semibold">No se pudo extraer el precio automáticamente</p>
-            <p className="text-[11px] opacity-90">{error}</p>
-            <button
-              type="button"
-              onClick={onSwitchToManual}
-              className="text-[11px] underline font-semibold text-foreground hover:text-primary block pt-0.5"
-            >
-              Ingresar el precio manualmente en la calculadora &rarr;
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
-
