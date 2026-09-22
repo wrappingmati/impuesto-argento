@@ -131,6 +131,11 @@ export default function Index() {
     isForeignDigitalService?: boolean;
     calculation?: TaxCalculationResult;
   }) => {
+    // Si recibimos un item con cálculo del backend, confirmamos que el servicio está online
+    if (item.calculation) {
+      setBackendOnline(true);
+    }
+
     addGame({
       name: item.name,
       originalPrice: item.price,
