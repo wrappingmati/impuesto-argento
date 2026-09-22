@@ -55,18 +55,34 @@ export default function Index() {
     persistSettings({ province: next, defaultDolarType: "tarjeta" });
   };
 
-  const handleAddItem = (item: Omit<SavedGame, "savedAt">) => {
-    addGame(item);
-  };
-
-  const handleOpenItemModal = (item: Omit<SavedGame, "savedAt">) => {
-    setActiveModalItem({
+  const handleItemCalculated = (item: {
+    name: string;
+    price: number;
+    thumbnail: string;
+    usdPrice?: number;
+    dolarType?: "tarjeta" | "oficial" | "blue";
+    isForeignDigitalService?: boolean;
+    platform?: string;
+    calculation?: any;
+  }) => {
+    addGame({
       name: item.name,
-      originalPrice: item.originalPrice,
-      thumbnail: item.thumbnail,
+      originalPrice: item.price,
+      thumbnail: item.thumbnail || "/placeholder.svg",
       usdPrice: item.usdPrice,
       dolarType: item.dolarType,
       platform: item.platform,
+    });
+
+    setActiveModalItem({
+      name: item.name,
+      originalPrice: item.price,
+      thumbnail: item.thumbnail || "/placeholder.svg",
+      usdPrice: item.usdPrice,
+      dolarType: item.dolarType,
+      platform: item.platform,
+      isForeignDigitalService: item.isForeignDigitalService,
+      calculation: item.calculation,
     });
   };
 
@@ -104,13 +120,13 @@ export default function Index() {
             </p>
           </div>
 
-          {/* Dock unificado de pegado de links, catálogo y cálculo manual */}
+          {/* Dock unificado con componentes canónicos UrlScraper, SubscriptionCatalog y GameSearch */}
           <UniversalCalculatorBar
             province={province}
+            onProvinceChange={handleProvinceChange}
             paymentMethod={paymentMethod}
             dolarRates={dolarRates}
-            onAddItem={handleAddItem}
-            onOpenItemModal={handleOpenItemModal}
+            onItemCalculated={handleItemCalculated}
           />
         </section>
 
@@ -124,8 +140,14 @@ export default function Index() {
           onDeleteGame={removeGame}
           onClearAll={clearAll}
           onAddPresetGame={(preset) => {
-            handleAddItem(preset);
-            handleOpenItemModal(preset);
+            handleItemCalculated({
+              name: preset.name,
+              price: preset.originalPrice,
+              thumbnail: preset.thumbnail,
+              usdPrice: preset.usdPrice,
+              dolarType: preset.dolarType,
+              platform: preset.platform,
+            });
           }}
         />
 
