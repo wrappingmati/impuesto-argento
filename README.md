@@ -20,8 +20,23 @@ Calculadora inteligente del **precio final real** de videojuegos, suscripciones 
 
 - **Frontend:** React 18 + TypeScript + Vite + Tailwind CSS + shadcn/ui + Radix Primitives + TanStack Query + Zod.
 - **Backend (Scraper Service):** Python 3.10+ + FastAPI + Scrapling + BeautifulSoup4 + Uvicorn + HTTPX.
-- **Testing:** Vitest (Frontend: 20 tests) + Pytest (Backend: 15 tests).
+- **Testing:** Vitest (Frontend: 20 tests) + Pytest (Backend: 30 tests con validación de seguridad Anti-SSRF).
 - **Persistencia:** `localStorage` validado con Zod (Frontend) + Caché TTL en memoria / Redis (Backend).
+
+---
+
+## 🔌 API REST Pública y Gratuita
+
+¿Estás construyendo un bot de Discord, una extensión de navegador (Chrome/Firefox) o una aplicación móvil para gamers o consumidores argentinos? Podés integrar directamente los endpoints de este microservicio:
+
+- 📖 **Documentación Swagger interactiva:** `/docs`
+- 📑 **Especificación OpenAPI / ReDoc:** `/redoc`
+
+### Endpoints Disponibles:
+* `GET /api/v1/rates`: Cotizaciones del Dólar Oficial, Tarjeta, MEP y Blue en vivo con caché de 10 min.
+* `GET /api/v1/services`: Catálogo de servicios populares (Netflix, Spotify, ChatGPT) con cálculo tributario según la provincia.
+* `POST /api/v1/scrape`: Extrae título, precio original y moneda desde una URL.
+* `POST /api/v1/scrape-and-calculate`: Scrapea cualquier producto y devuelve el comprobante completo con IVA (21%), Ganancias (30%) e IIBB provincial.
 
 ---
 
