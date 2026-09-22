@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { PROVINCES, type DolarType, type ProvinceCode } from "@/lib/tax";
 import type { DolarRates } from "@/lib/dolarApi";
+import { calculateArgentineTaxes, type TaxCalculationResult } from "@/lib/tax-engine";
 
 type CurrencyMode = "ars" | "usd";
 
@@ -23,6 +24,8 @@ interface GameSearchProps {
     thumbnail: string;
     usdPrice?: number;
     dolarType?: DolarType;
+    isForeignDigitalService?: boolean;
+    calculation?: TaxCalculationResult;
   }) => void;
   dolarRates: DolarRates;
   province: ProvinceCode;
@@ -40,6 +43,7 @@ export default function GameSearch({
   const [thumbnail, setThumbnail] = useState("");
   const [currencyMode, setCurrencyMode] = useState<CurrencyMode>("ars");
   const [dolarType, setDolarType] = useState<DolarType>("tarjeta");
+  const [isForeignDigitalService, setIsForeignDigitalService] = useState(false);
   const [touched, setTouched] = useState(false);
 
   const getRate = (): number | null => dolarRates[dolarType];
@@ -86,12 +90,38 @@ export default function GameSearch({
     const arsPrice = getArsPrice();
     if (!name.trim() || !arsPrice || !isValidThumbnail(thumbnail)) return;
 
+    const numPrice = parseFloat(price);
+    const isUsd = currencyMode === "usd";
+    const category = isUsd
+      ? "DIGITAL_SERVICE_USD"
+      : isForeignDigitalService
+      ? "DIGITAL_SERVICE_ARS_FOREIGN"
+      : "DIGITAL_SERVICE_LOCAL";
+
+    let calc: TaxCalculationResult | undefined;
+    if (dolarRates.oficial) {
+      calc = calculateArgentineTaxes({
+        amount: numPrice,
+        currency: isUsd ? "USD" : "ARS",
+        category,
+        province,
+        rates: {
+          oficial: dolarRates.oficial,
+          tarjeta: dolarRates.tarjeta ?? dolarRates.oficial * 1.3,
+          mep: dolarRates.mep,
+          blue: dolarRates.blue,
+        },
+      });
+    }
+
     onSave({
       name: name.trim(),
-      price: arsPrice,
+      price: calc ? calc.baseArs : arsPrice,
       thumbnail: thumbnail || "/placeholder.svg",
-      usdPrice: currencyMode === "usd" ? parseFloat(price) : undefined,
-      dolarType: currencyMode === "usd" ? dolarType : undefined,
+      usdPrice: isUsd ? numPrice : undefined,
+      dolarType: isUsd ? dolarType : undefined,
+      isForeignDigitalService: isUsd ? true : isForeignDigitalService,
+      calculation: calc,
     });
 
     setName("");
@@ -109,13 +139,13 @@ export default function GameSearch({
   return (
     <form onSubmit={handleSubmit} className="ticket w-full max-w-md p-6 space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="game-name">Nombre del juego</Label>
+        <Label htmlFor="game-name">Nombre del juego o suscripción</Label>
         <Input
           id="game-name"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Ej: Elden Ring, GTA VI..."
+          placeholder="Ej: Elden Ring, Game Pass, Netflix..."
         />
       </div>
 
@@ -178,6 +208,26 @@ export default function GameSearch({
         </div>
         {priceError && <p className="text-xs text-destructive">{priceError}</p>}
       </div>
+
+      {currencyMode === "ars" && (
+        <div className="flex items-center justify-between p-3 rounded-lg border border-border bg-white/5 gap-3">
+          <div className="space-y-0.5">
+            <Label htmlFor="foreign-service-toggle" className="text-xs font-semibold cursor-pointer">
+              ¿Es un servicio/tienda del exterior en pesos?
+            </Label>
+            <p className="text-[11px] text-muted-foreground">
+              Ej: Xbox Store, Netflix, Spotify (aplica +30% Ganancias RG 5617 e IIBB)
+            </p>
+          </div>
+          <input
+            id="foreign-service-toggle"
+            type="checkbox"
+            checked={isForeignDigitalService}
+            onChange={(e) => setIsForeignDigitalService(e.target.checked)}
+            className="w-4 h-4 accent-primary rounded cursor-pointer shrink-0"
+          />
+        </div>
+      )}
 
       {currencyMode === "usd" && (
         <div className="space-y-2">

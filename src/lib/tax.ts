@@ -73,6 +73,7 @@ export function computeTarjetaRate(oficial: number): number {
 export interface PriceBreakdown {
   base: number;
   iva: number;
+  ganancias: number;
   iibb: number;
   total: number;
   province: ProvinceCode;
@@ -81,27 +82,26 @@ export interface PriceBreakdown {
 /**
  * Calcula el desglose de un precio base en ARS.
  *
- * - IVA (21%) se aplica siempre.
- * - IIBB por servicios digitales del exterior se aplica solo si el precio
- *   se originó en una plataforma extranjera (isForeignDigitalService),
- *   independientemente de con qué cotización se haya convertido a pesos:
- *   la percepción grava el consumo del servicio, no el mecanismo de
- *   conversión de moneda.
- * - La percepción RG 5617 (30%) del dólar tarjeta NO se sub-aplica acá:
- *   ya está incorporada en la cotización "tarjeta" (ver computeTarjetaRate),
- *   así que sumarla de nuevo sobre el total sería contarla dos veces.
+ * - IVA (21%) se aplica siempre a consumos digitales.
+ * - IIBB por servicios digitales del exterior se aplica si isForeignDigitalService es true.
+ * - Percepción Ganancias/BBPP (RG 5617 - 30%): Si el precio fue convertido usando
+ *   dólar tarjeta, ya está incluida en la cotización. Pero si el precio fue ingresado
+ *   directamente en ARS para un servicio del exterior (ej. Netflix, Xbox en pesos),
+ *   se debe aplicar explícitamente mediante applyGananciasPercepcion = true.
  */
 export function computeBreakdown(
   basePriceArs: number,
   province: ProvinceCode = "OTRA",
-  isForeignDigitalService: boolean = false
+  isForeignDigitalService: boolean = false,
+  applyGananciasPercepcion: boolean = false
 ): PriceBreakdown {
   const iva = basePriceArs * IVA_RATE;
   const iibbRate = isForeignDigitalService ? PROVINCES[province].iibbRate : 0;
   const iibb = basePriceArs * iibbRate;
-  const total = basePriceArs + iva + iibb;
+  const ganancias = applyGananciasPercepcion ? basePriceArs * TARJETA_PERCEPCION_RATE : 0;
+  const total = basePriceArs + iva + iibb + ganancias;
 
-  return { base: basePriceArs, iva, iibb, total, province };
+  return { base: basePriceArs, iva, ganancias, iibb, total, province };
 }
 
 export function convertUsdToArs(usdPrice: number, rate: number): number {

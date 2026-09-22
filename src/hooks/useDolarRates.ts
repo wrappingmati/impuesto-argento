@@ -1,44 +1,32 @@
 // src/hooks/useDolarRates.ts
-import { useCallback, useEffect, useState } from "react";
-import { fetchDolarRates, isStale, type DolarResult } from "@/lib/dolarApi";
+import { useQuery } from "@tanstack/react-query";
+import { fetchDolarRates, isStale, type DolarRates } from "@/lib/dolarApi";
 
-interface UseDolarRatesState {
-  result: DolarResult | null;
-  loading: boolean;
-  error: string | null;
-}
+const DEFAULT_RATES: DolarRates = {
+  blue: null,
+  oficial: null,
+  tarjeta: null,
+  mep: null,
+};
 
 export function useDolarRates() {
-  const [state, setState] = useState<UseDolarRatesState>({
-    result: null,
-    loading: true,
-    error: null,
+  const { data, isLoading, isFetching, error, refetch } = useQuery({
+    queryKey: ["dolarRates"],
+    queryFn: fetchDolarRates,
+    staleTime: 10 * 60 * 1000, // 10 minutos
+    refetchOnWindowFocus: false,
+    retry: 2,
   });
 
-  const load = useCallback(async () => {
-    setState((s) => ({ ...s, loading: true, error: null }));
-    try {
-      const result = await fetchDolarRates();
-      setState({ result, loading: false, error: null });
-    } catch (err) {
-      setState({
-        result: null,
-        loading: false,
-        error: err instanceof Error ? err.message : "Error desconocido",
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    load();
-  }, [load]);
-
   return {
-    rates: state.result?.rates ?? { blue: null, oficial: null, tarjeta: null },
-    source: state.result?.source ?? null,
-    stale: state.result ? isStale(state.result) : false,
-    loading: state.loading,
-    error: state.error,
-    refetch: load,
+    rates: data?.rates ?? DEFAULT_RATES,
+    source: data?.source ?? null,
+    stale: data ? isStale(data) : false,
+    loading: isLoading,
+    isFetching,
+    error: error instanceof Error ? error.message : null,
+    refetch: () => {
+      refetch();
+    },
   };
 }

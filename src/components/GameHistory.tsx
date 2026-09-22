@@ -19,9 +19,14 @@ const dolarLabels: Record<string, string> = {
   tarjeta: "Tarjeta",
 };
 
+function getGameBreakdown(game: SavedGame, province: ProvinceCode) {
+  const isForeign = !!game.usdPrice || game.dolarType !== undefined;
+  // Todo consumo del exterior o liquidado en moneda extranjera con tarjeta lleva IVA (21%) + Ganancias (30%) + IIBB
+  return computeBreakdown(game.originalPrice, province, isForeign, isForeign);
+}
+
 function finalOf(game: SavedGame, province: ProvinceCode) {
-  const isForeign = !!game.usdPrice && !!game.dolarType;
-  return computeBreakdown(game.originalPrice, province, isForeign).total;
+  return getGameBreakdown(game, province).total;
 }
 
 export default function GameHistory({ games, province, onDeleteGame }: GameHistoryProps) {
@@ -113,7 +118,7 @@ export default function GameHistory({ games, province, onDeleteGame }: GameHisto
           <table className="w-full text-sm border-separate border-spacing-0 font-nums">
             <thead>
               <tr>
-                {["Juego", "USD", "Dólar", "Base ARS", "IVA+IIBB", "Final"].map((h, i) => (
+                {["Juego", "USD", "Dólar", "Base ARS", "Impuestos", "Final"].map((h, i) => (
                   <th
                     key={h}
                     className={`font-display text-left text-muted-foreground font-medium py-2 px-3 bg-white/5 border-b border-border ${
@@ -127,8 +132,7 @@ export default function GameHistory({ games, province, onDeleteGame }: GameHisto
             </thead>
             <tbody>
               {games.map((game, index) => {
-                const isForeign = !!game.usdPrice && !!game.dolarType;
-                const breakdown = computeBreakdown(game.originalPrice, province, isForeign);
+                const breakdown = getGameBreakdown(game, province);
                 const cheapest = Math.min(
                   ...games.map((g) => finalOf(g, province))
                 );
@@ -166,7 +170,7 @@ export default function GameHistory({ games, province, onDeleteGame }: GameHisto
                       ${breakdown.base.toFixed(0)}
                     </td>
                     <td className="py-3 px-3 text-right border-b border-border/50 text-primary/70">
-                      +${(breakdown.iva + breakdown.iibb).toFixed(0)}
+                      +${(breakdown.iva + breakdown.ganancias + breakdown.iibb).toFixed(0)}
                     </td>
                     <td className="py-3 px-3 text-right border-b border-border/50 font-semibold">
                       <span className={isCheapest && games.length > 1 ? "text-primary" : ""}>

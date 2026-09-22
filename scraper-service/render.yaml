@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: impuesto-argento-api
+    runtime: python
+    rootDir: scraper-service
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: DEBUG
+        value: "false"
+      - key: CORS_ORIGINS
+        value: "https://impuesto-argento.netlify.app,http://localhost:8080,http://localhost:5173"
+

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { computeBreakdown, computeTarjetaRate, IVA_RATE, PROVINCES } from "../tax";
+import { computeBreakdown, computeTarjetaRate, IVA_RATE, PROVINCES, TARJETA_PERCEPCION_RATE } from "../tax";
 
 describe("computeTarjetaRate", () => {
   it("aplica 30% (RG 5617) sobre el oficial, vigente desde ene. 2026", () => {
@@ -12,13 +12,23 @@ describe("computeBreakdown", () => {
     const result = computeBreakdown(1000, "BA", false);
     expect(result.iva).toBeCloseTo(1000 * IVA_RATE, 6);
     expect(result.iibb).toBe(0);
+    expect(result.ganancias).toBe(0);
     expect(result.total).toBeCloseTo(1210, 6);
   });
 
   it("suma IIBB cuando es una compra en plataforma extranjera y la provincia tiene alícuota", () => {
     const result = computeBreakdown(1000, "CBA", true); // Córdoba: 3%
     expect(result.iibb).toBeCloseTo(30, 6);
+    expect(result.ganancias).toBe(0);
     expect(result.total).toBeCloseTo(1000 + 210 + 30, 6);
+  });
+
+  it("suma percepción Ganancias/BBPP (30%) explícita si applyGananciasPercepcion es true (servicios en ARS)", () => {
+    const result = computeBreakdown(1000, "BA", true, true);
+    expect(result.iva).toBeCloseTo(210, 6);
+    expect(result.ganancias).toBeCloseTo(1000 * TARJETA_PERCEPCION_RATE, 6); // 300
+    expect(result.iibb).toBeCloseTo(20, 6); // BA 2%
+    expect(result.total).toBeCloseTo(1000 + 210 + 300 + 20, 6); // 1530
   });
 
   it("no suma IIBB en Entre Ríos (sin régimen específico confirmado)", () => {

@@ -1,0 +1,185 @@
+// src/lib/tax-engine/provinces.ts
+import type { ProvinceCode, ProvinceTaxInfo } from "./types";
+
+/**
+ * Tabla de Percepción de Ingresos Brutos (IIBB) sobre Servicios Digitales del Exterior
+ * Relevamiento exhaustivo con fuentes normativas provinciales.
+ */
+export const PROVINCE_TAX_REGIMES: Record<ProvinceCode, ProvinceTaxInfo> = {
+  CABA: {
+    code: "CABA",
+    label: "Ciudad Autónoma de Buenos Aires",
+    digitalServicesIibbRate: 0.02,
+    source: "Resolución (AGIP) 312/2019",
+    notes: "Alícuota general del 2% para prestadores de servicios digitales no residentes.",
+  },
+  BA: {
+    code: "BA",
+    label: "Buenos Aires (Provincia)",
+    digitalServicesIibbRate: 0.02,
+    source: "Resolución Normativa (ARBA) 38/2019",
+    notes: "Alícuota del 2% para sujetos prestadores de servicios digitales del exterior.",
+  },
+  CBA: {
+    code: "CBA",
+    label: "Córdoba",
+    digitalServicesIibbRate: 0.03,
+    source: "Decreto 775/2018 y Ley Tarifaria Provincial",
+    notes: "3% de percepción practicada por entidades emisoras de tarjetas.",
+  },
+  SF: {
+    code: "SF",
+    label: "Santa Fe",
+    digitalServicesIibbRate: 0.045, // 4.5% general, 3% audiovisual
+    source: "Resolución General (API) 30/2025 y Ley Impositiva Anual",
+    notes: "4,5% para servicios en general; 3% para servicios audiovisuales y streaming (Netflix/Spotify).",
+  },
+  CHA: {
+    code: "CHA",
+    label: "Chaco",
+    digitalServicesIibbRate: 0.055,
+    source: "Resolución General (ATP) 2046/2020",
+    notes: "Alícuota del 5,5% sobre el precio neto de la operación.",
+  },
+  LP: {
+    code: "LP",
+    label: "La Pampa",
+    digitalServicesIibbRate: 0.01,
+    source: "Resolución General (DGR) 14/2019",
+    notes: "1% de percepción sobre liquidaciones de tarjetas.",
+  },
+  NQN: {
+    code: "NQN",
+    label: "Neuquén",
+    digitalServicesIibbRate: 0.04,
+    source: "Resolución (DPR) 1/2022",
+    notes: "4% para servicios digitales prestados desde el exterior.",
+  },
+  RN: {
+    code: "RN",
+    label: "Río Negro",
+    digitalServicesIibbRate: 0.05,
+    source: "Resolución (ART) 808/2020",
+    notes: "5% sobre el valor neto facturado.",
+  },
+  SAL: {
+    code: "SAL",
+    label: "Salta",
+    digitalServicesIibbRate: 0.036,
+    source: "Resolución General (DGR) 34/2018",
+    notes: "3,6% de percepción.",
+  },
+  TF: {
+    code: "TF",
+    label: "Tierra del Fuego",
+    digitalServicesIibbRate: 0.03,
+    source: "Resolución General (AREF) 929/2022",
+    notes: "3% sobre servicios digitales no residentes.",
+  },
+  TUC: {
+    code: "TUC",
+    label: "Tucumán",
+    digitalServicesIibbRate: 0.05,
+    source: "Resolución General (DGR) 143/2021",
+    notes: "5% para sujetos radicados en el exterior.",
+  },
+  MZA: {
+    code: "MZA",
+    label: "Mendoza",
+    digitalServicesIibbRate: 0.0,
+    source: "ATM Mendoza",
+    notes: "Sin régimen específico formal de percepción sobre servicios digitales del exterior.",
+  },
+  ER: {
+    code: "ER",
+    label: "Entre Ríos",
+    digitalServicesIibbRate: 0.0,
+    source: "ATER Entre Ríos",
+    notes: "Sin régimen específico formal de percepción sobre servicios digitales del exterior.",
+  },
+  COR: {
+    code: "COR",
+    label: "Corrientes",
+    digitalServicesIibbRate: 0.0,
+    source: "DGR Corrientes",
+    notes: "Sin régimen de percepción activo a través de tarjetas.",
+  },
+  MIS: {
+    code: "MIS",
+    label: "Misiones",
+    digitalServicesIibbRate: 0.0,
+    source: "DGR Misiones",
+    notes: "Sin régimen específico generalizado para consumidores finales.",
+  },
+  JUJ: {
+    code: "JUJ",
+    label: "Jujuy",
+    digitalServicesIibbRate: 0.03,
+    source: "Resolución General (DPR) 1572/2020",
+    notes: "3% de percepción.",
+  },
+  SL: {
+    code: "SL",
+    label: "San Luis",
+    digitalServicesIibbRate: 0.02,
+    source: "DPIPN San Luis",
+    notes: "2% régimen general de percepciones con tarjeta.",
+  },
+  SJ: {
+    code: "SJ",
+    label: "San Juan",
+    digitalServicesIibbRate: 0.03,
+    source: "Resolución (DGR) 1100/2021",
+    notes: "3% sobre servicios digitales.",
+  },
+  CAT: {
+    code: "CAT",
+    label: "Catamarca",
+    digitalServicesIibbRate: 0.03,
+    source: "ARCA Catamarca",
+    notes: "3% de alícuota sobre operaciones con el exterior.",
+  },
+  LR: {
+    code: "LR",
+    label: "La Rioja",
+    digitalServicesIibbRate: 0.025,
+    source: "DGIP La Rioja",
+    notes: "2,5% de percepción.",
+  },
+  SDE: {
+    code: "SDE",
+    label: "Santiago del Estero",
+    digitalServicesIibbRate: 0.03,
+    source: "DGR Santiago del Estero",
+    notes: "3% sobre servicios digitales.",
+  },
+  CHU: {
+    code: "CHU",
+    label: "Chubut",
+    digitalServicesIibbRate: 0.03,
+    source: "DGR Chubut",
+    notes: "3% sobre consumos del exterior.",
+  },
+  SC: {
+    code: "SC",
+    label: "Santa Cruz",
+    digitalServicesIibbRate: 0.03,
+    source: "ASIP Santa Cruz",
+    notes: "3% de percepción.",
+  },
+  FORM: {
+    code: "FORM",
+    label: "Formosa",
+    digitalServicesIibbRate: 0.03,
+    source: "DGR Formosa",
+    notes: "3% sobre servicios digitales.",
+  },
+  OTRA: {
+    code: "OTRA",
+    label: "Otra jurisdicción / No informado",
+    digitalServicesIibbRate: 0.0,
+    source: "Valor de referencia",
+    notes: "Consultá la alícuota en el organismo recaudador de tu provincia.",
+  },
+};
+

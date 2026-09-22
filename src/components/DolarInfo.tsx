@@ -14,20 +14,19 @@ interface DolarInfoProps {
 export default function DolarInfo({ onRatesLoaded }: DolarInfoProps) {
   const { rates, source, stale, loading, error, refetch } = useDolarRates();
 
-  // Avisamos al padre cada vez que cambian las tasas (como efecto, no
-  // durante el render, para no disparar un setState del padre en medio
-  // del render de este componente).
+  // Avisamos al padre cada vez que cambian las tasas
   useEffect(() => {
     if (!loading && !error) {
       onRatesLoaded?.(rates);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rates.blue, rates.oficial, rates.tarjeta, loading, error]);
+  }, [rates.blue, rates.oficial, rates.tarjeta, rates.mep, loading, error]);
 
   const rateItems = [
-    { label: "Blue", value: rates.blue, className: "text-blue" },
     { label: "Oficial", value: rates.oficial, className: "text-oficial" },
-    { label: "Tarjeta", value: rates.tarjeta, className: "text-tarjeta", note: "+45% Ganancias" },
+    { label: "Tarjeta", value: rates.tarjeta, className: "text-tarjeta", note: "+30% Ganancias" },
+    { label: "MEP", value: rates.mep, className: "text-primary", note: "Bolsa" },
+    { label: "Blue", value: rates.blue, className: "text-blue" },
   ];
 
   return (
@@ -51,9 +50,9 @@ export default function DolarInfo({ onRatesLoaded }: DolarInfoProps) {
         </div>
 
         {loading && !error && (
-          <div className="flex gap-3">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="flex-1 h-12 bg-white/5 rounded-lg animate-pulse" />
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-14 bg-white/5 rounded-lg animate-pulse" />
             ))}
           </div>
         )}
@@ -72,14 +71,14 @@ export default function DolarInfo({ onRatesLoaded }: DolarInfoProps) {
 
         {!loading && !error && (
           <>
-            <div className="grid grid-cols-3 gap-3 font-nums">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-nums">
               {rateItems.map(({ label, value, className, note }) => (
-                <div key={label} className="bg-white/5 rounded-lg p-3 text-center">
-                  <p className="font-display text-xs text-muted-foreground mb-1">{label}</p>
-                  <p className={`text-lg font-semibold ${className}`}>
+                <div key={label} className="bg-white/5 rounded-lg p-2.5 text-center">
+                  <p className="font-display text-xs text-muted-foreground mb-0.5">{label}</p>
+                  <p className={`text-base font-semibold ${className}`}>
                     {value != null ? `$${value.toFixed(0)}` : "—"}
                   </p>
-                  {note && <p className="text-[10px] text-muted-foreground mt-1 font-display">{note}</p>}
+                  {note && <p className="text-[10px] text-muted-foreground mt-0.5 font-display">{note}</p>}
                 </div>
               ))}
             </div>

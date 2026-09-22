@@ -9,6 +9,7 @@ export interface DolarRates {
   blue: number | null;
   oficial: number | null;
   tarjeta: number | null;
+  mep: number | null;
 }
 
 export interface DolarResult {
@@ -38,7 +39,7 @@ async function fetchBluelytics(): Promise<DolarRates> {
     if (typeof oficial !== "number" || typeof blue !== "number") {
       throw new Error("bluelytics devolvió un formato inesperado");
     }
-    return { blue, oficial, tarjeta: computeTarjetaRate(oficial) };
+    return { blue, oficial, tarjeta: computeTarjetaRate(oficial), mep: null };
   } finally {
     cancel();
   }
@@ -53,6 +54,7 @@ async function fetchDolarApi(): Promise<DolarRates> {
     const data: Array<{ casa: string; venta: number }> = await res.json();
     const oficial = data.find((d) => d.casa === "oficial")?.venta;
     const blue = data.find((d) => d.casa === "blue")?.venta;
+    const mep = data.find((d) => d.casa === "bolsa")?.venta ?? null;
     const tarjetaFromApi = data.find((d) => d.casa === "tarjeta")?.venta;
     if (typeof oficial !== "number" || typeof blue !== "number") {
       throw new Error("dolarapi devolvió un formato inesperado");
@@ -61,6 +63,7 @@ async function fetchDolarApi(): Promise<DolarRates> {
       blue,
       oficial,
       tarjeta: tarjetaFromApi ?? computeTarjetaRate(oficial),
+      mep,
     };
   } finally {
     cancel();
