@@ -21,19 +21,19 @@ export default function DolarInfo({ onRatesLoaded }: DolarInfoProps) {
   }, [rates.blue, rates.oficial, rates.tarjeta, rates.mep, loading, error]);
 
   const rateItems = [
-    { label: "Dólar Oficial", value: rates.oficial, sub: "Base" },
-    { label: "Dólar Tarjeta", value: rates.tarjeta, sub: "+30% Gan." },
-    { label: "Dólar MEP", value: rates.mep, sub: "Bolsa", highlight: true },
-    { label: "Dólar Blue", value: rates.blue, sub: "Informal" },
+    { label: "Dólar Oficial", value: rates.oficial, sub: "Base ARCA / BCRA" },
+    { label: "Dólar Tarjeta", value: rates.tarjeta, sub: "Oficial + 30% Gan." },
+    { label: "Dólar MEP", value: rates.mep, sub: "Bolsa (Sin percepción)", highlight: true },
+    { label: "Dólar Blue", value: rates.blue, sub: "Mercado informal" },
   ];
 
   return (
-    <div className="bg-[#131722] border border-white/[0.08] rounded-2xl p-5 shadow-sm space-y-3">
-      <div className="flex items-center justify-between">
+    <div className="bg-[#131B2E] border border-slate-800/90 rounded-2xl p-5 sm:p-6 shadow-lg space-y-4">
+      <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
         <div className="flex items-center gap-2">
-          <TrendingUp className="w-4 h-4 text-slate-400" />
-          <span className="text-xs font-medium text-slate-300">
-            Cotizaciones de referencia
+          <TrendingUp className="w-4 h-4 text-[#22D3EE]" />
+          <span className="text-sm font-semibold text-slate-200">
+            Cotizaciones del Dólar en Vivo
           </span>
         </div>
         <button
@@ -41,26 +41,26 @@ export default function DolarInfo({ onRatesLoaded }: DolarInfoProps) {
           onClick={refetch}
           disabled={loading}
           title="Actualizar cotizaciones"
-          className="text-slate-400 hover:text-white p-1 rounded-md hover:bg-white/5 transition-colors disabled:opacity-40"
+          className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition-colors disabled:opacity-40"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
         </button>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 font-mono">
         {rateItems.map(({ label, value, sub, highlight }) => (
           <div
             key={label}
-            className={`p-2.5 rounded-xl border ${
+            className={`p-3 rounded-xl border ${
               highlight
-                ? "bg-emerald-500/[0.06] border-emerald-500/20"
-                : "bg-[#0b0e14] border-white/[0.06]"
+                ? "bg-emerald-500/10 border-emerald-500/25"
+                : "bg-[#0B0F19] border-slate-800"
             }`}
           >
-            <p className="font-sans text-[11px] text-slate-400">{label}</p>
+            <p className="font-sans text-xs text-slate-400 font-medium">{label}</p>
             <p
-              className={`text-base font-semibold mt-0.5 ${
-                highlight ? "text-emerald-400" : "text-slate-200"
+              className={`text-lg sm:text-xl font-bold mt-0.5 ${
+                highlight ? "text-emerald-400" : "text-white"
               }`}
             >
               {value != null ? `$${value.toFixed(0)}` : "—"}
