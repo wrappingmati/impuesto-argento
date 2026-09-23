@@ -48,22 +48,29 @@ El motor tributario está implementado en dos versiones idénticas y sincronizad
 
 ## 3. Arquitectura del Sistema
 
+> 💡 **Diseño y Componentes UI/UX**: Si necesitás pasarle el contexto a otra IA o diseñador para rediseñar la interfaz, consultá el documento dedicado: [`FRONTEND_DESIGN_CONTEXT.md`](file:///d:/Escritorio/impuesto-argento/FRONTEND_DESIGN_CONTEXT.md).
+
 ```
 impuesto-argento/
+├── FRONTEND_DESIGN_CONTEXT.md         # Guía de componentes y diseño para IAs/Diseñadores
 ├── src/                               # FRONTEND (React 18 + Vite + Tailwind + shadcn)
 │   ├── components/
+│   │   ├── Header.tsx                 # Barra superior fija con cotizaciones y controles globales
+│   │   ├── UniversalCalculatorBar.tsx # Dock unificado (Tabs: Pegar Link, Suscripciones, Manual)
+│   │   ├── GameLibrary.tsx            # Mi Biblioteca Gamer (Grilla de pósters, tabla y métricas)
+│   │   ├── PriceBreakdownModal.tsx    # Modal de ticket fiscal transparente e interactivo
 │   │   ├── UrlScraper.tsx             # Pestaña de scraping por URL con Scrapling
 │   │   ├── SubscriptionCatalog.tsx    # Pestaña de catálogo con filtros y planes
 │   │   ├── GameSearch.tsx             # Pestaña de calculadora manual
-│   │   ├── PriceBreakdown.tsx         # Comprobante ticket con ahorro MEP y desglose
+│   │   ├── PriceBreakdown.tsx         # Comprobante ticket canónico
 │   │   ├── DolarInfo.tsx              # Tarjetas de Oficial, Tarjeta, MEP y Blue
 │   │   ├── TaxInfo.tsx                # Guía impositiva educativa
-│   │   └── GameHistory.tsx            # Historial persistido en localStorage con Zod
+│   │   └── Footer.tsx                 # Pie de página oficial con autoría a WrappingMati
 │   ├── lib/
 │   │   ├── api.ts                     # Cliente HTTP para el backend FastAPI
 │   │   ├── tax.ts                     # Motor tributario frontend clásico
 │   │   └── tax-engine/                # Motor tributario v2.0 ampliado y tipado
-│   └── pages/Index.tsx                # Pantalla principal con pestañas y controles
+│   └── pages/Index.tsx                # Pantalla principal centrada en la Biblioteca Gamer
 │
 └── scraper-service/                   # BACKEND (Python 3.10+ / FastAPI / Scrapling)
     ├── app/
