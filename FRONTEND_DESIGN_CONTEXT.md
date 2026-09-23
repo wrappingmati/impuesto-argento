@@ -20,18 +20,17 @@ La aplicación resuelve un dolor cotidiano en Argentina: saber cuánto va a cost
 1. **Header Sticky:** Muestra el logo oficial (`/logo-full.png`), cotizaciones del dólar en vivo y dos controles globales reactivos:
    - **Selector de Provincia:** Aplica la tasa de Ingresos Brutos (IIBB) local (0% a 5,5%).
    - **Selector de Medio de Pago:** Alterna entre `Tarjeta (ARS)` (+51% de impuestos totales) y `Dólar MEP` (+21% de IVA únicamente, exento del 30% de retención de Ganancias).
-2. **Dock de Búsqueda Rápida (`UniversalCalculatorBar`):**
-   - El usuario pega un enlace de una tienda (Steam, Xbox, PS Store, Nintendo).
-   - O selecciona una suscripción preconfigurada (Game Pass, Spotify, etc.).
-   - O ingresa un precio manual en USD o ARS.
+2. **Hero Dock y Cotizaciones en Vivo (Layout de 2 Columnas):**
+   - **Columna Principal (8 cols):** `UniversalCalculatorBar` con 3 pestañas (Pegar Link, Suscripciones populares o Cotización manual rápida).
+   - **Columna Lateral (4 cols):** `DolarInfo` con matriz 2x2 de cotizaciones en tiempo real (Oficial, Tarjeta, MEP con ahorro y Blue) más tip financiero de exención impositiva con MEP.
 3. **Mi Biblioteca Gamer (`GameLibrary`):**
    - Cada juego calculado se agrega automáticamente a la colección personal del usuario (persistida en `localStorage`).
    - Se muestra como una **estantería estética de pósters/carátulas** con su precio final grande y claro en ARS.
    - En la parte superior hay una barra de métricas financieras: **Total Inversión ARS**, **Total Impuestos Retenidos** y **Ahorro Potencial con Dólar MEP**.
 4. **Ticket Fiscal Transparente (`PriceBreakdownModal`):**
    - Al tocar cualquier juego o scrapear uno nuevo, se abre un comprobante limpio e interactivo con el desglose exacto (IVA 21%, Percepción Ganancias 30%, IIBB Provincial) y un botón para copiar el comprobante formateado listo para Discord o WhatsApp.
-5. **Guía y Cotizaciones Plegables (`TaxInfo` / `DolarInfo`):**
-   - Panel inferior colapsable para consultar normativas legales oficiales y cotizaciones de referencia sin saturar la pantalla principal.
+5. **Guía de Normativas Fiscales Plegable (`TaxInfo`):**
+   - Panel inferior colapsable para consultar normativas legales oficiales (ARCA, Ley 27.430, RG 5617) sin saturar la pantalla principal.
 
 ---
 
@@ -40,10 +39,12 @@ La aplicación resuelve un dolor cotidiano en Argentina: saber cuánto va a cost
 ```mermaid
 flowchart TD
     Index["src/pages/Index.tsx (Página Principal)"] --> Header["src/components/Header.tsx"]
-    Index --> UniversalBar["src/components/UniversalCalculatorBar.tsx"]
+    Index --> HeroGrid["Layout Hero 2 Columnas (12 cols)"]
+    HeroGrid --> UniversalBar["src/components/UniversalCalculatorBar.tsx (8 cols)"]
+    HeroGrid --> LiveDolar["src/components/DolarInfo.tsx (4 cols)"]
     Index --> GameLibrary["src/components/GameLibrary.tsx"]
     Index --> BreakdownModal["src/components/PriceBreakdownModal.tsx"]
-    Index --> CollapsibleGuides["Panel Plegable de Guías y Cotizaciones"]
+    Index --> CollapsibleGuides["Panel Plegable de Normativas (TaxInfo)"]
     Index --> Footer["src/components/Footer.tsx"]
 
     UniversalBar --> UrlScraper["src/components/UrlScraper.tsx (Tab Pegar Link)"]

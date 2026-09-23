@@ -120,14 +120,21 @@ export default function Index() {
             </p>
           </div>
 
-          {/* Dock unificado con componentes canónicos UrlScraper, SubscriptionCatalog y GameSearch */}
-          <UniversalCalculatorBar
-            province={province}
-            onProvinceChange={handleProvinceChange}
-            paymentMethod={paymentMethod}
-            dolarRates={dolarRates}
-            onItemCalculated={handleItemCalculated}
-          />
+          {/* Grid de 2 columnas: Buscador y Calculadora (izquierda) + Cotizaciones Dólar en Vivo (derecha) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <div className="lg:col-span-8">
+              <UniversalCalculatorBar
+                province={province}
+                onProvinceChange={handleProvinceChange}
+                paymentMethod={paymentMethod}
+                dolarRates={dolarRates}
+                onItemCalculated={handleItemCalculated}
+              />
+            </div>
+            <div className="lg:col-span-4">
+              <DolarInfo onRatesLoaded={setDolarRates} />
+            </div>
+          </div>
         </section>
 
         {/* 3. La Biblioteca Gamer: Experiencia Principal de Pósters y Shelf */}
@@ -151,7 +158,7 @@ export default function Index() {
           }}
         />
 
-        {/* 4. Panel Plegable de Cotizaciones y Normativas Fiscales */}
+        {/* 4. Panel Plegable de Normativas Fiscales */}
         <section id="guias" className="border-t border-slate-800/80 pt-8 space-y-4">
           <button
             type="button"
@@ -164,10 +171,10 @@ export default function Index() {
               </div>
               <div>
                 <h3 className="text-sm font-bold text-white group-hover:text-[#74ACDF] transition-colors">
-                  Cotizaciones del Dólar y Guía de Impuestos Oficiales
+                  Guía de Impuestos y Normativas Oficiales
                 </h3>
                 <p className="text-xs text-slate-400">
-                  Consultá las fuentes tributarias (ARCA, Ley 27.430, RG 5617) y cotizaciones oficiales.
+                  Consultá las fuentes tributarias (ARCA, Ley 27.430, RG 5617) y marco legal vigente.
                 </p>
               </div>
             </div>
@@ -179,13 +186,8 @@ export default function Index() {
           </button>
 
           {showGuides && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2 animate-fade-in">
-              <div className="lg:col-span-6">
-                <DolarInfo onRatesLoaded={setDolarRates} />
-              </div>
-              <div className="lg:col-span-6">
-                <TaxInfo />
-              </div>
+            <div className="pt-2 animate-fade-in">
+              <TaxInfo />
             </div>
           )}
         </section>
