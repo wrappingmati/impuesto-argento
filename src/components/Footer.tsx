@@ -56,13 +56,23 @@ export default function Footer() {
             </a>
             <span className="text-slate-700">•</span>
             <a
+              href="https://github.com/wrappingmati"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors flex items-center gap-1.5"
+            >
+              <Globe className="w-3.5 h-3.5 text-[#74ACDF]" />
+              <span>Portafolio</span>
+            </a>
+            <span className="text-slate-700">•</span>
+            <a
               href="https://github.com/wrappingmati/impuesto-argento"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-white transition-colors flex items-center gap-1"
+              className="hover:text-white transition-colors flex items-center gap-1.5"
             >
               <Github className="w-3.5 h-3.5" />
-              <span>API REST</span>
+              <span>GitHub</span>
             </a>
             <span className="text-slate-700">•</span>
             <LegalModal>
