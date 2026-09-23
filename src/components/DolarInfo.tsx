@@ -28,10 +28,10 @@ export default function DolarInfo({ onRatesLoaded }: DolarInfoProps) {
   ];
 
   return (
-    <div className="bg-[#131B2E] border border-slate-800/90 rounded-2xl p-5 sm:p-6 shadow-lg space-y-4">
+    <div className="bg-[#111A2E] border border-slate-800/90 rounded-2xl p-5 sm:p-6 shadow-lg space-y-4">
       <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
         <div className="flex items-center gap-2">
-          <TrendingUp className="w-4 h-4 text-[#22D3EE]" />
+          <TrendingUp className="w-4 h-4 text-[#74ACDF]" />
           <span className="text-sm font-semibold text-slate-200">
             Cotizaciones del Dólar en Vivo
           </span>
@@ -53,14 +53,14 @@ export default function DolarInfo({ onRatesLoaded }: DolarInfoProps) {
             key={label}
             className={`p-3 rounded-xl border ${
               highlight
-                ? "bg-emerald-500/10 border-emerald-500/25"
-                : "bg-[#0B0F19] border-slate-800"
+                ? "bg-[#F6B40E]/10 border-[#F6B40E]/30"
+                : "bg-[#0A0F1D] border-slate-800"
             }`}
           >
             <p className="font-sans text-xs text-slate-400 font-medium">{label}</p>
             <p
               className={`text-lg sm:text-xl font-bold mt-0.5 ${
-                highlight ? "text-emerald-400" : "text-white"
+                highlight ? "text-[#F6B40E]" : "text-white"
               }`}
             >
               {value != null ? `$${value.toFixed(0)}` : "—"}

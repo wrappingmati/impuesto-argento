@@ -263,19 +263,20 @@ interface GameSearchProps {
 
 ## 4. Sistema de Diseño Actual y Tokens
 
-### 4.1. Paleta de Colores Vigente (Dark Theme Gaming):
-| Variable de Color | Código Hex | Clases Tailwind sugeridas | Uso Principal |
+### 4.1. Paleta de Colores Vigente (Identidad Argentina Premium):
+Inspirada en la bandera nacional argentina (Celeste, Blanco y Sol de Mayo) sobre un fondo oscuro moderno:
+
+| Variable de Color | Código Hex | Clases Tailwind / Tokens | Uso Principal |
 | :--- | :--- | :--- | :--- |
-| **Fondo General** | `#0B0F19` | `bg-[#0B0F19]` | Fondo de la aplicación |
-| **Superficie de Tarjetas** | `#131B2E` | `bg-[#131B2E]` | Contenedores y cards principales |
-| **Superficie Secundaria** | `#0B0F19` / `#1E1B2E` | `bg-[#0B0F19]` / `bg-[#1E1B2E]` | Sub-tarjetas, inputs, tablas |
-| **Bordes** | `#1E293B` / `#334155` | `border-slate-800` / `border-slate-700/80` | Bordes muy finos y sutiles |
-| **Violeta Primario** | `#6D28D9` | `bg-[#6D28D9]`, `hover:bg-[#5B21B6]` | Botones de acción principales |
-| **Azul Eléctrico** | `#3B82F6` | `text-blue-400`, `bg-blue-500` | Acentos visuales y categorías |
-| **Cyan / Dólar MEP** | `#22D3EE` | `text-[#22D3EE]` | Acentos de ahorro, badges de tiendas |
-| **Verde Esmeralda** | `#10B981` / `#34D399` | `text-emerald-400`, `bg-emerald-600` | Precios finales destacados y ahorros |
-| **Violeta Secundario** | `#A78BFA` | `text-[#A78BFA]` | Textos resaltados y etiquetas |
-| **Tipografía Base** | Slate Claro | `text-slate-100`, `text-slate-300`, `text-slate-400` | Jerarquía de textos legibles |
+| **Celeste Argentino** | `#74ACDF` | `bg-[#74ACDF]`, `text-[#74ACDF]`, `border-[#74ACDF]` | Color primario, CTAs, badges de tienda, tabs activos |
+| **Celeste Hover** | `#5B9CD6` | `hover:bg-[#5B9CD6]` | Estado hover de botones primarios |
+| **Dorado Sol de Mayo** | `#F6B40E` | `text-[#F6B40E]`, `bg-[#F6B40E]` | Acentos de Dólar MEP, percepciones, destaques patrios |
+| **Blanco Puro** | `#FFFFFF` | `text-white` | Títulos de alto contraste y detalles de bandera |
+| **Fondo General (Midnight)**| `#0A0F1D` | `bg-[#0A0F1D]` | Fondo general inmersivo sin saturación |
+| **Superficie de Tarjetas** | `#111A2E` | `bg-[#111A2E]` | Contenedores, cards de biblioteca, modales |
+| **Bordes Sutiles** | `#1E293B` | `border-slate-800` | Bordes limpios sin destellos saturados |
+| **Verde Esmeralda** | `#34D399` | `text-emerald-400` | Precios finales destacados y tickets fiscales |
+| **Tipografía Base** | Slate Claro | `text-slate-100`, `text-slate-300`, `text-slate-400` | Jerarquía tipográfica accesible y de lectura ágil |
 
 ### 4.2. Assets de Marca Disponibles en `/public`:
 - `public/logo-full.png`: Logo horizontal oficial (isotipo de 'A' estilizada con joystick gaming en degradado violeta-azul + tipografía "Impuesto Argento").
@@ -351,3 +352,4 @@ export interface TaxCalculationResult {
 ---
 
 *Documento generado para **Impuesto Argento** · 2026 · Proyecto creado por Matías Casas (WrappingMati)*
+

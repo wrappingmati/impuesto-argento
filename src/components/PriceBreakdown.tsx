@@ -57,7 +57,7 @@ export default function PriceBreakdown({
 
   if (error) {
     return (
-      <div className="bg-[#1E1B2E] border border-red-500/30 rounded-2xl p-6 text-center space-y-2">
+      <div className="bg-[#111A2E] border border-red-500/30 rounded-2xl p-6 text-center space-y-2">
         <p className="text-sm text-red-400 font-medium">Error al procesar el precio</p>
         <p className="text-xs text-slate-400">{error}</p>
       </div>
@@ -66,9 +66,9 @@ export default function PriceBreakdown({
 
   if (typeof originalPrice === "undefined" && !calculation) {
     return (
-      <div className="bg-[#1E1B2E]/60 border border-slate-800 rounded-2xl p-7 text-center space-y-3">
+      <div className="bg-[#111A2E]/60 border border-slate-800 rounded-2xl p-7 text-center space-y-3">
         <div className="w-12 h-12 rounded-xl bg-slate-800/80 border border-slate-700/60 mx-auto flex items-center justify-center text-slate-400">
-          <Info className="w-5 h-5 text-[#A78BFA]" />
+          <Info className="w-5 h-5 text-[#74ACDF]" />
         </div>
         <div className="space-y-1">
           <h4 className="text-sm font-semibold text-slate-200">Resultado estimado</h4>
@@ -105,7 +105,7 @@ export default function PriceBreakdown({
   };
 
   return (
-    <div className="bg-[#1E1B2E] border border-slate-800 rounded-2xl p-6 shadow-xl space-y-5">
+    <div className="bg-[#111A2E] border border-slate-800 rounded-2xl p-6 shadow-xl space-y-5">
       {/* Cabecera del producto */}
       <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
         <div className="flex items-center gap-3 min-w-0">
@@ -116,7 +116,7 @@ export default function PriceBreakdown({
               className="w-10 h-10 object-cover rounded-lg border border-slate-700/60 shrink-0 bg-black/40"
             />
           ) : (
-            <div className="w-10 h-10 rounded-lg bg-[#6D28D9]/20 border border-[#6D28D9]/40 flex items-center justify-center text-[#A78BFA] font-bold shrink-0">
+            <div className="w-10 h-10 rounded-lg bg-[#74ACDF]/15 border border-[#74ACDF]/30 flex items-center justify-center text-[#74ACDF] font-bold shrink-0">
               🎮
             </div>
           )}
@@ -147,7 +147,7 @@ export default function PriceBreakdown({
           <span className="text-3xl sm:text-4xl font-bold font-mono tracking-tight text-white">
             {formatArs(finalTotal)}
           </span>
-          <span className="text-xs font-semibold text-[#A78BFA]">ARS</span>
+          <span className="text-xs font-semibold text-[#74ACDF]">ARS</span>
         </div>
       </div>
 
@@ -259,14 +259,14 @@ export default function PriceBreakdown({
         className="w-full pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400 hover:text-white transition-colors"
       >
         <span className="flex items-center gap-1.5">
-          <Info className="w-3.5 h-3.5 text-[#A78BFA]" />
+          <Info className="w-3.5 h-3.5 text-[#74ACDF]" />
           <span>Ver detalle de impuestos</span>
         </span>
         <ChevronRight className={`w-3.5 h-3.5 transition-transform ${showDetails ? "rotate-90" : ""}`} />
       </button>
 
       {showDetails && (
-        <div className="p-3 rounded-xl bg-[#0F172A] border border-slate-800 text-[11px] text-slate-400 space-y-1.5 animate-fade-in">
+        <div className="p-3 rounded-xl bg-[#0A0F1D] border border-slate-800 text-[11px] text-slate-400 space-y-1.5 animate-fade-in">
           <p><strong className="text-slate-200">IVA (21%):</strong> Decreto 813/2018 para servicios digitales del exterior.</p>
           <p><strong className="text-slate-200">Percepción Ganancias (30%):</strong> RG 5617/2024 sobre compra de moneda extranjera.</p>
           <p><strong className="text-slate-200">IIBB Provincial:</strong> Régimen de percepción local ({PROVINCES[province]?.label}: {((PROVINCES[province]?.iibbRate || 0) * 100).toFixed(1)}%).</p>

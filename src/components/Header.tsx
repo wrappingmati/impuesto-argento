@@ -42,7 +42,7 @@ export default function Header({
   const isMep = paymentMethod === "DOLAR_MEP_CUENTA";
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-800/90 bg-[#0B0F19]/90 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-800/90 bg-[#0A0F1D]/90 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="h-16 flex items-center justify-between gap-3">
           {/* 1. Logo Oficial a la izquierda */}
@@ -64,7 +64,7 @@ export default function Header({
                 href="#biblioteca"
                 className="hover:text-white transition-colors flex items-center gap-1.5"
               >
-                <Gamepad2 className="w-3.5 h-3.5 text-[#A78BFA]" />
+                <Gamepad2 className="w-3.5 h-3.5 text-[#74ACDF]" />
                 <span>Mi Biblioteca</span>
               </a>
               <a
@@ -91,13 +91,13 @@ export default function Header({
             {onProvinceChange && (
               <div className="w-36 sm:w-44">
                 <Select value={province} onValueChange={(v) => onProvinceChange(v as ProvinceCode)}>
-                  <SelectTrigger className="bg-[#131B2E] border-slate-700/80 text-slate-200 text-xs h-9 rounded-xl focus:border-[#A78BFA]">
+                  <SelectTrigger className="bg-[#111A2E] border-slate-700/80 text-slate-200 text-xs h-9 rounded-xl focus:border-[#74ACDF]">
                     <div className="flex items-center gap-1.5 truncate">
-                      <MapPin className="w-3 h-3 text-[#A78BFA] shrink-0" />
+                      <MapPin className="w-3 h-3 text-[#74ACDF] shrink-0" />
                       <SelectValue />
                     </div>
                   </SelectTrigger>
-                  <SelectContent className="bg-[#131B2E] border-slate-700 text-slate-200 max-h-64 rounded-xl">
+                  <SelectContent className="bg-[#111A2E] border-slate-700 text-slate-200 max-h-64 rounded-xl">
                     {Object.entries(PROVINCES).map(([code, info]) => (
                       <SelectItem key={code} value={code} className="text-xs hover:bg-slate-800">
                         {info.label} ({((info.iibbRate || 0) * 100).toFixed(1)}% IIBB)
@@ -110,13 +110,13 @@ export default function Header({
 
             {/* Toggle de Medio de Pago */}
             {onPaymentMethodChange && (
-              <div className="flex items-center bg-[#131B2E] border border-slate-700/80 p-0.5 rounded-xl h-9">
+              <div className="flex items-center bg-[#111A2E] border border-slate-700/80 p-0.5 rounded-xl h-9">
                 <button
                   type="button"
                   onClick={() => onPaymentMethodChange("TARJETA_ARS")}
-                  className={`text-[11px] font-semibold px-2.5 sm:px-3 py-1 rounded-lg transition-all flex items-center gap-1 ${
+                  className={`text-[11px] font-bold px-2.5 sm:px-3 py-1 rounded-lg transition-all flex items-center gap-1 ${
                     !isMep
-                      ? "bg-[#6D28D9] text-white shadow-sm"
+                      ? "bg-[#74ACDF] text-slate-950 shadow-sm shadow-[#74ACDF]/20"
                       : "text-slate-400 hover:text-slate-200"
                   }`}
                   title="Pago en pesos con tarjeta (+51% impuestos)"
@@ -128,9 +128,9 @@ export default function Header({
                 <button
                   type="button"
                   onClick={() => onPaymentMethodChange("DOLAR_MEP_CUENTA")}
-                  className={`text-[11px] font-semibold px-2.5 sm:px-3 py-1 rounded-lg transition-all flex items-center gap-1 ${
+                  className={`text-[11px] font-bold px-2.5 sm:px-3 py-1 rounded-lg transition-all flex items-center gap-1 ${
                     isMep
-                      ? "bg-emerald-600 text-white shadow-sm"
+                      ? "bg-[#F6B40E] text-slate-950 shadow-sm shadow-[#F6B40E]/20"
                       : "text-slate-400 hover:text-slate-200"
                   }`}
                   title="Pago con dólares MEP en cuenta (-30% percepción)"
@@ -143,14 +143,14 @@ export default function Header({
 
             {/* Cotizaciones en vivo pill (desktop) */}
             {dolarRates?.tarjeta && (
-              <div className="hidden xl:flex items-center gap-2 text-xs font-mono bg-[#131B2E] border border-slate-800 px-3 py-1.5 rounded-full text-slate-300">
+              <div className="hidden xl:flex items-center gap-2 text-xs font-mono bg-[#111A2E] border border-slate-800 px-3 py-1.5 rounded-full text-slate-300">
                 <span className="text-slate-400">Tarjeta:</span>
                 <span className="font-semibold text-white">${dolarRates.tarjeta.toFixed(0)}</span>
                 {dolarRates.mep && (
                   <>
                     <span className="text-slate-600">|</span>
                     <span className="text-slate-400">MEP:</span>
-                    <span className="font-semibold text-[#22D3EE]">${dolarRates.mep.toFixed(0)}</span>
+                    <span className="font-semibold text-[#F6B40E]">${dolarRates.mep.toFixed(0)}</span>
                   </>
                 )}
               </div>

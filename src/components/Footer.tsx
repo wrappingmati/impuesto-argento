@@ -28,7 +28,7 @@ export default function Footer() {
                 href="https://github.com/wrappingmati"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white hover:text-[#A78BFA] font-medium inline-flex items-center gap-1 transition-colors"
+                className="text-white hover:text-[#74ACDF] font-medium inline-flex items-center gap-1 transition-colors"
               >
                 <span>Matías Casas – WrappingMati</span>
                 <ExternalLink className="w-3 h-3 text-slate-500" />

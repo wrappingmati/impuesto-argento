@@ -128,7 +128,7 @@ export default function UrlScraper({
               setError(null);
             }}
             placeholder="Pegá el link de Steam, PlayStation, Xbox o Nintendo..."
-            className="bg-[#0F172A] border-slate-700/80 text-slate-100 placeholder:text-slate-500 pr-24 text-xs sm:text-sm h-12 rounded-xl focus:border-[#A78BFA] focus:ring-1 focus:ring-[#A78BFA]/20 transition-all"
+            className="bg-[#0A0F1D] border-slate-700/80 text-slate-100 placeholder:text-slate-500 pr-24 text-xs sm:text-sm h-12 rounded-xl focus:border-[#74ACDF] focus:ring-1 focus:ring-[#74ACDF]/20 transition-all"
             disabled={loading}
             required
           />
@@ -137,9 +137,9 @@ export default function UrlScraper({
             onClick={handlePaste}
             disabled={loading}
             title="Pegar del portapapeles"
-            className="absolute right-2.5 text-xs text-slate-300 hover:text-white px-3 py-1.5 rounded-lg bg-[#1E1B2E] hover:bg-slate-700/60 border border-slate-700 flex items-center gap-1.5 transition-colors"
+            className="absolute right-2.5 text-xs text-slate-300 hover:text-white px-3 py-1.5 rounded-lg bg-[#111A2E] hover:bg-slate-700/60 border border-slate-700 flex items-center gap-1.5 transition-colors"
           >
-            <Clipboard className="w-3.5 h-3.5 text-[#A78BFA]" />
+            <Clipboard className="w-3.5 h-3.5 text-[#74ACDF]" />
             <span>Pegar</span>
           </button>
         </div>
@@ -147,11 +147,11 @@ export default function UrlScraper({
         <Button
           type="submit"
           disabled={loading || !url.trim()}
-          className="w-full h-12 bg-[#6D28D9] hover:bg-[#5B21B6] text-white text-sm font-semibold rounded-xl transition-all flex items-center justify-center gap-2 shadow-md shadow-[#6D28D9]/20"
+          className="w-full h-12 bg-[#74ACDF] hover:bg-[#5B9CD6] text-slate-950 text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-md shadow-[#74ACDF]/20"
         >
           {loading ? (
             <>
-              <Loader2 className="w-4 h-4 animate-spin" />
+              <Loader2 className="w-4 h-4 animate-spin text-slate-950" />
               <span>Extrayendo precio de la tienda...</span>
             </>
           ) : (
@@ -185,9 +185,9 @@ export default function UrlScraper({
               handleScrape(item.url);
             }}
             disabled={loading}
-            className="text-[11px] text-slate-300 hover:text-white bg-[#0F172A] hover:bg-slate-800 border border-slate-700/80 px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1.5"
+            className="text-[11px] text-slate-300 hover:text-white bg-[#0A0F1D] hover:bg-slate-800 border border-slate-700/80 px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1.5"
           >
-            <span className="text-slate-500 font-mono text-[10px]">{item.platform}</span>
+            <span className="text-[#74ACDF] font-mono text-[10px]">{item.platform}</span>
             <span>{item.label}</span>
           </button>
         ))}

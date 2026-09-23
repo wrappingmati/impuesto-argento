@@ -197,17 +197,17 @@ export default function GameLibrary({
   return (
     <section id="biblioteca" className="space-y-6">
       {/* 1. Header de la Biblioteca con Métricas Clave */}
-      <div className="bg-[#131B2E] border border-slate-800/90 rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
+      <div className="bg-[#111A2E] border border-slate-800/90 rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#6D28D9]/20 border border-[#6D28D9]/40 flex items-center justify-center text-[#A78BFA]">
+              <div className="w-8 h-8 rounded-lg bg-[#74ACDF]/15 border border-[#74ACDF]/30 flex items-center justify-center text-[#74ACDF]">
                 <Gamepad2 className="w-4 h-4" />
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
                 Mi Biblioteca Gamer
               </h2>
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#1E1B2E] border border-slate-700 text-[#22D3EE] font-mono">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#0A0F1D] border border-slate-700 text-[#74ACDF] font-mono">
                 {summary.count} {summary.count === 1 ? "título" : "títulos"}
               </span>
             </div>
@@ -223,7 +223,7 @@ export default function GameLibrary({
                 <button
                   type="button"
                   onClick={handleShareLibrary}
-                  className="bg-[#0B0F19] hover:bg-slate-800 text-slate-300 hover:text-white text-xs font-medium px-3 py-2 rounded-xl border border-slate-700/80 transition-colors flex items-center gap-1.5"
+                  className="bg-[#0A0F1D] hover:bg-slate-800 text-slate-300 hover:text-white text-xs font-medium px-3 py-2 rounded-xl border border-slate-700/80 transition-colors flex items-center gap-1.5"
                 >
                   {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5 text-slate-400" />}
                   <span>Compartir</span>
@@ -236,7 +236,7 @@ export default function GameLibrary({
                       onClearAll();
                     }
                   }}
-                  className="bg-[#0B0F19] hover:bg-red-500/10 text-slate-400 hover:text-red-400 text-xs font-medium px-3 py-2 rounded-xl border border-slate-800 hover:border-red-500/30 transition-colors flex items-center gap-1.5"
+                  className="bg-[#0A0F1D] hover:bg-red-500/10 text-slate-400 hover:text-red-400 text-xs font-medium px-3 py-2 rounded-xl border border-slate-800 hover:border-red-500/30 transition-colors flex items-center gap-1.5"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                   <span>Vaciar</span>
@@ -245,14 +245,14 @@ export default function GameLibrary({
             )}
 
             {/* Alternador de Modo: Pósters vs Tabla */}
-            <div className="flex items-center bg-[#0B0F19] border border-slate-800 p-1 rounded-xl">
+            <div className="flex items-center bg-[#0A0F1D] border border-slate-800 p-1 rounded-xl">
               <button
                 type="button"
                 onClick={() => setViewMode("grid")}
                 aria-label="Ver pósters"
-                className={`p-1.5 rounded-lg text-xs font-medium transition-all ${
+                className={`p-1.5 rounded-lg text-xs font-bold transition-all ${
                   viewMode === "grid"
-                    ? "bg-[#6D28D9] text-white shadow-sm"
+                    ? "bg-[#74ACDF] text-slate-950 shadow-sm"
                     : "text-slate-400 hover:text-slate-200"
                 }`}
               >
@@ -262,9 +262,9 @@ export default function GameLibrary({
                 type="button"
                 onClick={() => setViewMode("table")}
                 aria-label="Ver tabla comparativa"
-                className={`p-1.5 rounded-lg text-xs font-medium transition-all ${
+                className={`p-1.5 rounded-lg text-xs font-bold transition-all ${
                   viewMode === "table"
-                    ? "bg-[#6D28D9] text-white shadow-sm"
+                    ? "bg-[#74ACDF] text-slate-950 shadow-sm"
                     : "text-slate-400 hover:text-slate-200"
                 }`}
               >
@@ -277,33 +277,33 @@ export default function GameLibrary({
         {/* 2. Tarjetas de Resumen Financiero Total */}
         {summary.count > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-slate-800/80">
-            <div className="bg-[#0B0F19]/90 border border-slate-800/90 rounded-xl p-4">
+            <div className="bg-[#0A0F1D]/90 border border-slate-800/90 rounded-xl p-4">
               <span className="text-[11px] font-medium text-slate-400 block">Inversión Total Biblioteca</span>
               <div className="flex items-baseline gap-1.5 mt-0.5">
                 <span className="text-2xl sm:text-3xl font-extrabold font-mono text-white">
                   {formatArs(summary.totalFinalArs)}
                 </span>
-                <span className="text-[11px] font-bold text-[#A78BFA]">ARS</span>
+                <span className="text-[11px] font-bold text-[#74ACDF]">ARS</span>
               </div>
               <span className="text-[10px] text-slate-500 block mt-1 font-mono">
                 Base neta: {formatArs(summary.totalBaseArs)}
               </span>
             </div>
 
-            <div className="bg-[#0B0F19]/90 border border-slate-800/90 rounded-xl p-4">
+            <div className="bg-[#0A0F1D]/90 border border-slate-800/90 rounded-xl p-4">
               <span className="text-[11px] font-medium text-slate-400 block">Total Impuestos Retenidos</span>
               <div className="flex items-baseline gap-1.5 mt-0.5">
-                <span className="text-2xl sm:text-3xl font-extrabold font-mono text-amber-400">
+                <span className="text-2xl sm:text-3xl font-extrabold font-mono text-[#F6B40E]">
                   +{formatArs(summary.totalTaxesArs)}
                 </span>
-                <span className="text-[11px] font-bold text-amber-400">ARS</span>
+                <span className="text-[11px] font-bold text-[#F6B40E]">ARS</span>
               </div>
               <span className="text-[10px] text-slate-500 block mt-1">
                 IVA (21%) + Ganancias ({isMep ? "0% MEP" : "30%"}) + IIBB
               </span>
             </div>
 
-            <div className="bg-[#0B0F19]/90 border border-slate-800/90 rounded-xl p-4">
+            <div className="bg-[#0A0F1D]/90 border border-slate-800/90 rounded-xl p-4">
               <span className="text-[11px] font-medium text-slate-400 block">Ahorro con Dólar MEP</span>
               <div className="flex items-baseline gap-1.5 mt-0.5">
                 <span className="text-2xl sm:text-3xl font-extrabold font-mono text-emerald-400">
@@ -323,9 +323,9 @@ export default function GameLibrary({
       {/* 3. Contenido Principal: Grilla de Pósters o Tabla */}
       {summary.count === 0 ? (
         /* Empty State con Showcase de Juegos Populares */
-        <div className="bg-[#131B2E]/60 border border-slate-800/90 rounded-2xl p-8 sm:p-12 text-center space-y-8">
+        <div className="bg-[#111A2E]/60 border border-slate-800/90 rounded-2xl p-8 sm:p-12 text-center space-y-8">
           <div className="max-w-md mx-auto space-y-3">
-            <div className="w-16 h-16 rounded-2xl bg-[#6D28D9]/20 border border-[#6D28D9]/40 mx-auto flex items-center justify-center text-[#A78BFA] text-3xl shadow-lg shadow-[#6D28D9]/15">
+            <div className="w-16 h-16 rounded-2xl bg-[#74ACDF]/15 border border-[#74ACDF]/30 mx-auto flex items-center justify-center text-[#74ACDF] text-3xl shadow-lg shadow-[#74ACDF]/10">
               🎮
             </div>
             <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
@@ -339,7 +339,7 @@ export default function GameLibrary({
           <div className="space-y-4 pt-2">
             <div className="flex items-center justify-between text-xs text-slate-400 border-b border-slate-800 pb-2">
               <span className="font-semibold text-slate-200 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#22D3EE]" />
+                <Sparkles className="w-3.5 h-3.5 text-[#F6B40E]" />
                 <span>Juegos populares recomendados</span>
               </span>
               <span className="text-slate-500">Sumá con 1 clic</span>
@@ -360,7 +360,7 @@ export default function GameLibrary({
                 return (
                   <div
                     key={preset.name}
-                    className="bg-[#0B0F19] border border-slate-800/90 hover:border-[#6D28D9]/60 rounded-xl overflow-hidden group transition-all flex flex-col justify-between text-left shadow-md hover:shadow-xl hover:shadow-[#6D28D9]/10"
+                    className="bg-[#0A0F1D] border border-slate-800/90 hover:border-[#74ACDF]/60 rounded-xl overflow-hidden group transition-all flex flex-col justify-between text-left shadow-md hover:shadow-xl hover:shadow-[#74ACDF]/10"
                   >
                     <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
                       <img
@@ -371,14 +371,14 @@ export default function GameLibrary({
                           (e.currentTarget as HTMLImageElement).src = "/placeholder.svg";
                         }}
                       />
-                      <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded text-[9px] font-bold bg-black/70 backdrop-blur-md text-[#22D3EE] uppercase tracking-wider">
+                      <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded text-[9px] font-bold bg-black/70 backdrop-blur-md text-[#74ACDF] uppercase tracking-wider">
                         {preset.platform}
                       </div>
                     </div>
 
                     <div className="p-3 space-y-2 flex-1 flex flex-col justify-between">
                       <div>
-                        <h4 className="font-semibold text-xs text-white line-clamp-1 group-hover:text-[#A78BFA] transition-colors">
+                        <h4 className="font-semibold text-xs text-white line-clamp-1 group-hover:text-[#74ACDF] transition-colors">
                           {preset.name}
                         </h4>
                         <p className="text-[10px] text-slate-400 font-mono mt-0.5">
@@ -398,7 +398,7 @@ export default function GameLibrary({
                           type="button"
                           onClick={() => onAddPresetGame(preset)}
                           title={`Sumar ${preset.name} a mi biblioteca`}
-                          className="w-7 h-7 rounded-lg bg-[#6D28D9] hover:bg-[#5B21B6] text-white flex items-center justify-center transition-all shadow-sm shrink-0"
+                          className="w-7 h-7 rounded-lg bg-[#74ACDF] hover:bg-[#5B9CD6] text-slate-950 font-bold flex items-center justify-center transition-all shadow-sm shrink-0"
                         >
                           <Plus className="w-4 h-4" />
                         </button>
@@ -419,7 +419,7 @@ export default function GameLibrary({
             return (
               <div
                 key={`${game.name}-${index}`}
-                className="bg-[#131B2E] border border-slate-800 hover:border-[#6D28D9]/80 rounded-2xl overflow-hidden group transition-all duration-300 flex flex-col justify-between shadow-lg hover:shadow-2xl hover:shadow-[#6D28D9]/15 hover:-translate-y-1 relative"
+                className="bg-[#111A2E] border border-slate-800 hover:border-[#74ACDF]/80 rounded-2xl overflow-hidden group transition-all duration-300 flex flex-col justify-between shadow-lg hover:shadow-2xl hover:shadow-[#74ACDF]/15 hover:-translate-y-1 relative"
               >
                 {/* Portada / Cover Art con Aspect Ratio 16/10 o Póster */}
                 <div
@@ -444,11 +444,11 @@ export default function GameLibrary({
                       (e.currentTarget as HTMLImageElement).src = "/placeholder.svg";
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#131B2E] via-transparent to-black/40" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#111A2E] via-transparent to-black/40" />
 
                   {/* Badges superiores sobre la imagen */}
                   <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-black/70 backdrop-blur-md text-[#22D3EE] border border-white/10 uppercase tracking-wider">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-black/70 backdrop-blur-md text-[#74ACDF] border border-white/10 uppercase tracking-wider">
                       {game.platform || (isUsd ? "USD" : "ARS")}
                     </span>
                   </div>
@@ -468,7 +468,9 @@ export default function GameLibrary({
 
                   {/* Tax badge flotante */}
                   <div className="absolute bottom-2 left-2.5">
-                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-[#6D28D9]/90 backdrop-blur-md text-white border border-[#A78BFA]/30">
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold backdrop-blur-md border border-white/10 ${
+                      isMep ? "bg-[#F6B40E] text-slate-950" : "bg-[#74ACDF] text-slate-950"
+                    }`}>
                       {isMep ? "+21% MEP" : "+51% Impuestos"}
                     </span>
                   </div>
@@ -489,7 +491,7 @@ export default function GameLibrary({
                           calculation,
                         })
                       }
-                      className="font-bold text-xs sm:text-sm text-white line-clamp-2 cursor-pointer hover:text-[#A78BFA] transition-colors leading-snug"
+                      className="font-bold text-xs sm:text-sm text-white line-clamp-2 cursor-pointer hover:text-[#74ACDF] transition-colors leading-snug"
                       title={game.name}
                     >
                       {game.name}
@@ -526,9 +528,9 @@ export default function GameLibrary({
                           calculation,
                         })
                       }
-                      className="w-full bg-[#0B0F19] hover:bg-[#6D28D9]/20 text-slate-300 hover:text-white border border-slate-800 hover:border-[#6D28D9]/50 text-xs font-semibold py-1.5 px-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5"
+                      className="w-full bg-[#0A0F1D] hover:bg-[#74ACDF]/15 text-slate-300 hover:text-white border border-slate-800 hover:border-[#74ACDF]/40 text-xs font-semibold py-1.5 px-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5"
                     >
-                      <Receipt className="w-3.5 h-3.5 text-[#A78BFA]" />
+                      <Receipt className="w-3.5 h-3.5 text-[#74ACDF]" />
                       <span>Ver ticket</span>
                     </button>
                   </div>
@@ -539,11 +541,11 @@ export default function GameLibrary({
         </div>
       ) : (
         /* Modo 2: Tabla Comparativa Elegante */
-        <div className="bg-[#131B2E] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+        <div className="bg-[#111A2E] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
           <div className="overflow-x-auto">
             <table className="w-full text-xs text-left border-collapse font-sans">
               <thead>
-                <tr className="bg-[#0B0F19] border-b border-slate-800 text-slate-400 uppercase tracking-wider font-semibold text-[11px]">
+                <tr className="bg-[#0A0F1D] border-b border-slate-800 text-slate-400 uppercase tracking-wider font-semibold text-[11px]">
                   <th className="py-3.5 px-4">Juego / Servicio</th>
                   <th className="py-3.5 px-3">Plataforma</th>
                   <th className="py-3.5 px-3 text-right">Precio Original</th>
@@ -586,7 +588,7 @@ export default function GameLibrary({
                       </td>
 
                       <td className="py-3 px-3 font-sans">
-                        <span className="px-2 py-0.5 rounded bg-[#0B0F19] border border-slate-800 text-[10px] text-[#22D3EE] font-semibold">
+                        <span className="px-2 py-0.5 rounded bg-[#0A0F1D] border border-slate-800 text-[10px] text-[#74ACDF] font-semibold">
                           {game.platform || (isUsd ? "USD" : "ARS")}
                         </span>
                       </td>
@@ -599,7 +601,7 @@ export default function GameLibrary({
                         {formatArs(calculation.baseArs)}
                       </td>
 
-                      <td className="py-3 px-3 text-right text-amber-400">
+                      <td className="py-3 px-3 text-right text-[#F6B40E]">
                         +{formatArs(taxesAmount)}
                       </td>
 
@@ -631,7 +633,7 @@ export default function GameLibrary({
                             title="Ver ticket de desglose"
                             className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
                           >
-                            <Receipt className="w-4 h-4 text-[#A78BFA]" />
+                            <Receipt className="w-4 h-4 text-[#74ACDF]" />
                           </button>
                           <button
                             type="button"

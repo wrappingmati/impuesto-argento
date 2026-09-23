@@ -123,7 +123,7 @@ export default function SubscriptionCatalog({
             onClick={() => setCategory(c.id)}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all border ${
               category === c.id
-                ? "bg-white/10 text-white border-white/[0.12]"
+                ? "bg-[#74ACDF]/15 text-[#74ACDF] border-[#74ACDF]/40 font-semibold"
                 : "bg-transparent text-slate-400 border-transparent hover:text-slate-200 hover:bg-white/[0.04]"
             }`}
           >
@@ -134,7 +134,7 @@ export default function SubscriptionCatalog({
 
       {isLoading && !remoteServices && (
         <div className="p-8 text-center text-slate-400 space-y-2">
-          <Loader2 className="w-5 h-5 animate-spin mx-auto text-slate-400" />
+          <Loader2 className="w-5 h-5 animate-spin mx-auto text-[#74ACDF]" />
           <p className="text-xs">Cargando suscripciones...</p>
         </div>
       )}
@@ -151,7 +151,7 @@ export default function SubscriptionCatalog({
           return (
             <div
               key={service.id}
-              className="bg-[#0b0e14] border border-white/[0.06] hover:border-white/[0.12] rounded-xl p-3.5 space-y-2.5 transition-all flex flex-col justify-between"
+              className="bg-[#0A0F1D] border border-slate-800 hover:border-[#74ACDF]/40 rounded-xl p-3.5 space-y-2.5 transition-all flex flex-col justify-between"
             >
               <div className="space-y-1.5">
                 <div className="flex items-start justify-between gap-2">
@@ -181,8 +181,8 @@ export default function SubscriptionCatalog({
                         }
                         className={`text-[10px] px-2 py-0.5 rounded-md font-medium border transition-colors ${
                           planIndex === idx
-                            ? "bg-white/10 text-white border-white/[0.12]"
-                            : "bg-transparent text-slate-400 border-white/[0.04] hover:text-slate-200"
+                            ? "bg-[#74ACDF]/20 text-[#74ACDF] border-[#74ACDF]/40 font-semibold"
+                            : "bg-transparent text-slate-400 border-slate-800 hover:text-slate-200"
                         }`}
                       >
                         {p.name}
@@ -205,10 +205,10 @@ export default function SubscriptionCatalog({
                     calculation: calc,
                   })
                 }
-                className="w-full text-xs font-medium py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.06] transition-colors flex items-center justify-center gap-1"
+                className="w-full text-xs font-medium py-1.5 rounded-lg bg-[#111A2E] hover:bg-[#74ACDF] text-slate-300 hover:text-slate-950 hover:font-bold border border-slate-700/60 transition-all flex items-center justify-center gap-1"
               >
                 <span>Calcular desglose</span>
-                <ArrowRight className="w-3 h-3 text-slate-400" />
+                <ArrowRight className="w-3 h-3 text-slate-400 group-hover:text-slate-950" />
               </button>
             </div>
           );

@@ -114,7 +114,7 @@ export default function GameSearch({
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Ej: Mortal Kombat 1, Nintendo Switch Online..."
-            className="bg-[#0F172A] border-slate-700/80 text-slate-100 placeholder:text-slate-500 text-xs sm:text-sm h-11 rounded-xl focus:border-[#A78BFA] focus:ring-1 focus:ring-[#A78BFA]/20"
+            className="bg-[#0A0F1D] border-slate-800 text-slate-100 placeholder:text-slate-500 text-xs sm:text-sm h-11 rounded-xl focus:border-[#74ACDF] focus:ring-1 focus:ring-[#74ACDF]/20"
           />
         </div>
 
@@ -123,7 +123,7 @@ export default function GameSearch({
           <Label htmlFor="manual-price" className="text-xs font-medium text-slate-300">
             Precio del juego o compra
           </Label>
-          <div className="relative flex items-center bg-[#0F172A] border border-slate-700/80 rounded-xl overflow-hidden focus-within:border-[#A78BFA] focus-within:ring-1 focus-within:ring-[#A78BFA]/20 transition-all">
+          <div className="relative flex items-center bg-[#0A0F1D] border border-slate-800 rounded-xl overflow-hidden focus-within:border-[#74ACDF] focus-within:ring-1 focus-within:ring-[#74ACDF]/20 transition-all">
             <span className="pl-3.5 text-slate-400 font-mono text-sm">
               {currencyMode === "usd" ? "US$" : "$"}
             </span>
@@ -146,7 +146,7 @@ export default function GameSearch({
               <select
                 value={currencyMode}
                 onChange={(e) => setCurrencyMode(e.target.value as CurrencyMode)}
-                className="bg-[#1E1B2E] text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-medium focus:outline-none cursor-pointer"
+                className="bg-[#111A2E] text-slate-200 border border-slate-700/80 rounded-lg px-2.5 py-1.5 text-xs font-medium focus:outline-none cursor-pointer"
               >
                 <option value="usd">USD</option>
                 <option value="ars">ARS</option>
@@ -160,7 +160,7 @@ export default function GameSearch({
         <Button
           type="submit"
           disabled={!canSubmit}
-          className="w-full h-12 bg-[#6D28D9] hover:bg-[#5B21B6] text-white text-sm font-semibold rounded-xl transition-all flex items-center justify-center gap-2 shadow-md shadow-[#6D28D9]/20 mt-2"
+          className="w-full h-12 bg-[#74ACDF] hover:bg-[#5B9CD6] text-slate-950 text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-md shadow-[#74ACDF]/20 mt-2"
         >
           <span>Calcular impuestos</span>
           <ArrowRight className="w-4 h-4" />

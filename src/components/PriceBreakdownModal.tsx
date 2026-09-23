@@ -112,7 +112,7 @@ export default function PriceBreakdownModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-md w-[95vw] bg-[#131B2E] border border-slate-700/80 p-0 overflow-hidden text-slate-100 rounded-2xl shadow-2xl">
+      <DialogContent className="max-w-md w-[95vw] bg-[#111A2E] border border-slate-700/80 p-0 overflow-hidden text-slate-100 rounded-2xl shadow-2xl">
         {/* Cabecera con imagen y degradado */}
         <div className="relative h-32 w-full bg-slate-900 overflow-hidden">
           {game.thumbnail && game.thumbnail !== "/placeholder.svg" ? (
@@ -122,15 +122,15 @@ export default function PriceBreakdownModal({
               className="w-full h-full object-cover object-center filter brightness-60"
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-r from-[#6D28D9]/40 to-[#3B82F6]/40 flex items-center justify-center">
+            <div className="w-full h-full bg-gradient-to-r from-[#74ACDF]/30 via-white/10 to-[#F6B40E]/30 flex items-center justify-center">
               <span className="text-4xl">🎮</span>
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#131B2E] via-[#131B2E]/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#111A2E] via-[#111A2E]/60 to-transparent" />
 
           {/* Badges superiores */}
           <div className="absolute top-3 left-3 flex items-center gap-2">
-            <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold tracking-wider uppercase bg-black/60 backdrop-blur-md text-[#22D3EE] border border-white/10">
+            <span className="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-black/60 backdrop-blur-md text-[#74ACDF] border border-white/10">
               {game.platform || (isUsd ? "Tienda Digital (USD)" : "Digital ARS")}
             </span>
             <span className="px-2.5 py-1 rounded-full text-[10px] font-medium bg-black/60 backdrop-blur-md text-slate-300 border border-white/10">
@@ -150,13 +150,13 @@ export default function PriceBreakdownModal({
           </DialogHeader>
 
           {/* Selector de medio de pago interactivo */}
-          <div className="grid grid-cols-2 gap-1 p-1 bg-[#0B0F19] border border-slate-800 rounded-xl">
+          <div className="grid grid-cols-2 gap-1 p-1 bg-[#0A0F1D] border border-slate-800 rounded-xl">
             <button
               type="button"
               onClick={() => onPaymentMethodChange?.("TARJETA_ARS")}
-              className={`text-xs font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+              className={`text-xs font-bold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
                 !isMep
-                  ? "bg-[#6D28D9] text-white shadow-md shadow-[#6D28D9]/30"
+                  ? "bg-[#74ACDF] text-slate-950 shadow-md shadow-[#74ACDF]/25"
                   : "text-slate-400 hover:text-slate-200"
               }`}
             >
@@ -166,9 +166,9 @@ export default function PriceBreakdownModal({
             <button
               type="button"
               onClick={() => onPaymentMethodChange?.("DOLAR_MEP_CUENTA")}
-              className={`text-xs font-semibold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+              className={`text-xs font-bold py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
                 isMep
-                  ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30"
+                  ? "bg-[#F6B40E] text-slate-950 shadow-md shadow-[#F6B40E]/25"
                   : "text-slate-400 hover:text-slate-200"
               }`}
             >
@@ -178,14 +178,14 @@ export default function PriceBreakdownModal({
           </div>
 
           {/* Precio Final Destacado */}
-          <div className="bg-[#0B0F19]/80 border border-slate-800 rounded-xl p-4 flex items-baseline justify-between">
+          <div className="bg-[#0A0F1D]/80 border border-slate-800 rounded-xl p-4 flex items-baseline justify-between">
             <div>
               <span className="text-[11px] font-medium text-slate-400 block">Total Final a Pagar</span>
               <div className="flex items-baseline gap-2">
                 <span className="text-3xl font-extrabold font-mono tracking-tight text-white">
                   {formatArs(calc.totalArs)}
                 </span>
-                <span className="text-xs font-bold text-[#A78BFA]">ARS</span>
+                <span className="text-xs font-bold text-[#74ACDF]">ARS</span>
               </div>
             </div>
             <div className="text-right">
@@ -257,7 +257,7 @@ export default function PriceBreakdownModal({
             <button
               type="button"
               onClick={onClose}
-              className="bg-[#6D28D9] hover:bg-[#5B21B6] text-white text-xs font-semibold py-2.5 px-5 rounded-xl transition-all shadow-md shadow-[#6D28D9]/20"
+              className="bg-[#74ACDF] hover:bg-[#5B9CD6] text-slate-950 text-xs font-bold py-2.5 px-5 rounded-xl transition-all shadow-md shadow-[#74ACDF]/20"
             >
               Cerrar
             </button>

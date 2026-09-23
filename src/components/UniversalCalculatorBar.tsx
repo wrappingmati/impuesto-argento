@@ -38,14 +38,14 @@ export default function UniversalCalculatorBar({
   const [activeTab, setActiveTab] = useState<string>("url");
 
   return (
-    <div className="bg-[#131B2E] border border-slate-800/90 rounded-2xl p-5 sm:p-6 shadow-2xl space-y-4">
+    <div className="bg-[#111A2E] border border-slate-800/90 rounded-2xl p-5 sm:p-6 shadow-2xl space-y-4">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-4">
         {/* Cabecera del Dock con selector de modos */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
           <div>
             <h3 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
               <span>Buscador y Calculadora de Impuestos</span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#6D28D9]/20 text-[#A78BFA] border border-[#6D28D9]/40 font-mono font-medium">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#74ACDF]/15 text-[#74ACDF] border border-[#74ACDF]/30 font-mono font-medium">
                 En vivo
               </span>
             </h3>
@@ -54,24 +54,24 @@ export default function UniversalCalculatorBar({
             </p>
           </div>
 
-          <TabsList className="grid grid-cols-3 bg-[#0B0F19] border border-slate-800 h-10 p-1 rounded-xl shrink-0 w-full sm:w-auto">
+          <TabsList className="grid grid-cols-3 bg-[#0A0F1D] border border-slate-800 h-10 p-1 rounded-xl shrink-0 w-full sm:w-auto">
             <TabsTrigger
               value="url"
-              className="text-xs font-semibold px-3 py-1.5 rounded-lg data-[state=active]:bg-[#6D28D9] data-[state=active]:text-white text-slate-400 transition-all flex items-center gap-1.5"
+              className="text-xs font-bold px-3 py-1.5 rounded-lg data-[state=active]:bg-[#74ACDF] data-[state=active]:text-slate-950 text-slate-400 transition-all flex items-center gap-1.5"
             >
               <Link2 className="w-3.5 h-3.5" />
               <span>Pegar Link</span>
             </TabsTrigger>
             <TabsTrigger
               value="catalog"
-              className="text-xs font-semibold px-3 py-1.5 rounded-lg data-[state=active]:bg-[#6D28D9] data-[state=active]:text-white text-slate-400 transition-all flex items-center gap-1.5"
+              className="text-xs font-bold px-3 py-1.5 rounded-lg data-[state=active]:bg-[#74ACDF] data-[state=active]:text-slate-950 text-slate-400 transition-all flex items-center gap-1.5"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span>Suscripciones</span>
             </TabsTrigger>
             <TabsTrigger
               value="manual"
-              className="text-xs font-semibold px-3 py-1.5 rounded-lg data-[state=active]:bg-[#6D28D9] data-[state=active]:text-white text-slate-400 transition-all flex items-center gap-1.5"
+              className="text-xs font-bold px-3 py-1.5 rounded-lg data-[state=active]:bg-[#74ACDF] data-[state=active]:text-slate-950 text-slate-400 transition-all flex items-center gap-1.5"
             >
               <Edit3 className="w-3.5 h-3.5" />
               <span>Manual</span>

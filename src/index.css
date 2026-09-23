@@ -6,19 +6,19 @@
 
 @layer base {
   :root {
-    /* Paleta oficial de la referencia: #0F172A (Fondo), #1E1B2E / #131B2E (Superficie) */
-    --background: 222 47% 11%;
+    /* Paleta Colores Argentinos: #0A0F1D (Fondo), #111A2E (Superficie), #74ACDF (Celeste), #F6B40E (Sol Dorado) */
+    --background: 224 48% 8%;
     --foreground: 210 40% 98%;
 
-    --card: 222 41% 13%;
+    --card: 222 45% 12%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222 41% 13%;
+    --popover: 222 45% 12%;
     --popover-foreground: 210 40% 98%;
 
-    /* Violeta principal #6D28D9 */
-    --primary: 263 70% 50%;
-    --primary-foreground: 0 0% 100%;
+    /* Celeste Argentino #74ACDF */
+    --primary: 209 63% 66%;
+    --primary-foreground: 222 47% 11%;
 
     --secondary: 222 35% 18%;
     --secondary-foreground: 210 40% 96%;
@@ -26,22 +26,23 @@
     --muted: 222 30% 16%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 189 94% 53%;
+    /* Amarillo Sol de Mayo #F6B40E */
+    --accent: 43 93% 51%;
     --accent-foreground: 222 47% 11%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 217 33% 20%;
-    --input: 222 47% 11%;
-    --ring: 263 70% 50%;
+    --input: 224 48% 8%;
+    --ring: 209 63% 66%;
 
     --radius: 1rem;
 
     /* Cotizaciones */
     --rate-blue: 217 91% 60%;
     --rate-oficial: 152 55% 48%;
-    --rate-tarjeta: 263 70% 60%;
+    --rate-tarjeta: 209 63% 66%;
   }
 }
 
@@ -50,7 +51,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-[#0F172A] text-foreground font-sans antialiased selection:bg-[#6D28D9]/30 selection:text-white;
+    @apply bg-[#0A0F1D] text-foreground font-sans antialiased selection:bg-[#74ACDF]/30 selection:text-white;
   }
 }
 

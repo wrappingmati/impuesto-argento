@@ -87,7 +87,7 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0F19] text-slate-100 flex flex-col justify-between selection:bg-[#6D28D9]/30">
+    <div className="min-h-screen bg-[#0A0F1D] text-slate-100 flex flex-col justify-between selection:bg-[#74ACDF]/30">
       {/* 1. Header con logo transparente, cotizaciones en vivo y controles globales */}
       <Header
         backendOnline={backendOnline}
@@ -102,20 +102,20 @@ export default function Index() {
         {/* 2. Hero & Dock Universal de Entrada */}
         <section className="space-y-6">
           <div className="text-center max-w-2xl mx-auto space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#131B2E] border border-slate-700/80 text-xs font-semibold">
-              <span className="text-[#A78BFA]">Calculá.</span>
-              <span className="text-[#22D3EE]">Coleccioná.</span>
-              <span className="text-emerald-400">Jugá sin sorpresas.</span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111A2E] border border-[#74ACDF]/30 text-xs font-semibold shadow-sm">
+              <span className="text-[#74ACDF]">Calculá.</span>
+              <span className="text-white">Coleccioná.</span>
+              <span className="text-[#F6B40E]">Jugá sin sorpresas 🇦🇷</span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
               Calculá tus juegos y armá tu{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#A78BFA] via-[#60A5FA] to-[#22D3EE]">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#74ACDF] via-white to-[#F6B40E]">
                 Biblioteca Gamer
               </span>
             </h1>
 
-            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-lg mx-auto">
+            <p className="text-xs sm:text-sm text-slate-300/80 leading-relaxed max-w-lg mx-auto">
               Precios transparentes en pesos argentinos para Steam, PlayStation, Xbox, Nintendo y suscripciones digitales.
             </p>
           </div>
@@ -156,14 +156,14 @@ export default function Index() {
           <button
             type="button"
             onClick={() => setShowGuides(!showGuides)}
-            className="w-full bg-[#131B2E]/60 hover:bg-[#131B2E] border border-slate-800 p-4 rounded-2xl flex items-center justify-between transition-colors text-left group"
+            className="w-full bg-[#111A2E]/70 hover:bg-[#111A2E] border border-slate-800 hover:border-[#74ACDF]/40 p-4 rounded-2xl flex items-center justify-between transition-colors text-left group"
           >
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-[#6D28D9]/20 border border-[#6D28D9]/40 flex items-center justify-center text-[#A78BFA]">
+              <div className="w-9 h-9 rounded-xl bg-[#74ACDF]/15 border border-[#74ACDF]/30 flex items-center justify-center text-[#74ACDF]">
                 <BookOpen className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-white group-hover:text-[#A78BFA] transition-colors">
+                <h3 className="text-sm font-bold text-white group-hover:text-[#74ACDF] transition-colors">
                   Cotizaciones del Dólar y Guía de Impuestos Oficiales
                 </h3>
                 <p className="text-xs text-slate-400">
