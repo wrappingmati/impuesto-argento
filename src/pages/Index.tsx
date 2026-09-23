@@ -98,17 +98,17 @@ export default function Index() {
         onPaymentMethodChange={setPaymentMethod}
       />
 
-      <main className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-10">
+      <main className="max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-8 sm:space-y-10">
         {/* 2. Hero & Dock Universal de Entrada */}
-        <section className="space-y-6">
-          <div className="text-center max-w-2xl mx-auto space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111A2E] border border-[#74ACDF]/30 text-xs font-semibold shadow-sm">
+        <section className="space-y-5 sm:space-y-6">
+          <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3 px-1">
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#111A2E] border border-[#74ACDF]/30 text-[11px] sm:text-xs font-semibold shadow-sm">
               <span className="text-[#74ACDF]">Calculá.</span>
               <span className="text-white">Coleccioná.</span>
               <span className="text-[#F6B40E]">Jugá sin sorpresas 🇦🇷</span>
             </div>
 
-            <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight">
               Calculá tus juegos y armá tu{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#74ACDF] via-white to-[#F6B40E]">
                 Biblioteca Gamer

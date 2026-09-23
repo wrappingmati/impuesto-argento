@@ -276,11 +276,11 @@ export default function GameLibrary({
 
         {/* 2. Tarjetas de Resumen Financiero Total */}
         {summary.count > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-slate-800/80">
-            <div className="bg-[#0A0F1D]/90 border border-slate-800/90 rounded-xl p-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 pt-3 border-t border-slate-800/80">
+            <div className="bg-[#0A0F1D]/90 border border-slate-800/90 rounded-xl p-3.5 sm:p-4">
               <span className="text-[11px] font-medium text-slate-400 block">Inversión Total Biblioteca</span>
               <div className="flex items-baseline gap-1.5 mt-0.5">
-                <span className="text-2xl sm:text-3xl font-extrabold font-mono text-white">
+                <span className="text-xl sm:text-2xl md:text-3xl font-extrabold font-mono text-white">
                   {formatArs(summary.totalFinalArs)}
                 </span>
                 <span className="text-[11px] font-bold text-[#74ACDF]">ARS</span>
@@ -290,10 +290,10 @@ export default function GameLibrary({
               </span>
             </div>
 
-            <div className="bg-[#0A0F1D]/90 border border-slate-800/90 rounded-xl p-4">
+            <div className="bg-[#0A0F1D]/90 border border-slate-800/90 rounded-xl p-3.5 sm:p-4">
               <span className="text-[11px] font-medium text-slate-400 block">Total Impuestos Retenidos</span>
               <div className="flex items-baseline gap-1.5 mt-0.5">
-                <span className="text-2xl sm:text-3xl font-extrabold font-mono text-[#F6B40E]">
+                <span className="text-xl sm:text-2xl md:text-3xl font-extrabold font-mono text-[#F6B40E]">
                   +{formatArs(summary.totalTaxesArs)}
                 </span>
                 <span className="text-[11px] font-bold text-[#F6B40E]">ARS</span>
@@ -303,10 +303,10 @@ export default function GameLibrary({
               </span>
             </div>
 
-            <div className="bg-[#0A0F1D]/90 border border-slate-800/90 rounded-xl p-4">
+            <div className="bg-[#0A0F1D]/90 border border-slate-800/90 rounded-xl p-3.5 sm:p-4">
               <span className="text-[11px] font-medium text-slate-400 block">Ahorro con Dólar MEP</span>
               <div className="flex items-baseline gap-1.5 mt-0.5">
-                <span className="text-2xl sm:text-3xl font-extrabold font-mono text-emerald-400">
+                <span className="text-xl sm:text-2xl md:text-3xl font-extrabold font-mono text-emerald-400">
                   {summary.totalMepSavingsArs > 0 ? `-${formatArs(summary.totalMepSavingsArs)}` : "$0"}
                 </span>
                 <span className="text-[11px] font-bold text-emerald-400">ARS</span>

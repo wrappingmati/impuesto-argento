@@ -43,15 +43,22 @@ export default function Header({
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-800/90 bg-[#0A0F1D]/90 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="h-16 flex items-center justify-between gap-3">
-          {/* 1. Logo Oficial a la izquierda */}
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="h-16 flex items-center justify-between gap-2 sm:gap-4">
+          {/* 1. Logo Oficial: Icono 'IA' en mobile para encajar perfecto, logo completo en desktop */}
           <div className="flex items-center gap-6">
-            <a href="/" className="flex items-center gap-2 shrink-0 group">
+            <a href="/" className="flex items-center gap-2 shrink-0 group" title="Impuesto Argento">
+              {/* En mobile: solo el icono 'IA' */}
+              <img
+                src="/logo-icon.png"
+                alt="Impuesto Argento"
+                className="h-8 w-auto object-contain sm:hidden"
+              />
+              {/* En desktop (sm+): logo completo */}
               <img
                 src="/logo-full.png"
                 alt="Impuesto Argento"
-                className="h-8 sm:h-9 w-auto object-contain transition-transform group-hover:scale-[1.02]"
+                className="h-8 sm:h-9 w-auto object-contain hidden sm:block transition-transform group-hover:scale-[1.02]"
                 onError={(e) => {
                   (e.currentTarget as HTMLImageElement).src = "/logo-icon.png";
                 }}
@@ -86,12 +93,12 @@ export default function Header({
           </div>
 
           {/* 2. Controles Globales (Provincia + Método de Pago) */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             {/* Selector de Provincia */}
             {onProvinceChange && (
-              <div className="w-36 sm:w-44">
+              <div className="w-28 sm:w-36 md:w-44">
                 <Select value={province} onValueChange={(v) => onProvinceChange(v as ProvinceCode)}>
-                  <SelectTrigger className="bg-[#111A2E] border-slate-700/80 text-slate-200 text-xs h-9 rounded-xl focus:border-[#74ACDF]">
+                  <SelectTrigger className="bg-[#111A2E] border-slate-700/80 text-slate-200 text-[11px] sm:text-xs h-8 sm:h-9 px-2 sm:px-3 rounded-xl focus:border-[#74ACDF]">
                     <div className="flex items-center gap-1.5 truncate">
                       <MapPin className="w-3 h-3 text-[#74ACDF] shrink-0" />
                       <SelectValue />
@@ -110,11 +117,11 @@ export default function Header({
 
             {/* Toggle de Medio de Pago */}
             {onPaymentMethodChange && (
-              <div className="flex items-center bg-[#111A2E] border border-slate-700/80 p-0.5 rounded-xl h-9">
+              <div className="flex items-center bg-[#111A2E] border border-slate-700/80 p-0.5 rounded-xl h-8 sm:h-9 shrink-0">
                 <button
                   type="button"
                   onClick={() => onPaymentMethodChange("TARJETA_ARS")}
-                  className={`text-[11px] font-bold px-2.5 sm:px-3 py-1 rounded-lg transition-all flex items-center gap-1 ${
+                  className={`text-[11px] font-bold px-2 sm:px-3 py-1 rounded-lg transition-all flex items-center gap-1 ${
                     !isMep
                       ? "bg-[#74ACDF] text-slate-950 shadow-sm shadow-[#74ACDF]/20"
                       : "text-slate-400 hover:text-slate-200"
@@ -128,7 +135,7 @@ export default function Header({
                 <button
                   type="button"
                   onClick={() => onPaymentMethodChange("DOLAR_MEP_CUENTA")}
-                  className={`text-[11px] font-bold px-2.5 sm:px-3 py-1 rounded-lg transition-all flex items-center gap-1 ${
+                  className={`text-[11px] font-bold px-2 sm:px-3 py-1 rounded-lg transition-all flex items-center gap-1 ${
                     isMep
                       ? "bg-[#F6B40E] text-slate-950 shadow-sm shadow-[#F6B40E]/20"
                       : "text-slate-400 hover:text-slate-200"

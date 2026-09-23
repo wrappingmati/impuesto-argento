@@ -280,8 +280,8 @@ Inspirada en la bandera nacional argentina (Celeste, Blanco y Sol de Mayo) sobre
 | **Tipografía Base** | Slate Claro | `text-slate-100`, `text-slate-300`, `text-slate-400` | Jerarquía tipográfica accesible y de lectura ágil |
 
 ### 4.2. Assets de Marca Disponibles en `/public`:
-- `public/logo-full.png`: Logo horizontal oficial (isotipo de 'A' estilizada con joystick gaming en degradado violeta-azul + tipografía "Impuesto Argento").
-- `public/logo-icon.png`: Isotipo de 'A' con joystick en degradado.
+- `public/logo-icon.png`: Isotipo de 'A' estilizada con joystick gaming. **Se utiliza en el Header en mobile (`sm:hidden`)** para que los controles globales (provincia y medio de pago) encajen perfectamente sin desbordar la barra superior.
+- `public/logo-full.png`: Logo horizontal oficial (isotipo + texto "Impuesto Argento"). Se utiliza en desktop (`hidden sm:block`).
 - `public/placeholder.svg`: Fallback para carátulas cuando un juego no tiene imagen.
 
 ---

@@ -30,7 +30,7 @@ export default function DolarInfo({ onRatesLoaded, className = "" }: DolarInfoPr
 
   return (
     <div
-      className={`bg-[#111A2E] border border-slate-800/90 rounded-2xl p-5 sm:p-6 shadow-2xl space-y-4 ${className}`}
+      className={`bg-[#111A2E] border border-slate-800/90 rounded-2xl p-4 sm:p-6 shadow-2xl space-y-3.5 sm:space-y-4 ${className}`}
     >
       <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
         <div className="flex items-center gap-2">
@@ -58,11 +58,11 @@ export default function DolarInfo({ onRatesLoaded, className = "" }: DolarInfoPr
       </div>
 
       {/* Matriz 2x2 para adaptarse perfectamente al ancho de columna */}
-      <div className="grid grid-cols-2 gap-2.5 font-mono">
+      <div className="grid grid-cols-2 gap-2 sm:gap-2.5 font-mono">
         {rateItems.map(({ label, value, sub, highlight }) => (
           <div
             key={label}
-            className={`p-3 rounded-xl border transition-all ${
+            className={`p-2.5 sm:p-3 rounded-xl border transition-all ${
               highlight
                 ? "bg-[#F6B40E]/10 border-[#F6B40E]/30"
                 : "bg-[#0A0F1D] border-slate-800 hover:border-slate-700/80"
