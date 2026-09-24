@@ -96,8 +96,17 @@ npm run dev
 
 ---
 
+## 👨‍💻 Autor
+
+Desarrollado con pasión por la tecnología y la comunidad gamer por **Matías Casas (WrappingMati)**:
+- 🌐 **Sitio Web / Portafolio:** [www.wrappingmati.com.ar](https://www.wrappingmati.com.ar)
+- 🐙 **GitHub:** [@wrappingmati](https://github.com/wrappingmati)
+
+---
+
 ## 📄 Licencia y Descargo de Responsabilidad
 
 Distribuido bajo la Licencia **MIT**. Consulta el archivo [`LICENSE`](./LICENSE) para más información.
 
 Este proyecto se distribuye "tal cual", sin garantías de ningún tipo. Los cálculos son informativos y no constituyen asesoramiento contable ni financiero. El autor no se hace responsable por decisiones tomadas en base a las estimaciones del sistema.
+

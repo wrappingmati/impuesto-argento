@@ -352,5 +352,6 @@ export interface TaxCalculationResult {
 
 ---
 
-*Documento generado para **Impuesto Argento** · 2026 · Proyecto creado por Matías Casas (WrappingMati)*
+*Documento generado para **Impuesto Argento** · 2026 · Proyecto creado por [Matías Casas (WrappingMati)](https://www.wrappingmati.com.ar)*
+
 

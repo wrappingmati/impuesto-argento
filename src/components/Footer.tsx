@@ -25,7 +25,7 @@ export default function Footer() {
             <p className="text-xs text-slate-400">
               Un proyecto de{" "}
               <a
-                href="https://github.com/wrappingmati"
+                href="https://www.wrappingmati.com.ar"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-[#74ACDF] font-medium inline-flex items-center gap-1 transition-colors"
@@ -56,7 +56,7 @@ export default function Footer() {
             </a>
             <span className="text-slate-700">•</span>
             <a
-              href="https://github.com/wrappingmati"
+              href="https://www.wrappingmati.com.ar"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-white transition-colors flex items-center gap-1.5"
