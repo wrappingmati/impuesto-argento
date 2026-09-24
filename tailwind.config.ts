@@ -60,6 +60,23 @@ export default {
         blue: "hsl(var(--rate-blue))",
         oficial: "hsl(var(--rate-oficial))",
         tarjeta: "hsl(var(--rate-tarjeta))",
+        brand: {
+          celeste: "#74ACDF",
+          celesteHover: "#5B9CD6",
+          celesteLight: "#BAE6FD",
+          sol: "#F6B40E",
+          solHover: "#E09F08",
+          blanco: "#FFFFFF",
+          bg: "#0A0F1D",
+          surface: "#111A2E",
+          surfaceAlt: "#0E1526",
+          cyan: "#38BDF8",
+          secondary: "#74ACDF",
+        },
+        slate: {
+          850: "#111A2E",
+          950: "#0A0F1D",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

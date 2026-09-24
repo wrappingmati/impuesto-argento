@@ -1,52 +1,56 @@
 // src/components/TaxInfo.tsx
-import { Info } from "lucide-react";
+import React from "react";
+import { Info, BookOpen, ShieldCheck } from "lucide-react";
 
 export default function TaxInfo() {
   return (
-    <div className="ticket w-full max-w-md p-5">
-      <div className="flex items-start gap-3">
-        <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-        <div className="space-y-2 text-sm">
-          <h3 className="font-display font-semibold">
-            Impuestos vigentes hoy (agosto 2026)
-          </h3>
-          <div className="space-y-1 text-muted-foreground font-nums">
-            <div className="flex justify-between">
-              <span className="font-display">✅ IVA (servicios digitales)</span>
-              <span className="font-medium text-foreground">21%</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-display">✅ Percepción Ganancias/BBPP (RG 5617)</span>
-              <span className="font-medium text-foreground">30% · solo dólar tarjeta</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-display">✅ Percepción IIBB (según provincia)</span>
-              <span className="font-medium text-foreground">0% – 5,5%</span>
-            </div>
-            <div className="flex justify-between line-through opacity-40">
-              <span className="font-display">❌ Impuesto PAÍS</span>
-              <span>30% (venció por ley el 2/1/2026)</span>
-            </div>
+    <div className="bg-[#111A2E] border border-slate-800/90 rounded-2xl p-5 sm:p-6 space-y-4 text-xs shadow-lg">
+      <div className="flex items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
+        <div className="flex items-center gap-2 text-slate-200 font-semibold text-sm">
+          <BookOpen className="w-4 h-4 text-[#74ACDF] shrink-0" />
+          <span>Guía Tributaria: Impuestos Digitales en Argentina</span>
+        </div>
+        <span className="text-[10px] text-slate-400 font-mono">Actualizado 2026</span>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-slate-400">
+        <div className="p-3.5 rounded-xl bg-[#0A0F1D] border border-slate-800 space-y-1">
+          <div className="flex items-center justify-between font-semibold text-slate-200">
+            <span>IVA Servicios Digitales (Dec. 813/2018)</span>
+            <span className="text-[#74ACDF] font-mono text-sm">21%</span>
           </div>
-          <p className="text-xs text-muted-foreground/70 pt-1">
-            Hasta enero de 2026 el dólar tarjeta llevaba Impuesto PAÍS (30%) +
-            percepción de Ganancias (30%) = 60% total. El Impuesto PAÍS tenía
-            una vigencia legal de 5 años y venció; hoy solo queda la
-            percepción RG 5617 del 30%, ya incorporada en la cotización
-            "tarjeta" de esta app.
+          <p className="text-[11px] text-slate-400 leading-relaxed">
+            Se aplica sobre el valor base en pesos de compras digitales del exterior (Steam, PlayStation Store, Netflix, Spotify, etc.).
           </p>
-          <p className="text-xs text-muted-foreground/70">
-            La percepción de IIBB grava el consumo de servicios digitales de
-            plataformas extranjeras (Steam, PlayStation Store, Xbox, etc.) y
-            depende de tu provincia. Entre Ríos, Mendoza y la mayoría de las
-            provincias no listadas no tienen, a esta fecha, un régimen
-            específico para esto — CABA, Buenos Aires, Córdoba, Santa Fe,
-            Chaco, La Pampa, Neuquén, Río Negro, Salta y Tierra del Fuego sí.
+        </div>
+
+        <div className="p-3.5 rounded-xl bg-[#0A0F1D] border border-slate-800 space-y-1">
+          <div className="flex items-center justify-between font-semibold text-slate-200">
+            <span>Percepción Ganancias (RG 5617 ARCA)</span>
+            <span className="text-[#F6B40E] font-mono text-sm">30%</span>
+          </div>
+          <p className="text-[11px] text-slate-400 leading-relaxed">
+            Percepción a cuenta deducible de Ganancias o Bienes Personales. <strong>Exenta (\$0)</strong> si pagás tu resumen bancario con Dólar MEP desde caja de ahorro.
           </p>
-          <p className="text-xs text-muted-foreground/70">
-            Son valores de referencia relevados de normativa pública, no
-            asesoramiento impositivo. Las alícuotas provinciales cambian con
-            frecuencia — confirmá siempre con el resumen de tu tarjeta.
+        </div>
+
+        <div className="p-3.5 rounded-xl bg-[#0A0F1D] border border-slate-800 space-y-1">
+          <div className="flex items-center justify-between font-semibold text-slate-200">
+            <span>Percepción Ingresos Brutos (IIBB)</span>
+            <span className="text-[#74ACDF] font-mono text-sm">0% a 5,5%</span>
+          </div>
+          <p className="text-[11px] text-slate-400 leading-relaxed">
+            Régimen local según tu provincia (CABA: 2%, Buenos Aires: 2%, Córdoba: 3%, Entre Ríos: 3%, Santa Fe: 4,5%, etc.).
+          </p>
+        </div>
+
+        <div className="p-3.5 rounded-xl bg-[#0A0F1D] border border-slate-800/60 space-y-1 opacity-65">
+          <div className="flex items-center justify-between font-medium text-slate-400 line-through">
+            <span>Impuesto PAÍS (Ley 27.541)</span>
+            <span className="font-mono text-sm">0%</span>
+          </div>
+          <p className="text-[11px] text-slate-500 leading-relaxed">
+            Finalizó su vigencia legal de 5 años. Ya no se cobra en ninguna tarjeta ni consumo con moneda extranjera.
           </p>
         </div>
       </div>

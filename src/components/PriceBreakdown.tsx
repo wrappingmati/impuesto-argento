@@ -1,8 +1,10 @@
 // src/components/PriceBreakdown.tsx
+import React, { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { computeBreakdown, formatArs, formatUsd, PROVINCES, type DolarType, type ProvinceCode } from "@/lib/tax";
 import type { MepComparison, PaymentMethod, TaxCalculationResult } from "@/lib/tax-engine";
-import { Sparkles } from "lucide-react";
+import { Copy, Check, Info, Sparkles, ChevronRight } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface PriceBreakdownProps {
   title?: string;
@@ -20,12 +22,6 @@ interface PriceBreakdownProps {
   error?: string;
 }
 
-const dolarLabels: Record<DolarType, string> = {
-  blue: "Blue",
-  oficial: "Oficial",
-  tarjeta: "Tarjeta (+30% Ganancias)",
-};
-
 export default function PriceBreakdown({
   title,
   thumbnail,
@@ -41,238 +37,241 @@ export default function PriceBreakdown({
   isLoading,
   error,
 }: PriceBreakdownProps) {
+  const [copied, setCopied] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
+  const { toast } = useToast();
+
   if (isLoading) {
     return (
-      <div className="ticket w-full max-w-md p-6 space-y-4">
-        <Skeleton className="h-6 w-32" />
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-full" />
+      <div className="bg-[#1E1B2E] border border-slate-800 rounded-2xl p-6 space-y-4">
+        <Skeleton className="h-4 w-32 bg-slate-800" />
+        <Skeleton className="h-12 w-3/4 bg-slate-800" />
+        <div className="space-y-2 pt-2">
+          <Skeleton className="h-4 w-full bg-slate-800" />
+          <Skeleton className="h-4 w-full bg-slate-800" />
+          <Skeleton className="h-4 w-full bg-slate-800" />
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="ticket w-full max-w-md p-6 border-destructive">
-        <p className="text-destructive">{error}</p>
+      <div className="bg-[#111A2E] border border-red-500/30 rounded-2xl p-6 text-center space-y-2">
+        <p className="text-sm text-red-400 font-medium">Error al procesar el precio</p>
+        <p className="text-xs text-slate-400">{error}</p>
       </div>
     );
   }
 
-  if (typeof originalPrice === "undefined" && !calculation) return null;
+  if (typeof originalPrice === "undefined" && !calculation) {
+    return (
+      <div className="bg-[#111A2E]/60 border border-slate-800 rounded-2xl p-7 text-center space-y-3">
+        <div className="w-12 h-12 rounded-xl bg-slate-800/80 border border-slate-700/60 mx-auto flex items-center justify-center text-slate-400">
+          <Info className="w-5 h-5 text-[#74ACDF]" />
+        </div>
+        <div className="space-y-1">
+          <h4 className="text-sm font-semibold text-slate-200">Resultado estimado</h4>
+          <p className="text-xs text-slate-400 max-w-xs mx-auto leading-relaxed">
+            Ingresá un precio o pegá un enlace para ver el desglose en pesos al instante.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const isForeign = isForeignDigitalService || (!!usdPrice && !!dolarType);
   const isMepPayment = paymentMethod === "DOLAR_MEP_CUENTA";
   const effectiveMep = calculation?.mepComparison ?? mepComparison;
 
-  // Si tenemos la liquidación exacta del motor tributario oficial, la usamos directamente
   const hasEngineCalc = !!calculation;
   const baseArs = calculation ? calculation.baseArs : (originalPrice ?? 0);
   const totalArs = calculation ? calculation.totalArs : 0;
 
-  // Fallback con computeBreakdown legacy
   const applyGananciasExplicitly = isForeign && !usdPrice && !isMepPayment;
   const legacyBreakdown = computeBreakdown(originalPrice ?? 0, province, isForeign, applyGananciasExplicitly);
   const iibbApplies = isForeign && PROVINCES[province]?.iibbRate > 0;
+  const finalTotal = hasEngineCalc ? totalArs : legacyBreakdown.total;
 
-  // La tasa de cambio que se usó para calcular el precio base
-  const exchangeRateUsed = calculation?.exchangeRateUsed ?? (isMepPayment ? effectiveMep?.mepRate : dolarRate);
+  const handleCopy = () => {
+    const textToCopy = `Impuesto Argento - ${title || "Juego"}\nTotal estimado: ${formatArs(finalTotal)}\nBase ARS: ${formatArs(baseArs)}\nProvincia: ${PROVINCES[province]?.label || province}\nCalculá en impuesto-argento.netlify.app`;
+    navigator.clipboard.writeText(textToCopy);
+    setCopied(true);
+    toast({
+      title: "Copiado al portapapeles",
+      description: "El desglose del precio fue copiado con éxito.",
+    });
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
-    <div className="ticket w-full max-w-md p-6 space-y-4 animate-print-in font-nums">
-      {/* Portada y título si proviene de scraping o catálogo */}
-      {title && (
-        <div className="flex items-center gap-3 pb-2 border-b border-border/40">
-          {thumbnail && thumbnail !== "/placeholder.svg" && (
+    <div className="bg-[#111A2E] border border-slate-800 rounded-2xl p-6 shadow-xl space-y-5">
+      {/* Cabecera del producto */}
+      <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+        <div className="flex items-center gap-3 min-w-0">
+          {thumbnail && thumbnail !== "/placeholder.svg" ? (
             <img
               src={thumbnail}
-              alt={title}
-              className="w-12 h-12 object-cover rounded-md border border-border/50 shrink-0"
+              alt={title || "Producto"}
+              className="w-10 h-10 object-cover rounded-lg border border-slate-700/60 shrink-0 bg-black/40"
             />
+          ) : (
+            <div className="w-10 h-10 rounded-lg bg-[#74ACDF]/15 border border-[#74ACDF]/30 flex items-center justify-center text-[#74ACDF] font-bold shrink-0">
+              🎮
+            </div>
           )}
-          <div className="min-w-0 flex-1">
-            <h4 className="font-display font-bold text-sm truncate text-foreground">{title}</h4>
-            <p className="text-[11px] text-muted-foreground">Desglose impositivo en tiempo real</p>
+          <div className="min-w-0">
+            <h3 className="font-semibold text-sm text-white truncate">
+              {title || "Producto seleccionado"}
+            </h3>
+            <p className="text-xs text-slate-400">
+              {PROVINCES[province]?.label} · {isMepPayment ? "Dólar MEP" : "Tarjeta ARS"}
+            </p>
           </div>
         </div>
-      )}
 
-      <div className="flex items-center justify-between font-display">
-        <h3 className="text-base font-semibold tracking-wide">Comprobante estimado</h3>
-        <span className="text-[10px] uppercase tracking-widest text-muted-foreground">
-          no válido como factura
-        </span>
+        <button
+          type="button"
+          onClick={handleCopy}
+          title="Copiar comprobante"
+          className="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition-colors"
+        >
+          {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+        </button>
       </div>
 
-      <div className="ticket-divider" />
+      {/* Precio Final: Grande y claro como en el mockup */}
+      <div className="space-y-1">
+        <p className="text-xs text-slate-400 font-medium">Total estimado</p>
+        <div className="flex items-baseline gap-2">
+          <span className="text-3xl sm:text-4xl font-bold font-mono tracking-tight text-white">
+            {formatArs(finalTotal)}
+          </span>
+          <span className="text-xs font-semibold text-[#74ACDF]">ARS</span>
+        </div>
+      </div>
 
-      <div className="space-y-2 text-sm">
+      {/* Desglose de impuestos limpio */}
+      <div className="space-y-2.5 pt-3 border-t border-slate-800/80 text-xs sm:text-sm">
         {usdPrice && (
-          <div className="pb-3 space-y-1">
-            <div className="flex justify-between text-muted-foreground">
-              <span className="font-display">Precio original</span>
-              <span>{formatUsd(usdPrice)}</span>
-            </div>
-            {exchangeRateUsed && (
-              <div className="flex justify-between text-muted-foreground">
-                <span className="font-display">
-                  {isMepPayment
-                    ? "Dólar MEP (Bolsa)"
-                    : calculation?.exchangeRateUsed
-                    ? "Dólar Oficial (cambio base)"
-                    : `Dólar ${dolarLabels[dolarType || "oficial"]}`}
-                </span>
-                <span>× ${exchangeRateUsed.toFixed(0)}</span>
-              </div>
-            )}
-            <div className="ticket-divider pt-2" />
+          <div className="flex justify-between items-center text-slate-400">
+            <span>Precio original</span>
+            <span className="font-mono text-slate-200">{formatUsd(usdPrice)}</span>
           </div>
         )}
 
+        <div className="flex justify-between items-center text-slate-300">
+          <span>Precio base</span>
+          <span className="font-mono text-slate-200">{formatArs(baseArs)}</span>
+        </div>
+
         {hasEngineCalc ? (
           <>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground font-display">Precio base (ARS)</span>
-              <span>{formatArs(baseArs)}</span>
-            </div>
-
-            {/* Impuestos desglosados del motor tributario */}
             {calculation.taxes.map((t) => {
               const isIva = t.id === "iva-21";
               const isGanancias = t.id === "rg-5617-30";
-              const colorClass = isIva
-                ? "text-primary"
+              const label = isIva
+                ? "IVA (21%)"
                 : isGanancias
-                ? "text-tarjeta"
-                : "text-amber-400";
+                ? "Percepción (30% RG 5617)"
+                : t.name;
 
               return (
-                <div key={t.id} className={`flex justify-between ${colorClass}`}>
-                  <span className="font-display">{t.name}</span>
-                  <span>+ {formatArs(t.amountArs)}</span>
+                <div key={t.id} className="flex justify-between items-center text-slate-300">
+                  <span className="text-slate-400">{label}</span>
+                  <span className="font-mono text-slate-200">+ {formatArs(t.amountArs)}</span>
                 </div>
               );
             })}
 
-            {/* Si paga con MEP, mostrar exención explícita de Ganancias */}
             {isMepPayment && (
-              <div className="flex justify-between text-emerald-500">
-                <span className="font-display">Percepción Ganancias (RG 5617)</span>
-                <span className="text-xs font-semibold">Exento ($0) con Dólar MEP</span>
+              <div className="flex justify-between items-center text-emerald-400">
+                <span>Percepción (30% RG 5617)</span>
+                <span className="font-mono font-medium">Exento (\$0)</span>
               </div>
             )}
 
-            {/* Si IIBB no aplica en la provincia */}
             {!calculation.taxes.some((t) => t.id.startsWith("iibb")) && (
-              <div className="flex justify-between text-muted-foreground/50">
-                <span className="font-display line-through">Percepción IIBB</span>
-                <span className="text-xs self-center">
-                  {province === "OTRA" ? "elegí tu provincia" : "no aplica en tu provincia"}
-                </span>
+              <div className="flex justify-between items-center text-slate-500">
+                <span>Otros cargos (IIBB)</span>
+                <span className="text-xs">no aplica</span>
               </div>
             )}
-
-            <div className="flex justify-between text-muted-foreground/40">
-              <span className="font-display line-through">Impuesto PAÍS</span>
-              <span className="text-xs self-center">eliminado 2 ene. 2026</span>
-            </div>
-
-            <div className="ticket-divider" />
-
-            <div className="flex justify-between font-display font-bold text-base pt-1">
-              <span>Total estimado</span>
-              <span className="text-primary">{formatArs(totalArs)}</span>
-            </div>
           </>
         ) : (
-          /* Modo de compatibilidad / fallback legacy */
           <>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground font-display">Precio base (ARS)</span>
-              <span>{formatArs(legacyBreakdown.base)}</span>
+            <div className="flex justify-between items-center text-slate-300">
+              <span className="text-slate-400">IVA (21%)</span>
+              <span className="font-mono text-slate-200">+ {formatArs(legacyBreakdown.iva)}</span>
             </div>
 
-            <div className="flex justify-between text-primary">
-              <span className="font-display">IVA (21%)</span>
-              <span>+ {formatArs(legacyBreakdown.iva)}</span>
-            </div>
-
-            {/* Percepción Ganancias / BBPP */}
             {isMepPayment ? (
-              <div className="flex justify-between text-emerald-500">
-                <span className="font-display">Percepción Ganancias (RG 5617)</span>
-                <span className="text-xs font-semibold">Exento ($0) con Dólar MEP</span>
+              <div className="flex justify-between items-center text-emerald-400">
+                <span>Percepción (30% RG 5617)</span>
+                <span className="font-mono font-medium">Exento (\$0)</span>
               </div>
             ) : legacyBreakdown.ganancias > 0 ? (
-              <div className="flex justify-between text-tarjeta">
-                <span className="font-display">
-                  Percepción Ganancias/BBPP (RG 5617) · 30%
+              <div className="flex justify-between items-center text-slate-300">
+                <span className="text-slate-400">Percepción (30%)</span>
+                <span className="font-mono text-slate-200">
+                  + {formatArs(legacyBreakdown.ganancias)}
                 </span>
-                <span>+ {formatArs(legacyBreakdown.ganancias)}</span>
-              </div>
-            ) : dolarType === "tarjeta" ? (
-              <div className="flex justify-between text-muted-foreground/40">
-                <span className="font-display line-through">Percepción Ganancias/BBPP (RG 5617)</span>
-                <span className="text-xs self-center">ya incluida en el dólar tarjeta</span>
               </div>
             ) : null}
 
-            {/* IIBB Provincial */}
-            {isForeign ? (
-              iibbApplies ? (
-                <div className="flex justify-between text-tarjeta">
-                  <span className="font-display">
-                    Percepción IIBB · {PROVINCES[province]?.label}
-                  </span>
-                  <span>+ {formatArs(legacyBreakdown.iibb)}</span>
-                </div>
-              ) : (
-                <div className="flex justify-between text-muted-foreground/50">
-                  <span className="font-display line-through">Percepción IIBB</span>
-                  <span className="text-xs self-center">
-                    {province === "OTRA" ? "elegí tu provincia" : "no aplica en tu provincia"}
-                  </span>
-                </div>
-              )
-            ) : (
-              <div className="flex justify-between text-muted-foreground/40">
-                <span className="font-display line-through">Percepción IIBB</span>
-                <span className="text-xs self-center">solo aplica a compras en plataformas extranjeras</span>
+            {isForeign && iibbApplies && (
+              <div className="flex justify-between items-center text-slate-300">
+                <span className="text-slate-400">Otros cargos (IIBB)</span>
+                <span className="font-mono text-slate-200">
+                  + {formatArs(legacyBreakdown.iibb)}
+                </span>
               </div>
             )}
-
-            <div className="flex justify-between text-muted-foreground/40">
-              <span className="font-display line-through">Impuesto PAÍS</span>
-              <span className="text-xs self-center">eliminado 2 ene. 2026</span>
-            </div>
-
-            <div className="ticket-divider" />
-
-            <div className="flex justify-between font-display font-bold text-base pt-1">
-              <span>Total estimado</span>
-              <span className="text-primary">{formatArs(legacyBreakdown.total)}</span>
-            </div>
           </>
         )}
 
-        {/* Recomendación de ahorro con Dólar MEP */}
-        {effectiveMep && effectiveMep.isRecommended && !isMepPayment && (
-          <div className="mt-3 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs flex items-start gap-2">
-            <Sparkles className="w-4 h-4 shrink-0 mt-0.5" />
-            <div>
-              <p className="font-semibold">
-                ¡Pagando con Dólares MEP te ahorrás {formatArs(effectiveMep.savingsArs)} ({effectiveMep.savingsPercentage}%)!
-              </p>
-              <p className="text-[11px] opacity-80 mt-0.5">
-                Si pagás tu resumen en dólares antes del vencimiento con saldo en cuenta, no te cobran el 30% de percepción.
-              </p>
-            </div>
-          </div>
-        )}
+        {/* Impuesto PAIS tachado */}
+        <div className="flex justify-between items-center text-slate-500">
+          <span className="line-through">Impuesto PAÍS</span>
+          <span className="text-xs">0% (Vencido 2/1/2026)</span>
+        </div>
       </div>
 
-      <div className="barcode mt-2" aria-hidden="true" />
+      {/* Ahorro con Dólar MEP */}
+      {effectiveMep && effectiveMep.isRecommended && !isMepPayment && (
+        <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs flex items-start gap-2.5">
+          <Sparkles className="w-4 h-4 shrink-0 mt-0.5 text-emerald-400" />
+          <div className="space-y-0.5">
+            <p className="font-semibold text-emerald-200">
+              ¡Ahorrás {formatArs(effectiveMep.savingsArs)} ({effectiveMep.savingsPercentage}%) con Dólar MEP!
+            </p>
+            <p className="text-[11px] text-emerald-300/80 leading-relaxed">
+              Pagá tu resumen en dólares antes del vencimiento con saldo en cuenta para no pagar el 30% de percepción.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Link estilo "Ver detalle de impuestos >" de la referencia */}
+      <button
+        type="button"
+        onClick={() => setShowDetails(!showDetails)}
+        className="w-full pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400 hover:text-white transition-colors"
+      >
+        <span className="flex items-center gap-1.5">
+          <Info className="w-3.5 h-3.5 text-[#74ACDF]" />
+          <span>Ver detalle de impuestos</span>
+        </span>
+        <ChevronRight className={`w-3.5 h-3.5 transition-transform ${showDetails ? "rotate-90" : ""}`} />
+      </button>
+
+      {showDetails && (
+        <div className="p-3 rounded-xl bg-[#0A0F1D] border border-slate-800 text-[11px] text-slate-400 space-y-1.5 animate-fade-in">
+          <p><strong className="text-slate-200">IVA (21%):</strong> Decreto 813/2018 para servicios digitales del exterior.</p>
+          <p><strong className="text-slate-200">Percepción Ganancias (30%):</strong> RG 5617/2024 sobre compra de moneda extranjera.</p>
+          <p><strong className="text-slate-200">IIBB Provincial:</strong> Régimen de percepción local ({PROVINCES[province]?.label}: {((PROVINCES[province]?.iibbRate || 0) * 100).toFixed(1)}%).</p>
+        </div>
+      )}
     </div>
   );
 }

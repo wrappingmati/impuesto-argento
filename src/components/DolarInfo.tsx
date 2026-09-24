@@ -1,7 +1,6 @@
 // src/components/DolarInfo.tsx
-import { useEffect } from "react";
-import { AlertTriangle, RefreshCw, TrendingUp } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import React, { useEffect } from "react";
+import { RefreshCw, TrendingUp, Sparkles } from "lucide-react";
 import { useDolarRates } from "@/hooks/useDolarRates";
 import type { DolarRates } from "@/lib/dolarApi";
 
@@ -9,12 +8,12 @@ export type { DolarRates };
 
 interface DolarInfoProps {
   onRatesLoaded?: (rates: DolarRates) => void;
+  className?: string;
 }
 
-export default function DolarInfo({ onRatesLoaded }: DolarInfoProps) {
+export default function DolarInfo({ onRatesLoaded, className = "" }: DolarInfoProps) {
   const { rates, source, stale, loading, error, refetch } = useDolarRates();
 
-  // Avisamos al padre cada vez que cambian las tasas
   useEffect(() => {
     if (!loading && !error) {
       onRatesLoaded?.(rates);
@@ -23,74 +22,82 @@ export default function DolarInfo({ onRatesLoaded }: DolarInfoProps) {
   }, [rates.blue, rates.oficial, rates.tarjeta, rates.mep, loading, error]);
 
   const rateItems = [
-    { label: "Oficial", value: rates.oficial, className: "text-oficial" },
-    { label: "Tarjeta", value: rates.tarjeta, className: "text-tarjeta", note: "+30% Ganancias" },
-    { label: "MEP", value: rates.mep, className: "text-primary", note: "Bolsa" },
-    { label: "Blue", value: rates.blue, className: "text-blue" },
+    { label: "Dólar Oficial", value: rates.oficial, sub: "Base ARCA / BCRA" },
+    { label: "Dólar Tarjeta", value: rates.tarjeta, sub: "Oficial + 30% Gan." },
+    { label: "Dólar MEP", value: rates.mep, sub: "Bolsa (Sin percepción)", highlight: true },
+    { label: "Dólar Blue", value: rates.blue, sub: "Mercado informal" },
   ];
 
   return (
-    <div className="w-full max-w-md">
-      <div className="ticket p-4">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 text-primary" />
-            <span className="text-xs font-semibold text-primary tracking-widest uppercase">
-              Cotización del dólar
-            </span>
+    <div
+      className={`bg-[#111A2E] border border-slate-800/90 rounded-2xl p-4 sm:p-6 shadow-2xl space-y-3.5 sm:space-y-4 ${className}`}
+    >
+      <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
+        <div className="flex items-center gap-2">
+          <div className="relative flex items-center justify-center">
+            <TrendingUp className="w-4 h-4 text-[#74ACDF]" />
+            <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping" />
+            <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-emerald-400 rounded-full" />
           </div>
-          <button
-            onClick={refetch}
-            disabled={loading}
-            aria-label="Actualizar cotización"
-            className="text-muted-foreground hover:text-foreground transition-colors disabled:opacity-40"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
-          </button>
+          <span className="text-sm font-bold text-white tracking-tight">
+            Cotizaciones en Vivo
+          </span>
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#74ACDF]/15 text-[#74ACDF] border border-[#74ACDF]/30 font-mono font-medium">
+            BCRA / MEP
+          </span>
         </div>
+        <button
+          type="button"
+          onClick={refetch}
+          disabled={loading}
+          title="Actualizar cotizaciones"
+          className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition-colors disabled:opacity-40"
+        >
+          <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+        </button>
+      </div>
 
-        {loading && !error && (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-14 bg-white/5 rounded-lg animate-pulse" />
-            ))}
+      {/* Matriz 2x2 para adaptarse perfectamente al ancho de columna */}
+      <div className="grid grid-cols-2 gap-2 sm:gap-2.5 font-mono">
+        {rateItems.map(({ label, value, sub, highlight }) => (
+          <div
+            key={label}
+            className={`p-2.5 sm:p-3 rounded-xl border transition-all ${
+              highlight
+                ? "bg-[#F6B40E]/10 border-[#F6B40E]/30"
+                : "bg-[#0A0F1D] border-slate-800 hover:border-slate-700/80"
+            }`}
+          >
+            <p className="font-sans text-xs text-slate-400 font-medium">{label}</p>
+            <p
+              className={`text-lg sm:text-xl font-bold mt-0.5 ${
+                highlight ? "text-[#F6B40E]" : "text-white"
+              }`}
+            >
+              {value != null ? `$${value.toFixed(0)}` : "—"}
+            </p>
+            <p className="font-sans text-[10px] text-slate-500 mt-0.5 truncate">{sub}</p>
           </div>
-        )}
+        ))}
+      </div>
 
-        {error && (
-          <div className="flex items-start gap-2 text-sm text-destructive">
-            <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
-            <div className="space-y-2">
-              <p>No se pudo obtener la cotización. Probá de nuevo en un momento.</p>
-              <Button size="sm" variant="outline" onClick={refetch}>
-                Reintentar
-              </Button>
-            </div>
-          </div>
-        )}
+      {/* Tip de Ahorro con Dólar MEP */}
+      <div className="p-3 rounded-xl bg-[#0A0F1D] border border-slate-800 text-[11px] text-slate-300 space-y-1">
+        <div className="flex items-center justify-between text-slate-400">
+          <span className="flex items-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-[#F6B40E]" />
+            <span className="font-semibold text-slate-200">Tip de Ahorro:</span>
+          </span>
+          <span className="text-[#F6B40E] font-mono font-bold">-30% Percepción</span>
+        </div>
+        <p className="text-[10px] text-slate-400 leading-snug">
+          Pagando con saldo en dólares evitás el 30% de adelanto de Ganancias (RG 5617).
+        </p>
+      </div>
 
-        {!loading && !error && (
-          <>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-nums">
-              {rateItems.map(({ label, value, className, note }) => (
-                <div key={label} className="bg-white/5 rounded-lg p-2.5 text-center">
-                  <p className="font-display text-xs text-muted-foreground mb-0.5">{label}</p>
-                  <p className={`text-base font-semibold ${className}`}>
-                    {value != null ? `$${value.toFixed(0)}` : "—"}
-                  </p>
-                  {note && <p className="text-[10px] text-muted-foreground mt-0.5 font-display">{note}</p>}
-                </div>
-              ))}
-            </div>
-            {(stale || source === "cache") && (
-              <p className="text-[11px] text-muted-foreground mt-2">
-                {source === "cache"
-                  ? "Mostrando la última cotización guardada (sin conexión con las APIs)."
-                  : "Cotización de hace más de 10 minutos."}
-              </p>
-            )}
-          </>
-        )}
+      <div className="flex items-center justify-between text-[10px] text-slate-500 pt-0.5 border-t border-slate-800/60">
+        <span>Fuente: Ámbito / BCRA</span>
+        <span>{stale || source === "cache" ? "Último registro" : "Actualizado"}</span>
       </div>
     </div>
   );

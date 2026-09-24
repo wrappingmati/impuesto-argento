@@ -37,5 +37,10 @@ export function useSavedGames() {
     });
   }, []);
 
-  return { games, addGame, removeGame };
+  const clearAll = useCallback(() => {
+    persistSavedGames([]);
+    setGames([]);
+  }, []);
+
+  return { games, addGame, removeGame, clearAll };
 }

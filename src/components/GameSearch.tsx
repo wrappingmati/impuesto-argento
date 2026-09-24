@@ -1,16 +1,9 @@
 // src/components/GameSearch.tsx
-import { useState } from "react";
-import { DollarSign } from "lucide-react";
+import React, { useState } from "react";
+import { ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { PROVINCES, type DolarType, type ProvinceCode } from "@/lib/tax";
 import type { DolarRates } from "@/lib/dolarApi";
 import { calculateArgentineTaxes, type TaxCalculationResult } from "@/lib/tax-engine";
@@ -36,14 +29,12 @@ export default function GameSearch({
   onSave,
   dolarRates,
   province,
-  onProvinceChange,
 }: GameSearchProps) {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [thumbnail, setThumbnail] = useState("");
-  const [currencyMode, setCurrencyMode] = useState<CurrencyMode>("ars");
-  const [dolarType, setDolarType] = useState<DolarType>("tarjeta");
-  const [isForeignDigitalService, setIsForeignDigitalService] = useState(false);
+  const [currencyMode, setCurrencyMode] = useState<CurrencyMode>("usd");
+  const [dolarType, setDolarType] = useState<DolarType>("oficial");
+  const [isForeignDigitalService, setIsForeignDigitalService] = useState(true);
   const [touched, setTouched] = useState(false);
 
   const getRate = (): number | null => dolarRates[dolarType];
@@ -63,32 +54,16 @@ export default function GameSearch({
       ? "Ingresá un precio mayor a 0."
       : null;
 
-  const isValidThumbnail = (url: string) => {
-    if (!url) return true;
-    try {
-      const parsed = new URL(url);
-      return parsed.protocol === "https:";
-    } catch {
-      return false;
-    }
-  };
-  const thumbnailError =
-    touched && thumbnail.trim() && !isValidThumbnail(thumbnail)
-      ? "Tiene que ser una URL https:// válida."
-      : null;
-
   const canSubmit =
-    !!name.trim() &&
     !!price.trim() &&
     !!arsPreview &&
-    isValidThumbnail(thumbnail) &&
     (currencyMode === "ars" || !!getRate());
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setTouched(true);
     const arsPrice = getArsPrice();
-    if (!name.trim() || !arsPrice || !isValidThumbnail(thumbnail)) return;
+    if (!arsPrice) return;
 
     const numPrice = parseFloat(price);
     const isUsd = currencyMode === "usd";
@@ -115,174 +90,82 @@ export default function GameSearch({
     }
 
     onSave({
-      name: name.trim(),
+      name: name.trim() || (isUsd ? `Juego (US$ ${numPrice})` : `Compra ($ ${numPrice})`),
       price: calc ? calc.baseArs : arsPrice,
-      thumbnail: thumbnail || "/placeholder.svg",
+      thumbnail: "/placeholder.svg",
       usdPrice: isUsd ? numPrice : undefined,
       dolarType: isUsd ? dolarType : undefined,
       isForeignDigitalService: isUsd ? true : isForeignDigitalService,
       calculation: calc,
     });
-
-    setName("");
-    setPrice("");
-    setThumbnail("");
-    setTouched(false);
   };
 
-  const dolarOptions: { key: DolarType; label: string; className: string }[] = [
-    { key: "oficial", label: "Oficial", className: "text-oficial" },
-    { key: "blue", label: "Blue", className: "text-blue" },
-    { key: "tarjeta", label: "Tarjeta", className: "text-tarjeta" },
-  ];
-
   return (
-    <form onSubmit={handleSubmit} className="ticket w-full max-w-md p-6 space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="game-name">Nombre del juego o suscripción</Label>
-        <Input
-          id="game-name"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Ej: Elden Ring, Game Pass, Netflix..."
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label>Tu provincia (para la percepción de IIBB)</Label>
-        <Select value={province} onValueChange={(v) => onProvinceChange(v as ProvinceCode)}>
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {Object.entries(PROVINCES).map(([code, info]) => (
-              <SelectItem key={code} value={code}>
-                {info.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="space-y-2">
-        <Label>Moneda del precio</Label>
-        <div className="grid grid-cols-2 gap-2">
-          {(["ars", "usd"] as CurrencyMode[]).map((mode) => (
-            <button
-              key={mode}
-              type="button"
-              onClick={() => setCurrencyMode(mode)}
-              className={`py-2 px-4 rounded-lg text-sm font-semibold border transition-all ${
-                currencyMode === mode
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-white/5 text-muted-foreground border-border hover:border-primary/50"
-              }`}
-            >
-              {mode === "ars" ? "🇦🇷 ARS" : "🇺🇸 USD"}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="game-price">
-          Precio ({currencyMode === "ars" ? "ARS $" : "USD $"})
-        </Label>
-        <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm font-nums">
-            {currencyMode === "ars" ? "ARS $" : "USD $"}
-          </span>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-3">
+        {/* Nombre opcional */}
+        <div className="space-y-1">
+          <Label htmlFor="manual-name" className="text-xs font-medium text-slate-300">
+            Nombre o título (opcional)
+          </Label>
           <Input
-            id="game-price"
-            type="number"
-            min="0"
-            step="0.01"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            onBlur={() => setTouched(true)}
-            placeholder="0.00"
-            className="pl-16 font-nums"
-            aria-invalid={!!priceError}
+            id="manual-name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Ej: Mortal Kombat 1, Nintendo Switch Online..."
+            className="bg-[#0A0F1D] border-slate-800 text-slate-100 placeholder:text-slate-500 text-xs sm:text-sm h-11 rounded-xl focus:border-[#74ACDF] focus:ring-1 focus:ring-[#74ACDF]/20"
           />
         </div>
-        {priceError && <p className="text-xs text-destructive">{priceError}</p>}
-      </div>
 
-      {currencyMode === "ars" && (
-        <div className="flex items-center justify-between p-3 rounded-lg border border-border bg-white/5 gap-3">
-          <div className="space-y-0.5">
-            <Label htmlFor="foreign-service-toggle" className="text-xs font-semibold cursor-pointer">
-              ¿Es un servicio/tienda del exterior en pesos?
-            </Label>
-            <p className="text-[11px] text-muted-foreground">
-              Ej: Xbox Store, Netflix, Spotify (aplica +30% Ganancias RG 5617 e IIBB)
-            </p>
-          </div>
-          <input
-            id="foreign-service-toggle"
-            type="checkbox"
-            checked={isForeignDigitalService}
-            onChange={(e) => setIsForeignDigitalService(e.target.checked)}
-            className="w-4 h-4 accent-primary rounded cursor-pointer shrink-0"
-          />
-        </div>
-      )}
-
-      {currencyMode === "usd" && (
-        <div className="space-y-2">
-          <Label>Tipo de dólar para conversión</Label>
-          <div className="grid grid-cols-3 gap-2">
-            {dolarOptions.map(({ key, label, className }) => (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setDolarType(key)}
-                className={`py-2 px-3 rounded-lg text-sm font-semibold border transition-all ${
-                  dolarType === key
-                    ? "bg-white/10 border-primary"
-                    : "bg-white/5 border-border hover:border-primary/40"
-                }`}
+        {/* Input con selector de moneda integrado como en la referencia */}
+        <div className="space-y-1">
+          <Label htmlFor="manual-price" className="text-xs font-medium text-slate-300">
+            Precio del juego o compra
+          </Label>
+          <div className="relative flex items-center bg-[#0A0F1D] border border-slate-800 rounded-xl overflow-hidden focus-within:border-[#74ACDF] focus-within:ring-1 focus-within:ring-[#74ACDF]/20 transition-all">
+            <span className="pl-3.5 text-slate-400 font-mono text-sm">
+              {currencyMode === "usd" ? "US$" : "$"}
+            </span>
+            <input
+              id="manual-price"
+              type="number"
+              step="0.01"
+              min="0"
+              value={price}
+              onChange={(e) => {
+                setPrice(e.target.value);
+                setTouched(true);
+              }}
+              placeholder="59.99"
+              className="w-full bg-transparent text-slate-100 placeholder:text-slate-500 px-2 py-3 text-sm sm:text-base font-mono focus:outline-none"
+              required
+            />
+            {/* Pill de Moneda */}
+            <div className="pr-1.5 flex items-center">
+              <select
+                value={currencyMode}
+                onChange={(e) => setCurrencyMode(e.target.value as CurrencyMode)}
+                className="bg-[#111A2E] text-slate-200 border border-slate-700/80 rounded-lg px-2.5 py-1.5 text-xs font-medium focus:outline-none cursor-pointer"
               >
-                <span className={className}>{label}</span>
-                <div className="text-xs text-muted-foreground mt-0.5 font-nums">
-                  {dolarRates[key] ? `$${dolarRates[key]?.toFixed(0)}` : "..."}
-                </div>
-              </button>
-            ))}
-          </div>
-
-          {arsPreview !== null && price && (
-            <div className="bg-primary/10 border border-primary/20 rounded-lg px-4 py-2 flex justify-between items-center text-sm font-nums">
-              <span className="text-muted-foreground">
-                USD ${parseFloat(price).toFixed(2)} × ${getRate()?.toFixed(0)}
-              </span>
-              <span className="text-primary font-semibold">
-                = ARS ${arsPreview.toFixed(2)}
-              </span>
+                <option value="usd">USD</option>
+                <option value="ars">ARS</option>
+              </select>
             </div>
-          )}
+          </div>
+          {priceError && <p className="text-xs text-red-400">{priceError}</p>}
         </div>
-      )}
 
-      <div className="space-y-2">
-        <Label htmlFor="game-thumbnail">URL de imagen (opcional)</Label>
-        <Input
-          id="game-thumbnail"
-          type="url"
-          value={thumbnail}
-          onChange={(e) => setThumbnail(e.target.value)}
-          onBlur={() => setTouched(true)}
-          placeholder="https://..."
-          aria-invalid={!!thumbnailError}
-        />
-        {thumbnailError && <p className="text-xs text-destructive">{thumbnailError}</p>}
+        {/* Botón primario de calcular */}
+        <Button
+          type="submit"
+          disabled={!canSubmit}
+          className="w-full h-12 bg-[#74ACDF] hover:bg-[#5B9CD6] text-slate-950 text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-md shadow-[#74ACDF]/20 mt-2"
+        >
+          <span>Calcular impuestos</span>
+          <ArrowRight className="w-4 h-4" />
+        </Button>
       </div>
-
-      <Button type="submit" className="w-full font-semibold" disabled={!canSubmit}>
-        <DollarSign className="w-4 h-4 mr-1" />
-        Calcular y guardar
-      </Button>
     </form>
   );
 }

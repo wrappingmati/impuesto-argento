@@ -13,6 +13,7 @@ const SavedGameSchema = z.object({
   usdPrice: z.number().nonnegative().optional(),
   dolarType: z.enum(["blue", "oficial", "tarjeta"]).optional(),
   province: z.string().optional(),
+  platform: z.string().optional(),
   savedAt: z.number().optional(),
 });
 

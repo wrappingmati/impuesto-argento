@@ -1,6 +1,6 @@
 // src/components/UrlScraper.tsx
-import { useState } from "react";
-import { Link2, Search, Loader2, Clipboard, ExternalLink, AlertCircle } from "lucide-react";
+import React, { useState } from "react";
+import { Link2, Search, Loader2, Clipboard, ArrowRight, AlertCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { scrapeAndCalculateApi, type ScrapeAndCalculateResponse } from "@/lib/api";
@@ -20,21 +20,24 @@ interface UrlScraperProps {
     isForeignDigitalService: boolean;
     calculation?: ScrapeAndCalculateResponse["calculation"];
   }) => void;
-  onSwitchToManual: () => void;
+  onSwitchToManual?: () => void;
 }
 
 const EXAMPLE_URLS = [
   {
-    label: "Steam: Baldur's Gate 3",
+    label: "Baldur's Gate 3",
+    platform: "Steam",
     url: "https://store.steampowered.com/app/1086940/Baldurs_Gate_3/",
   },
   {
-    label: "Steam: Counter-Strike 2",
-    url: "https://store.steampowered.com/app/730/CounterStrike_2/",
+    label: "PC Game Pass",
+    platform: "Xbox",
+    url: "https://www.xbox.com/es-AR/xbox-game-pass/pc-game-pass",
   },
   {
-    label: "Xbox Game Pass PC",
-    url: "https://www.xbox.com/es-AR/xbox-game-pass/pc-game-pass",
+    label: "Counter-Strike 2",
+    platform: "Steam",
+    url: "https://store.steampowered.com/app/730/CounterStrike_2/",
   },
 ];
 
@@ -58,7 +61,7 @@ export default function UrlScraper({
       } else {
         toast({
           title: "URL inválida",
-          description: "El portapapeles no contiene un enlace web válido.",
+          description: "El portapapeles no contiene un enlace web.",
           variant: "destructive",
         });
       }
@@ -92,15 +95,15 @@ export default function UrlScraper({
       });
 
       toast({
-        title: "¡Scraping exitoso!",
-        description: `Se detectó ${scraped.title} (${scraped.currency} $${scraped.amount}).`,
+        title: "¡Precio obtenido!",
+        description: `${scraped.title} (${scraped.currency} \$${scraped.amount}).`,
       });
     } catch (err) {
       console.error("Error scraping:", err);
       const msg =
         err instanceof Error
           ? err.message
-          : "No se pudo extraer la información de la URL provista.";
+          : "No se pudo extraer la información del enlace provisto.";
       setError(msg);
     } finally {
       setLoading(false);
@@ -108,17 +111,7 @@ export default function UrlScraper({
   };
 
   return (
-    <div className="ticket w-full max-w-md p-6 space-y-4">
-      <div className="space-y-1">
-        <h3 className="font-display font-semibold text-lg flex items-center gap-2 text-primary">
-          <Link2 className="w-5 h-5" />
-          Scrapear cualquier URL
-        </h3>
-        <p className="text-xs text-muted-foreground">
-          Pegá el link de cualquier juego, suscripción o tienda (Steam, Xbox, PlayStation, Amazon) y Scrapling extraerá el precio y calculará los impuestos al instante.
-        </p>
-      </div>
-
+    <div className="space-y-4">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -134,8 +127,8 @@ export default function UrlScraper({
               setUrl(e.target.value);
               setError(null);
             }}
-            placeholder="https://store.steampowered.com/app/..."
-            className="pr-20 font-mono text-xs"
+            placeholder="Pegá el link de Steam, PlayStation, Xbox o Nintendo..."
+            className="bg-[#0A0F1D] border-slate-700/80 text-slate-100 placeholder:text-slate-500 pr-24 text-xs sm:text-sm h-12 rounded-xl focus:border-[#74ACDF] focus:ring-1 focus:ring-[#74ACDF]/20 transition-all"
             disabled={loading}
             required
           />
@@ -144,70 +137,61 @@ export default function UrlScraper({
             onClick={handlePaste}
             disabled={loading}
             title="Pegar del portapapeles"
-            className="absolute right-2 text-muted-foreground hover:text-foreground text-xs px-2 py-1 rounded bg-white/5 border border-border/50 flex items-center gap-1 transition-colors"
+            className="absolute right-2.5 text-xs text-slate-300 hover:text-white px-3 py-1.5 rounded-lg bg-[#111A2E] hover:bg-slate-700/60 border border-slate-700 flex items-center gap-1.5 transition-colors"
           >
-            <Clipboard className="w-3 h-3" />
+            <Clipboard className="w-3.5 h-3.5 text-[#74ACDF]" />
             <span>Pegar</span>
           </button>
         </div>
 
-        <Button type="submit" disabled={!url.trim() || loading} className="w-full font-semibold">
+        <Button
+          type="submit"
+          disabled={loading || !url.trim()}
+          className="w-full h-12 bg-[#74ACDF] hover:bg-[#5B9CD6] text-slate-950 text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-md shadow-[#74ACDF]/20"
+        >
           {loading ? (
             <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Extrayendo con Scrapling...
+              <Loader2 className="w-4 h-4 animate-spin text-slate-950" />
+              <span>Extrayendo precio de la tienda...</span>
             </>
           ) : (
             <>
-              <Search className="w-4 h-4 mr-2" />
-              Analizar y Calcular Impuestos
+              <span>Calcular impuestos</span>
+              <ArrowRight className="w-4 h-4" />
             </>
           )}
         </Button>
       </form>
 
-      {/* Ejemplos rápidos */}
-      <div className="pt-1 space-y-2">
-        <p className="text-[11px] text-muted-foreground font-display uppercase tracking-wider">
-          Probar enlaces de ejemplo:
-        </p>
-        <div className="flex flex-wrap gap-1.5">
-          {EXAMPLE_URLS.map((ex) => (
-            <button
-              key={ex.label}
-              type="button"
-              disabled={loading}
-              onClick={() => {
-                setUrl(ex.url);
-                handleScrape(ex.url);
-              }}
-              className="text-[11px] px-2.5 py-1 rounded-md bg-white/5 hover:bg-primary/20 border border-border/60 text-muted-foreground hover:text-primary transition-all flex items-center gap-1"
-            >
-              <ExternalLink className="w-3 h-3" />
-              {ex.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Error con botón para ir a la calculadora manual */}
       {error && (
-        <div className="p-3 rounded-lg border border-destructive/40 bg-destructive/10 text-xs text-destructive flex items-start gap-2 animate-in fade-in duration-200">
-          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-          <div className="space-y-1.5 flex-1">
-            <p className="font-semibold">No se pudo extraer el precio automáticamente</p>
-            <p className="text-[11px] opacity-90">{error}</p>
-            <button
-              type="button"
-              onClick={onSwitchToManual}
-              className="text-[11px] underline font-semibold text-foreground hover:text-primary block pt-0.5"
-            >
-              Ingresar el precio manualmente en la calculadora &rarr;
-            </button>
+        <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-xs text-red-300 flex items-start gap-2.5">
+          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-400" />
+          <div className="space-y-0.5">
+            <p className="font-medium text-red-200">No pudimos leer este link automáticamente</p>
+            <p className="text-[11px] text-red-300/80 leading-relaxed">{error}</p>
           </div>
         </div>
       )}
+
+      {/* Enlaces de ejemplo rápidos */}
+      <div className="pt-1 flex flex-wrap items-center gap-2 text-xs text-slate-400">
+        <span className="text-[11px] text-slate-500">Ejemplos:</span>
+        {EXAMPLE_URLS.map((item) => (
+          <button
+            key={item.url}
+            type="button"
+            onClick={() => {
+              setUrl(item.url);
+              handleScrape(item.url);
+            }}
+            disabled={loading}
+            className="text-[11px] text-slate-300 hover:text-white bg-[#0A0F1D] hover:bg-slate-800 border border-slate-700/80 px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1.5"
+          >
+            <span className="text-[#74ACDF] font-mono text-[10px]">{item.platform}</span>
+            <span>{item.label}</span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
-

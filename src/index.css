@@ -6,42 +6,43 @@
 
 @layer base {
   :root {
-    /* "Tinta de impresora térmica": verde-negro profundo, no un negro puro genérico */
-    --background: 155 18% 6%;
-    --foreground: 60 9% 94%;
+    /* Paleta Colores Argentinos: #0A0F1D (Fondo), #111A2E (Superficie), #74ACDF (Celeste), #F6B40E (Sol Dorado) */
+    --background: 224 48% 8%;
+    --foreground: 210 40% 98%;
 
-    --card: 155 14% 9%;
-    --card-foreground: 60 9% 94%;
+    --card: 222 45% 12%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 155 14% 9%;
-    --popover-foreground: 60 9% 94%;
+    --popover: 222 45% 12%;
+    --popover-foreground: 210 40% 98%;
 
-    /* Verde billete: acento principal */
-    --primary: 152 55% 48%;
-    --primary-foreground: 155 30% 8%;
+    /* Celeste Argentino #74ACDF */
+    --primary: 209 63% 66%;
+    --primary-foreground: 222 47% 11%;
 
-    --secondary: 155 10% 16%;
-    --secondary-foreground: 60 9% 94%;
+    --secondary: 222 35% 18%;
+    --secondary-foreground: 210 40% 96%;
 
-    --muted: 155 10% 15%;
-    --muted-foreground: 150 6% 62%;
+    --muted: 222 30% 16%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 152 55% 48%;
-    --accent-foreground: 155 30% 8%;
+    /* Amarillo Sol de Mayo #F6B40E */
+    --accent: 43 93% 51%;
+    --accent-foreground: 222 47% 11%;
 
-    --destructive: 4 71% 58%;
-    --destructive-foreground: 60 9% 96%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 155 12% 18%;
-    --input: 155 12% 18%;
-    --ring: 152 55% 48%;
+    --border: 217 33% 20%;
+    --input: 224 48% 8%;
+    --ring: 209 63% 66%;
 
-    --radius: 0.6rem;
+    --radius: 1rem;
 
-    /* Colores de las tres cotizaciones, con identidad propia */
-    --rate-blue: 213 82% 66%;
+    /* Cotizaciones */
+    --rate-blue: 217 91% 60%;
     --rate-oficial: 152 55% 48%;
-    --rate-tarjeta: 37 82% 58%;
+    --rate-tarjeta: 209 63% 66%;
   }
 }
 
@@ -50,14 +51,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-display antialiased;
-    background-image:
-      radial-gradient(circle at 15% -10%, hsl(152 55% 48% / 0.08), transparent 45%),
-      radial-gradient(circle at 85% 110%, hsl(213 82% 66% / 0.06), transparent 45%);
-    background-attachment: fixed;
-  }
-  ::selection {
-    background: hsl(var(--primary) / 0.35);
+    @apply bg-[#0A0F1D] text-foreground font-sans antialiased selection:bg-[#74ACDF]/30 selection:text-white;
   }
 }
 
@@ -66,38 +60,23 @@
     @apply font-mono tabular-nums;
   }
 
-  /* Ficha estilo "ticket fiscal": esquinas cortadas en octágono, como
-     un comprobante recortado. Es el elemento firma de la interfaz. */
+  /* Tarjetas principales estilo premium */
   .ticket {
-    background: hsl(var(--card));
-    border: 1px solid hsl(var(--border));
-    clip-path: polygon(
-      0% 10px, 10px 0%, calc(100% - 10px) 0%, 100% 10px,
-      100% calc(100% - 10px), calc(100% - 10px) 100%,
-      10px 100%, 0% calc(100% - 10px)
-    );
+    background-color: rgba(19, 27, 46, 0.4);
+    border: 1px solid rgba(30, 41, 59, 0.8);
+    border-radius: 1rem;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
   }
 
-  /* Línea de perforación entre secciones del ticket */
+  /* Divisor sutil y limpio */
   .ticket-divider {
-    border-top: 1px dashed hsl(var(--border));
+    border-top: 1px solid rgba(51, 65, 85, 0.4);
   }
 
-  /* Tira de "código de barras" decorativa, coherente con el tema de comprobante */
+  /* Barra decorativa sutil */
   .barcode {
-    height: 18px;
-    background-image: repeating-linear-gradient(
-      90deg,
-      hsl(var(--foreground) / 0.5) 0px,
-      hsl(var(--foreground) / 0.5) 2px,
-      transparent 2px,
-      transparent 5px,
-      hsl(var(--foreground) / 0.5) 5px,
-      hsl(var(--foreground) / 0.5) 6px,
-      transparent 6px,
-      transparent 10px
-    );
-    opacity: 0.5;
+    display: none;
   }
 }
 
