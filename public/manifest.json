@@ -1,0 +1,23 @@
+{
+  "name": "Impuesto Argento",
+  "short_name": "Impuesto Argento",
+  "description": "Calculá el precio real en pesos argentinos de tus juegos y suscripciones digitales.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0F1D",
+  "theme_color": "#0A0F1D",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/logo-icon.png",
+      "sizes": "96x77",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo-icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
