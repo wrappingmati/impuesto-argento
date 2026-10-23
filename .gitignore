@@ -30,3 +30,8 @@ dist/
 .env.local
 .vite/
 *.tsbuildinfo
+
+
+# Impeccable binaries
+**/scripts/bin/
+*.exe
