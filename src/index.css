@@ -53,6 +53,28 @@
   body {
     @apply bg-[#0A0F1D] text-foreground font-sans antialiased selection:bg-[#74ACDF]/30 selection:text-white;
   }
+
+  /* Scrollbar temático con paleta argentina */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0A0F1D;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 4px;
+    border: 2px solid #0A0F1D;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #74ACDF;
+  }
+
+  /* Color de cursor temático */
+  input, textarea {
+    caret-color: #74ACDF;
+  }
 }
 
 @layer utilities {

@@ -325,8 +325,8 @@ export default function GameLibrary({
         /* Empty State con Showcase de Juegos Populares */
         <div className="bg-[#111A2E]/60 border border-slate-800/90 rounded-2xl p-8 sm:p-12 text-center space-y-8">
           <div className="max-w-md mx-auto space-y-3">
-            <div className="w-16 h-16 rounded-2xl bg-[#74ACDF]/15 border border-[#74ACDF]/30 mx-auto flex items-center justify-center text-[#74ACDF] text-3xl shadow-lg shadow-[#74ACDF]/10">
-              🎮
+            <div className="w-16 h-16 rounded-2xl bg-[#74ACDF]/15 border border-[#74ACDF]/30 mx-auto flex items-center justify-center text-[#74ACDF] shadow-lg shadow-[#74ACDF]/10">
+              <Gamepad2 className="w-8 h-8 text-[#74ACDF]" />
             </div>
             <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
               Tu biblioteca gamer está lista

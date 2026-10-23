@@ -152,12 +152,12 @@ export default function Header({
             {dolarRates?.tarjeta && (
               <div className="hidden xl:flex items-center gap-2 text-xs font-mono bg-[#111A2E] border border-slate-800 px-3 py-1.5 rounded-full text-slate-300">
                 <span className="text-slate-400">Tarjeta:</span>
-                <span className="font-semibold text-white">${dolarRates.tarjeta.toFixed(0)}</span>
+                <span className="font-semibold text-white tabular-nums">${dolarRates.tarjeta.toFixed(0)}</span>
                 {dolarRates.mep && (
                   <>
                     <span className="text-slate-600">|</span>
                     <span className="text-slate-400">MEP:</span>
-                    <span className="font-semibold text-[#F6B40E]">${dolarRates.mep.toFixed(0)}</span>
+                    <span className="font-semibold text-[#F6B40E] tabular-nums">${dolarRates.mep.toFixed(0)}</span>
                   </>
                 )}
               </div>

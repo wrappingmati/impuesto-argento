@@ -14,7 +14,7 @@ import {
   type TaxCalculationResult,
   type ExchangeRates,
 } from "@/lib/tax-engine";
-import { Copy, Check, Sparkles, CreditCard, DollarSign, ShieldAlert, ExternalLink } from "lucide-react";
+import { Copy, Check, Sparkles, CreditCard, DollarSign, ShieldAlert, ExternalLink, Gamepad2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export interface ModalGameData {
@@ -122,8 +122,8 @@ export default function PriceBreakdownModal({
               className="w-full h-full object-cover object-center filter brightness-60"
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-r from-[#74ACDF]/30 via-white/10 to-[#F6B40E]/30 flex items-center justify-center">
-              <span className="text-4xl">🎮</span>
+            <div className="w-full h-full bg-[#0A0F1D] flex items-center justify-center">
+              <Gamepad2 className="w-12 h-12 text-[#74ACDF]/70" />
             </div>
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-[#111A2E] via-[#111A2E]/60 to-transparent" />

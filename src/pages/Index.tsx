@@ -110,7 +110,7 @@ export default function Index() {
 
             <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight">
               Calculá tus juegos y armá tu{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#74ACDF] via-white to-[#F6B40E]">
+              <span className="text-[#74ACDF] font-black">
                 Biblioteca Gamer
               </span>
             </h1>

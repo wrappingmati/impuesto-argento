@@ -70,7 +70,7 @@ export default function DolarInfo({ onRatesLoaded, className = "" }: DolarInfoPr
           >
             <p className="font-sans text-xs text-slate-400 font-medium">{label}</p>
             <p
-              className={`text-lg sm:text-xl font-bold mt-0.5 ${
+              className={`text-lg sm:text-xl font-bold mt-0.5 tabular-nums ${
                 highlight ? "text-[#F6B40E]" : "text-white"
               }`}
             >
