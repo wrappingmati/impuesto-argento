@@ -110,10 +110,10 @@ export default function GameLibrary({
 
   const rates: ExchangeRates = useMemo(
     () => ({
-      oficial: dolarRates.oficial ?? 1050,
-      tarjeta: dolarRates.tarjeta ?? (dolarRates.oficial ? dolarRates.oficial * 1.3 : 1365),
-      mep: dolarRates.mep ?? 1210,
-      blue: dolarRates.blue ?? 1240,
+      oficial: dolarRates.oficial ?? 1550,
+      tarjeta: dolarRates.tarjeta ?? (dolarRates.oficial ? dolarRates.oficial * 1.3 : 2015),
+      mep: dolarRates.mep ?? 1564,
+      blue: dolarRates.blue ?? 1565,
     }),
     [dolarRates]
   );

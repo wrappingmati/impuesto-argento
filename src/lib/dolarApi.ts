@@ -28,24 +28,7 @@ function withTimeout(ms: number): { signal: AbortSignal; cancel: () => void } {
   return { signal: controller.signal, cancel: () => clearTimeout(id) };
 }
 
-async function fetchBluelytics(): Promise<DolarRates> {
-  const { signal, cancel } = withTimeout(FETCH_TIMEOUT_MS);
-  try {
-    const res = await fetch("https://api.bluelytics.com.ar/v2/latest", { signal });
-    if (!res.ok) throw new Error(`bluelytics respondió ${res.status}`);
-    const data = await res.json();
-    const oficial = data?.oficial?.value_avg;
-    const blue = data?.blue?.value_avg;
-    if (typeof oficial !== "number" || typeof blue !== "number") {
-      throw new Error("bluelytics devolvió un formato inesperado");
-    }
-    return { blue, oficial, tarjeta: computeTarjetaRate(oficial), mep: null };
-  } finally {
-    cancel();
-  }
-}
-
-/** Proveedor de respaldo: https://dolarapi.com */
+/** Proveedor principal: https://dolarapi.com (incluye Dólar MEP, Oficial, Tarjeta y Blue) */
 async function fetchDolarApi(): Promise<DolarRates> {
   const { signal, cancel } = withTimeout(FETCH_TIMEOUT_MS);
   try {
@@ -65,6 +48,24 @@ async function fetchDolarApi(): Promise<DolarRates> {
       tarjeta: tarjetaFromApi ?? computeTarjetaRate(oficial),
       mep,
     };
+  } finally {
+    cancel();
+  }
+}
+
+/** Proveedor de respaldo: https://api.bluelytics.com.ar */
+async function fetchBluelytics(): Promise<DolarRates> {
+  const { signal, cancel } = withTimeout(FETCH_TIMEOUT_MS);
+  try {
+    const res = await fetch("https://api.bluelytics.com.ar/v2/latest", { signal });
+    if (!res.ok) throw new Error(`bluelytics respondió ${res.status}`);
+    const data = await res.json();
+    const oficial = data?.oficial?.value_sell ?? data?.oficial?.value_avg;
+    const blue = data?.blue?.value_sell ?? data?.blue?.value_avg;
+    if (typeof oficial !== "number" || typeof blue !== "number") {
+      throw new Error("bluelytics devolvió un formato inesperado");
+    }
+    return { blue, oficial, tarjeta: computeTarjetaRate(oficial), mep: null };
   } finally {
     cancel();
   }
@@ -96,20 +97,20 @@ function writeCache(result: DolarResult) {
 }
 
 /**
- * Trae las cotizaciones probando bluelytics primero y dolarapi.com como
- * respaldo. Si ambas fallan, devuelve la última cotización cacheada
- * (marcada como `source: "cache"`) en vez de dejar la UI vacía.
+ * Trae las cotizaciones probando dolarapi.com primero (que incluye Dólar MEP)
+ * y bluelytics como respaldo. Si ambas fallan, devuelve la última cotización
+ * cacheada (marcada como `source: "cache"`) en vez de dejar la UI vacía.
  */
 export async function fetchDolarRates(): Promise<DolarResult> {
   try {
-    const rates = await fetchBluelytics();
-    const result: DolarResult = { rates, source: "bluelytics", fetchedAt: Date.now() };
+    const rates = await fetchDolarApi();
+    const result: DolarResult = { rates, source: "dolarapi", fetchedAt: Date.now() };
     writeCache(result);
     return result;
   } catch (primaryError) {
     try {
-      const rates = await fetchDolarApi();
-      const result: DolarResult = { rates, source: "dolarapi", fetchedAt: Date.now() };
+      const rates = await fetchBluelytics();
+      const result: DolarResult = { rates, source: "bluelytics", fetchedAt: Date.now() };
       writeCache(result);
       return result;
     } catch (fallbackError) {
@@ -119,7 +120,7 @@ export async function fetchDolarRates(): Promise<DolarResult> {
       }
       console.error("Fallaron ambas APIs de cotización:", primaryError, fallbackError);
       throw new Error(
-        "No se pudo obtener la cotización del dólar (bluelytics y dolarapi.com fallaron)."
+        "No se pudo obtener la cotización del dólar (dolarapi.com y bluelytics fallaron)."
       );
     }
   }

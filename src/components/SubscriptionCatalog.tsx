@@ -47,10 +47,10 @@ export default function SubscriptionCatalog({
 
   // Fallback local en caso de que el backend esté desconectado
   const localRates: ExchangeRates = {
-    oficial: dolarRates.oficial ?? 1050,
-    tarjeta: dolarRates.tarjeta ?? 1365,
-    mep: dolarRates.mep ?? 1210,
-    blue: dolarRates.blue ?? 1240,
+    oficial: dolarRates.oficial ?? 1550,
+    tarjeta: dolarRates.tarjeta ?? 2015,
+    mep: dolarRates.mep ?? 1564,
+    blue: dolarRates.blue ?? 1565,
   };
 
   const services = remoteServices ?? POPULAR_PROVIDERS.filter((p) => p.plans && p.plans.length > 0).map((p) => ({
