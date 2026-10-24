@@ -294,9 +294,10 @@ export default function GameLibrary({
 
         {/* 2. Tarjetas de Resumen Financiero Total */}
         {summary.count > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 pt-3 border-t border-slate-800/80">
-            <div className="bg-[#0A0F1D]/90 border border-slate-800/90 rounded-xl p-3.5 sm:p-4">
-              <div className="flex items-center justify-between"><span className="text-[11px] font-medium text-slate-400">Inversión Total Biblioteca</span><CreditCard className="w-3.5 h-3.5 text-[#74ACDF]" /></div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-slate-800/80">
+            <div className="relative bg-gradient-to-br from-[#121c32] to-[#0A0F1D] border border-slate-800/90 hover:border-[#74ACDF]/50 rounded-2xl p-4 sm:p-5 overflow-hidden shadow-lg transition-all">
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#74ACDF] to-transparent" />
+              <div className="flex items-center justify-between"><span className="text-xs font-bold uppercase tracking-wider text-slate-400">Inversión Total</span><CreditCard className="w-4 h-4 text-[#74ACDF]" /></div>
               <div className="flex items-baseline gap-1.5 mt-0.5">
                 <span className="text-xl sm:text-2xl md:text-3xl font-extrabold font-mono text-white">
                   {formatArs(summary.totalFinalArs)}
@@ -308,8 +309,9 @@ export default function GameLibrary({
               </span>
             </div>
 
-            <div className="bg-[#0A0F1D]/90 border border-slate-800/90 rounded-xl p-3.5 sm:p-4">
-              <div className="flex items-center justify-between"><span className="text-[11px] font-medium text-slate-400">Total Impuestos Retenidos</span><Receipt className="w-3.5 h-3.5 text-[#F6B40E]" /></div>
+            <div className="relative bg-gradient-to-br from-[#1c180b] to-[#0A0F1D] border border-slate-800/90 hover:border-[#F6B40E]/50 rounded-2xl p-4 sm:p-5 overflow-hidden shadow-lg transition-all">
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#F6B40E] to-transparent" />
+              <div className="flex items-center justify-between"><span className="text-xs font-bold uppercase tracking-wider text-slate-400">Impuestos Retenidos</span><Receipt className="w-4 h-4 text-[#F6B40E]" /></div>
               <div className="flex items-baseline gap-1.5 mt-0.5">
                 <span className="text-xl sm:text-2xl md:text-3xl font-extrabold font-mono text-[#F6B40E]">
                   +{formatArs(summary.totalTaxesArs)}
@@ -321,8 +323,9 @@ export default function GameLibrary({
               </span>
             </div>
 
-            <div className="bg-[#0A0F1D]/90 border border-slate-800/90 rounded-xl p-3.5 sm:p-4">
-              <div className="flex items-center justify-between"><span className="text-[11px] font-medium text-emerald-400 font-semibold">Ahorro con Dólar MEP</span><Sparkles className="w-3.5 h-3.5 text-emerald-400" /></div>
+            <div className="relative bg-gradient-to-br from-[#0c2419] to-[#0A0F1D] border border-emerald-500/40 hover:border-emerald-500/70 rounded-2xl p-4 sm:p-5 overflow-hidden shadow-xl shadow-emerald-950/20 transition-all">
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-emerald-400 to-transparent" />
+              <div className="flex items-center justify-between"><span className="text-xs font-bold uppercase tracking-wider text-emerald-400">Ahorro con Dólar MEP</span><Sparkles className="w-4 h-4 text-emerald-400" /></div>
               <div className="flex items-baseline gap-1.5 mt-0.5">
                 <span className="text-xl sm:text-2xl md:text-3xl font-extrabold font-mono text-emerald-400">
                   {summary.totalMepSavingsArs > 0 ? `-${formatArs(summary.totalMepSavingsArs)}` : "$0"}
@@ -531,16 +534,31 @@ export default function GameLibrary({
                   </div>
 
                   {/* Precio Final Grande y Botón de Ticket */}
-                  <div className="pt-2 border-t border-slate-800/80 space-y-2">
-                    <div>
-                      <span className="text-[10px] text-slate-400 uppercase font-semibold tracking-wider block">
-                        Precio Final ARS
-                      </span>
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-xl sm:text-2xl font-extrabold font-mono tracking-tight text-emerald-400">
-                          {formatArs(calculation.totalArs)}
+                  <div className="pt-2 border-t border-slate-800/80 space-y-2.5">
+                    {/* Ahorro con MEP destacador */}
+                    {calculation.mepComparison?.savingsArs > 0 && !isMep && (
+                      <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-between text-xs">
+                        <span className="text-[10px] font-bold text-emerald-300 flex items-center gap-1">
+                          <Sparkles className="w-3 h-3 text-emerald-400 shrink-0" />
+                          <span>Con MEP</span>
                         </span>
-                        <span className="text-[10px] font-bold text-slate-400">ARS</span>
+                        <span className="font-mono font-black text-emerald-400 text-xs">
+                          -${formatArs(calculation.mepComparison.savingsArs)}
+                        </span>
+                      </div>
+                    )}
+
+                    <div className="flex items-baseline justify-between">
+                      <div>
+                        <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">
+                          Precio Final
+                        </span>
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-xl sm:text-2xl font-black font-mono tracking-tight text-white group-hover:text-emerald-400 transition-colors">
+                            {formatArs(calculation.totalArs)}
+                          </span>
+                          <span className="text-[10px] font-bold text-slate-500">ARS</span>
+                        </div>
                       </div>
                     </div>
 
@@ -557,10 +575,10 @@ export default function GameLibrary({
                           calculation,
                         })
                       }
-                      className="w-full bg-[#0A0F1D] hover:bg-[#74ACDF]/15 text-slate-300 hover:text-white border border-slate-800 hover:border-[#74ACDF]/40 text-xs font-semibold py-1.5 px-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5"
+                      className="w-full bg-[#080D1A] hover:bg-[#74ACDF] text-slate-300 hover:text-slate-950 border border-slate-700/80 hover:border-[#74ACDF] text-xs font-bold py-2 px-3 rounded-xl transition-all duration-200 flex items-center justify-center gap-1.5 shadow-sm cursor-pointer active:scale-95"
                     >
-                      <Receipt className="w-3.5 h-3.5 text-[#74ACDF]" />
-                      <span>Ver ticket</span>
+                      <Receipt className="w-3.5 h-3.5" />
+                      <span>Ver ticket fiscal</span>
                     </button>
                   </div>
                 </div>

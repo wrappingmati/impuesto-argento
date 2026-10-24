@@ -118,6 +118,29 @@ export default function Index() {
             <p className="text-xs sm:text-sm text-slate-300/80 leading-relaxed max-w-lg mx-auto">
               Precios transparentes en pesos argentinos para Steam, PlayStation, Xbox, Nintendo y suscripciones digitales.
             </p>
+            {/* Badges de tiendas oficiales */}
+            <div className="pt-2 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 text-xs font-semibold text-slate-400">
+              <span className="px-3 py-1 rounded-full bg-[#111A2E]/90 border border-slate-800 text-slate-300 flex items-center gap-1.5 shadow-sm hover:border-[#66c0f4]/50 transition-colors">
+                <span className="w-2 h-2 rounded-full bg-[#66c0f4] shadow-[0_0_8px_#66c0f4]" />
+                <span>Steam</span>
+              </span>
+              <span className="px-3 py-1 rounded-full bg-[#111A2E]/90 border border-slate-800 text-slate-300 flex items-center gap-1.5 shadow-sm hover:border-emerald-500/50 transition-colors">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
+                <span>Xbox · Game Pass</span>
+              </span>
+              <span className="px-3 py-1 rounded-full bg-[#111A2E]/90 border border-slate-800 text-slate-300 flex items-center gap-1.5 shadow-sm hover:border-blue-500/50 transition-colors">
+                <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]" />
+                <span>PlayStation</span>
+              </span>
+              <span className="px-3 py-1 rounded-full bg-[#111A2E]/90 border border-slate-800 text-slate-300 flex items-center gap-1.5 shadow-sm hover:border-red-500/50 transition-colors">
+                <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]" />
+                <span>Nintendo</span>
+              </span>
+              <span className="px-3 py-1 rounded-full bg-[#111A2E]/90 border border-slate-800 text-slate-300 flex items-center gap-1.5 shadow-sm hover:border-[#F6B40E]/50 transition-colors">
+                <span className="w-2 h-2 rounded-full bg-[#F6B40E] shadow-[0_0_8px_#F6B40E]" />
+                <span>Suscripciones</span>
+              </span>
+            </div>
           </div>
 
           {/* Grid de 2 columnas: Buscador y Calculadora (izquierda) + Cotizaciones Dólar en Vivo (derecha) */}
