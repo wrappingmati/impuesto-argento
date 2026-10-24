@@ -128,7 +128,7 @@ export default function UrlScraper({
               setError(null);
             }}
             placeholder="Pegá el link de Steam, PlayStation, Xbox o Nintendo..."
-            className="bg-[#0A0F1D] border-slate-700/80 text-slate-100 placeholder:text-slate-500 pr-24 text-xs sm:text-sm h-12 rounded-xl focus:border-[#74ACDF] focus:ring-1 focus:ring-[#74ACDF]/20 transition-all"
+            className="bg-[#0A0F1D] border-slate-700/80 hover:border-slate-600 focus:border-[#74ACDF] text-slate-100 placeholder:text-slate-500 pr-24 text-xs sm:text-sm h-12 rounded-xl focus:ring-2 focus:ring-[#74ACDF]/25 transition-all shadow-inner"
             disabled={loading}
             required
           />
@@ -147,7 +147,7 @@ export default function UrlScraper({
         <Button
           type="submit"
           disabled={loading || !url.trim()}
-          className="w-full h-12 bg-[#74ACDF] hover:bg-[#5B9CD6] text-slate-950 text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-md shadow-[#74ACDF]/20"
+          className="w-full h-12 bg-[#74ACDF] hover:bg-[#8ec2f2] text-slate-950 text-sm font-black rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-[#74ACDF]/25 hover:shadow-[#74ACDF]/40 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
         >
           {loading ? (
             <>
@@ -185,7 +185,7 @@ export default function UrlScraper({
               handleScrape(item.url);
             }}
             disabled={loading}
-            className="text-[11px] text-slate-300 hover:text-white bg-[#0A0F1D] hover:bg-slate-800 border border-slate-700/80 px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1.5"
+            className="text-[11px] text-slate-300 hover:text-white bg-[#0A0F1D] hover:bg-slate-800 hover:border-[#74ACDF]/50 border border-slate-800 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shadow-sm group"
           >
             <span className="text-[#74ACDF] font-mono text-[10px]">{item.platform}</span>
             <span>{item.label}</span>

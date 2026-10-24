@@ -26,6 +26,24 @@ import type { SavedGame } from "@/lib/storage";
 import PriceBreakdownModal, { type ModalGameData } from "./PriceBreakdownModal";
 import { useToast } from "@/hooks/use-toast";
 
+
+function getPlatformBadge(platform?: string, isUsd?: boolean) {
+  const p = (platform || "").toLowerCase();
+  if (p.includes("steam")) {
+    return { label: "Steam", style: "bg-[#171a21]/90 text-[#66c0f4] border-[#66c0f4]/40" };
+  }
+  if (p.includes("xbox") || p.includes("game pass")) {
+    return { label: "Xbox", style: "bg-[#107c10]/90 text-emerald-200 border-emerald-400/40" };
+  }
+  if (p.includes("playstation") || p.includes("psn") || p.includes("ps4") || p.includes("ps5")) {
+    return { label: "PlayStation", style: "bg-[#003791]/90 text-blue-200 border-blue-400/40" };
+  }
+  if (p.includes("nintendo")) {
+    return { label: "Nintendo", style: "bg-[#e60012]/90 text-white border-red-400/40" };
+  }
+  return { label: platform || (isUsd ? "USD" : "ARS"), style: "bg-black/80 text-[#74ACDF] border-[#74ACDF]/40" };
+}
+
 interface GameLibraryProps {
   games: SavedGame[];
   province: ProvinceCode;
@@ -278,7 +296,7 @@ export default function GameLibrary({
         {summary.count > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 pt-3 border-t border-slate-800/80">
             <div className="bg-[#0A0F1D]/90 border border-slate-800/90 rounded-xl p-3.5 sm:p-4">
-              <span className="text-[11px] font-medium text-slate-400 block">Inversión Total Biblioteca</span>
+              <div className="flex items-center justify-between"><span className="text-[11px] font-medium text-slate-400">Inversión Total Biblioteca</span><CreditCard className="w-3.5 h-3.5 text-[#74ACDF]" /></div>
               <div className="flex items-baseline gap-1.5 mt-0.5">
                 <span className="text-xl sm:text-2xl md:text-3xl font-extrabold font-mono text-white">
                   {formatArs(summary.totalFinalArs)}
@@ -291,7 +309,7 @@ export default function GameLibrary({
             </div>
 
             <div className="bg-[#0A0F1D]/90 border border-slate-800/90 rounded-xl p-3.5 sm:p-4">
-              <span className="text-[11px] font-medium text-slate-400 block">Total Impuestos Retenidos</span>
+              <div className="flex items-center justify-between"><span className="text-[11px] font-medium text-slate-400">Total Impuestos Retenidos</span><Receipt className="w-3.5 h-3.5 text-[#F6B40E]" /></div>
               <div className="flex items-baseline gap-1.5 mt-0.5">
                 <span className="text-xl sm:text-2xl md:text-3xl font-extrabold font-mono text-[#F6B40E]">
                   +{formatArs(summary.totalTaxesArs)}
@@ -304,7 +322,7 @@ export default function GameLibrary({
             </div>
 
             <div className="bg-[#0A0F1D]/90 border border-slate-800/90 rounded-xl p-3.5 sm:p-4">
-              <span className="text-[11px] font-medium text-slate-400 block">Ahorro con Dólar MEP</span>
+              <div className="flex items-center justify-between"><span className="text-[11px] font-medium text-emerald-400 font-semibold">Ahorro con Dólar MEP</span><Sparkles className="w-3.5 h-3.5 text-emerald-400" /></div>
               <div className="flex items-baseline gap-1.5 mt-0.5">
                 <span className="text-xl sm:text-2xl md:text-3xl font-extrabold font-mono text-emerald-400">
                   {summary.totalMepSavingsArs > 0 ? `-${formatArs(summary.totalMepSavingsArs)}` : "$0"}
@@ -419,7 +437,7 @@ export default function GameLibrary({
             return (
               <div
                 key={`${game.name}-${index}`}
-                className="bg-[#111A2E] border border-slate-800 hover:border-[#74ACDF]/80 rounded-2xl overflow-hidden group transition-all duration-300 flex flex-col justify-between shadow-lg hover:shadow-2xl hover:shadow-[#74ACDF]/15 hover:-translate-y-1 relative"
+                className="bg-[#111A2E] border border-slate-800 hover:border-[#74ACDF] rounded-2xl overflow-hidden group transition-all duration-300 flex flex-col justify-between shadow-lg hover:shadow-2xl hover:shadow-[#74ACDF]/20 hover:-translate-y-1.5 relative"
               >
                 {/* Portada / Cover Art con Aspect Ratio 16/10 o Póster */}
                 <div
@@ -448,9 +466,20 @@ export default function GameLibrary({
 
                   {/* Badges superiores sobre la imagen */}
                   <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-black/70 backdrop-blur-md text-[#74ACDF] border border-white/10 uppercase tracking-wider">
-                      {game.platform || (isUsd ? "USD" : "ARS")}
-                    </span>
+                    {(() => {
+                      const badge = getPlatformBadge(game.platform, isUsd);
+                      return (
+                        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold backdrop-blur-md border uppercase tracking-wider shadow-sm ${badge.style}`}>
+                          {badge.label}
+                        </span>
+                      );
+                    })()}
+                    {calculation.mepComparison?.savingsArs > 0 && !isMep && (
+                      <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/90 text-slate-950 shadow-md backdrop-blur-md flex items-center gap-1 font-mono">
+                        <Sparkles className="w-2.5 h-2.5" />
+                        <span>-${formatArs(calculation.mepComparison.savingsArs)} MEP</span>
+                      </span>
+                    )}
                   </div>
 
                   {/* Botón de eliminar discreto */}

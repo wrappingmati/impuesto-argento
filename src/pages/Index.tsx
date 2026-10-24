@@ -108,9 +108,9 @@ export default function Index() {
               <span className="text-[#F6B40E]">Jugá sin sorpresas 🇦🇷</span>
             </div>
 
-            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
               Calculá tus juegos y armá tu{" "}
-              <span className="text-[#74ACDF] font-black">
+              <span className="text-[#74ACDF] drop-shadow-[0_0_25px_rgba(116,172,223,0.35)]">
                 Biblioteca Gamer
               </span>
             </h1>

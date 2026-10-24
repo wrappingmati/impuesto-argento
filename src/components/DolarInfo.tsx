@@ -30,8 +30,10 @@ export default function DolarInfo({ onRatesLoaded, className = "" }: DolarInfoPr
 
   return (
     <div
-      className={`bg-[#111A2E] border border-slate-800/90 rounded-2xl p-4 sm:p-6 shadow-2xl space-y-3.5 sm:space-y-4 ${className}`}
+      className={`relative bg-[#111A2E]/95 backdrop-blur-xl border border-slate-800/90 rounded-2xl p-4 sm:p-6 shadow-2xl space-y-3.5 sm:space-y-4 overflow-hidden ${className}`}
     >
+      {/* Acento de luz neon dorado Sol de Mayo */}
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#F6B40E]/70 to-transparent" />
       <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
         <div className="flex items-center gap-2">
           <div className="relative flex items-center justify-center">

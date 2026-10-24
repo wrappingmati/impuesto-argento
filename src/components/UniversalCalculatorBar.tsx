@@ -38,7 +38,9 @@ export default function UniversalCalculatorBar({
   const [activeTab, setActiveTab] = useState<string>("url");
 
   return (
-    <div className="bg-[#111A2E] border border-slate-800/90 rounded-2xl p-4 sm:p-6 shadow-2xl space-y-4">
+    <div className="relative bg-[#111A2E]/95 backdrop-blur-xl border border-slate-800/90 hover:border-slate-700/80 rounded-2xl p-4 sm:p-6 shadow-2xl space-y-4 overflow-hidden transition-all">
+      {/* Acento de luz neon celeste */}
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#74ACDF]/70 to-transparent" />
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-4">
         {/* Cabecera del Dock con selector de modos */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
